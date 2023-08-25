@@ -1,4 +1,8 @@
+from typing import Unpack
+
 import typer
+
+from restrun.cli.commands.generate import GenerateArgs
 
 app = typer.Typer()
 
@@ -9,5 +13,5 @@ def new() -> None:
 
 
 @app.command()
-def generate() -> None:
+def generate(**kwargs: Unpack[GenerateArgs]) -> None:
     print("Generate command")
