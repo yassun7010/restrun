@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "petstore"
+version = "0.1.0"
+description = ""
+authors = ["yasutani_naoto <yasutani_naoto@cyberagent.co.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
