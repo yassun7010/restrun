@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 from jinja2 import BaseLoader, Environment
 
-import restrun
 from restrun.exception import FileNotFoundError
 
 if TYPE_CHECKING:
@@ -26,7 +25,6 @@ class BaseGenerator:
                 Environment(loader=BaseLoader())
                 .from_string(f.read())
                 .render(
-                    context.model_dump(),
-                    version=restrun.__version__,
+                    restrun=context,
                 )
             )

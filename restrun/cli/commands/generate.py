@@ -80,6 +80,16 @@ def generate_command(space: Namespace) -> None:
             with open(base_path / config.name / "client" / filename, "w") as file:
                 file.write(generator.generate(context))
 
+    if GenerateTarget.RESOURCE in targets:
+        from restrun.generator.get_request import GetRequestGenerator
+
+        resources = context.resources
+        for resource in resources.get_requests:
+            with open(
+                base_path / config.name / "requests" / f"{resource}.py", "w"
+            ) as file:
+                file.write(GetRequestGenerator().generate(context))
+
     if config.lint:
         RuffLinter().lint(base_path)
 
