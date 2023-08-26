@@ -7,6 +7,7 @@ import tomllib
 from typer import Option
 
 from restrun.config import DEFAULT_CONFIG_FILENAME, Config
+from restrun.linter.ruff import RuffLinter
 
 if TYPE_CHECKING:
     from argparse import _SubParsersAction
@@ -75,6 +76,8 @@ def generate_command(space: Namespace) -> None:
         ]:
             with open(base_path / config.name / "client" / filename, "w") as file:
                 file.write(generator.generate(context))
+
+    RuffLinter().lint(base_path)
 
 
 def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:
