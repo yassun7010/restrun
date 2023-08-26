@@ -17,6 +17,10 @@ class Config(RootModel):
     def name(self) -> str:
         return self.root.name
 
+    @property
+    def lint(self) -> bool:
+        return self.root.lint
+
     def to_context(self) -> "Context":
         return self.root.to_context()
 

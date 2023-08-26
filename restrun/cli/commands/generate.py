@@ -1,5 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from enum import Enum
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
 
@@ -11,6 +12,8 @@ from restrun.linter.ruff import RuffLinter
 
 if TYPE_CHECKING:
     from argparse import _SubParsersAction
+
+logger = getLogger(__name__)
 
 
 class GenerateTarget(Enum):
@@ -77,7 +80,8 @@ def generate_command(space: Namespace) -> None:
             with open(base_path / config.name / "client" / filename, "w") as file:
                 file.write(generator.generate(context))
 
-    RuffLinter().lint(base_path)
+    if config.lint:
+        RuffLinter().lint(base_path)
 
 
 def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:

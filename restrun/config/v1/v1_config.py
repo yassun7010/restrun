@@ -14,6 +14,11 @@ class V1Config(ExtraForbidModel):
 
     output: Annotated[Path | None, Field(title="output directory.")] = None
 
+    lint: Annotated[
+        bool,
+        Field(title="lint generated code. default linter is 'ruffo'"),
+    ] = True
+
     def to_context(self) -> "Context":
         return Context(
             client_prefix=self.name,
