@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
 from typer import Option
 
 from restrun import strcase
-from restrun.config import DEFAULT_CONFIG_FILENAME, load
+from restrun.config import DEFAULT_CONFIG_FILENAME, Config, load
+from restrun.generator import is_auto_generated
 from restrun.generator.context.restrun import RestrunContext
 from restrun.linter.ruff import RuffLinter
 
@@ -67,8 +68,8 @@ def generate_command(space: Namespace) -> None:
     with open(config_path, "br") as file:
         config = load(file)
 
-    context = RestrunContext.from_config(config)
-    base_path = config_path.parent / strcase.module_name(context.config.name)
+    base_path = config_path.parent / strcase.module_name(config.name)
+    context = make_rustrun_context(base_path, config)
 
     if GenerateTarget.CLIENT in targets:
         write_clients(base_path, context)
@@ -88,8 +89,29 @@ def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:
     return targets
 
 
+def make_rustrun_context(base_path: Path, config: Config) -> RestrunContext:
+    client_mixins_dir = base_path / "client" / "mixins"
+    if not client_mixins_dir.exists():
+        client_mixins = []
+        real_client_mixins = []
+        mock_client_mixins = []
+    else:
+        client_mixins = []
+        real_client_mixins = []
+        mock_client_mixins = []
+
+    return RestrunContext(
+        config=config,
+        client_prefix=config.name,
+        client_mixins=client_mixins,
+        real_client_mixins=real_client_mixins,
+        mock_client_mixins=mock_client_mixins,
+    )
+
+
 def write_clients(base_path: Path, context: RestrunContext) -> None:
     from restrun.generator.client import ClientGenerator
+    from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator
     from restrun.generator.client_module import ClientModuleGenerator
     from restrun.generator.mock_client import MockClientGenerator
     from restrun.generator.real_client import RealClientGenerator
@@ -99,9 +121,13 @@ def write_clients(base_path: Path, context: RestrunContext) -> None:
         ("real_client.py", RealClientGenerator()),
         ("mock_client.py", MockClientGenerator()),
         ("__init__.py", ClientModuleGenerator()),
+        (Path("mixins") / "__init__.py", ClientMixinsModuleGenerator()),
     ]:
-        with open(base_path / "client" / filename, "w") as file:
-            file.write(generator.generate(context))
+        filepath = base_path / "client" / filename
+
+        if not filepath.exists() or is_auto_generated(filepath):
+            with open(filepath, "w") as file:
+                file.write(generator.generate(context))
 
 
 def write_resources(base_path: Path, context: RestrunContext) -> None:
