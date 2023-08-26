@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from pathlib import Path
 
 
 class RestrunException(Exception):
@@ -15,7 +16,16 @@ class RestrunError(RestrunException):
     pass
 
 
-class MockResponseNotFound(RestrunError):
+class MockResponseNotFoundError(RestrunError):
     @property
     def message(self) -> str:
         return "Mock response data does not found. Please set use `MockClient.inject_*` methods."
+
+
+class RestrunFileNotFoundError(RestrunError, FileNotFoundError):
+    def __init__(self, filepath: str | Path) -> None:
+        self.filepath = Path(filepath) if isinstance(filepath, str) else filepath
+
+    @property
+    def message(self) -> str:
+        return f'"{self.filepath}" not found.'
