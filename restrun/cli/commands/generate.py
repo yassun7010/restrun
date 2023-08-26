@@ -11,7 +11,6 @@ from restrun import strcase
 from restrun.config import DEFAULT_CONFIG_FILENAME, Config, load
 from restrun.generator import ClassInfo, find_class_from_code, is_auto_generated
 from restrun.generator.context.restrun import RestrunContext
-from restrun.linter.ruff import RuffLinter
 
 if TYPE_CHECKING:
     from argparse import _SubParsersAction
@@ -78,7 +77,14 @@ def generate_command(space: Namespace) -> None:
     if GenerateTarget.RESOURCE in targets:
         write_resources(base_path, context)
 
+    if config.format:
+        from restrun.formatter.black import BlackFormatter
+
+        BlackFormatter().format(base_path)
+
     if config.lint:
+        from restrun.linter.ruff import RuffLinter
+
         RuffLinter().lint(base_path)
 
 

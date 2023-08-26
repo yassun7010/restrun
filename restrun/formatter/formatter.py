@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 
-class Linter(ABC):
+class Formatter(ABC):
     @abstractmethod
-    def lint(self, target_dir: Path, *args: str) -> None:
+    def format(self, target_dir: Path, *args: str) -> None:
         ...

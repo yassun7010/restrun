@@ -23,6 +23,10 @@ class Config(RootModel):
         return self.root.name
 
     @property
+    def format(self) -> bool:
+        return self.root.format
+
+    @property
     def lint(self) -> bool:
         return self.root.lint
 

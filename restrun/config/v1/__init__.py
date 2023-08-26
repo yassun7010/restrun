@@ -16,6 +16,12 @@ class V1Config(ExtraForbidModel):
     output: Annotated[Path | None, Field(title="output directory.")] = None
 
     source: list[V1Source] = Field(title="source files.", default_factory=list)
+
+    format: Annotated[
+        bool,
+        Field(title="format generated code. default formatter is 'black'"),
+    ] = True
+
     lint: Annotated[
         bool,
         Field(title="lint generated code. default linter is 'ruffo'"),
