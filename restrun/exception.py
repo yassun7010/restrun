@@ -42,3 +42,13 @@ class FileNotFoundError(RestrunError, FileNotFoundError):
     @property
     def message(self) -> str:
         return f'"{self.filepath}" not found.'
+
+
+class PythonFileExecutionError(RestrunError):
+    def __init__(self, filepath: Path, error: Exception) -> None:
+        self.filepath = filepath
+        self.error = error
+
+    @property
+    def message(self) -> str:
+        return f'"{self.filepath}" execution failed: {self.error}'

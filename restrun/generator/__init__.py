@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Type, TypeAlias
 
+from restrun.exception import PythonFileExecutionError
+
 PythonCode: TypeAlias = str
 GeneratedPythonCode: TypeAlias = str
 
@@ -39,10 +41,17 @@ def find_class_from_code(source: Path, class_type: Type) -> ClassInfo | None:
     with open(source, "r") as file:
         code = file.read()
 
-    exec(code, None, locals)
+    try:
+        exec(code, None, locals)
+    except Exception as error:
+        raise PythonFileExecutionError(source, error=error)
 
     for name, variable in locals.items():
-        if issubclass(variable, class_type) and variable is not class_type:
-            return ClassInfo(module_path=source.stem, class_name=name)
+        try:
+            if issubclass(variable, class_type) and variable is not class_type:
+                return ClassInfo(module_path=source.stem, class_name=name)
+
+        except TypeError:
+            pass
 
     return None
