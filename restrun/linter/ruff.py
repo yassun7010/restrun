@@ -4,12 +4,12 @@ import sys
 from logging import getLogger
 from pathlib import Path
 
-from .base_linter import BaseLinter
+from .linter import Linter
 
 logger = getLogger(__name__)
 
 
-class RuffLinter(BaseLinter):
+class RuffLinter(Linter):
     def lint(self, target_dir: Path, *args: str) -> None:
         from ruff.__main__ import find_ruff_bin
 

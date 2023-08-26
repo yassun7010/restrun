@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class BaseLinter(ABC):
+class Linter(ABC):
     @abstractmethod
     def lint(self) -> None:
         ...
