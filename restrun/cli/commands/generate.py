@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 from enum import Enum
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
+from typing import TYPE_CHECKING, Annotated, Iterable, NotRequired, TypedDict
 
 from typer import Option
 
@@ -88,12 +88,14 @@ def generate_command(space: Namespace) -> None:
         RuffLinter().lint(base_path)
 
 
-def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:
+def get_targets(
+    targets: Iterable[GenerateTarget],
+) -> set[GenerateTarget]:
     for target in targets:
         if target == GenerateTarget.ALL:
-            return list([t for t in GenerateTarget if t != GenerateTarget.ALL])
+            return set([t for t in GenerateTarget if t != GenerateTarget.ALL])
 
-    return targets
+    return set(targets)
 
 
 def make_rustrun_context(base_path: Path, config: Config) -> RestrunContext:
