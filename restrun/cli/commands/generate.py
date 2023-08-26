@@ -79,18 +79,26 @@ def generate_command(space: Namespace) -> None:
             ("mock_client.py", MockClientGenerator()),
             ("__init__.py", ClientModuleGenerator()),
         ]:
-            with open(base_path / config.name / "client" / filename, "w") as file:
+            with open(
+                base_path / config.name.lower() / "client" / filename, "w"
+            ) as file:
                 file.write(generator.generate(context))
 
     if GenerateTarget.RESOURCE in targets:
         from restrun.generator.get_request import GetRequestGenerator
+        from restrun.generator.resources_module import ResourcesModuleGenerator
 
         resources = context.resources
         for resource in resources.get_requests:
             with open(
-                base_path / config.name / "requests" / f"{resource}.py", "w"
+                base_path / config.name.lower() / "resources" / f"{resource}.py", "w"
             ) as file:
                 file.write(GetRequestGenerator().generate(context))
+
+        with open(
+            base_path / config.name.lower() / "resources" / "__init__.py", "w"
+        ) as file:
+            file.write(ResourcesModuleGenerator().generate(context))
 
     if config.lint:
         RuffLinter().lint(base_path)
