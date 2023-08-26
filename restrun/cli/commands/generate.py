@@ -68,43 +68,13 @@ def generate_command(space: Namespace) -> None:
         config = load(file)
 
     context = RestrunContext.from_config(config)
-    base_path = config_path.parent
+    base_path = config_path.parent / strcase.module_name(context.config.name)
 
     if GenerateTarget.CLIENT in targets:
-        from restrun.generator.client import ClientGenerator
-        from restrun.generator.client_module import ClientModuleGenerator
-        from restrun.generator.mock_client import MockClientGenerator
-
-        for filename, generator in [
-            ("client.py", ClientGenerator()),
-            ("mock_client.py", MockClientGenerator()),
-            ("__init__.py", ClientModuleGenerator()),
-        ]:
-            with open(
-                base_path / strcase.module_name(config.name) / "client" / filename, "w"
-            ) as file:
-                file.write(generator.generate(context))
+        write_clients(base_path, context)
 
     if GenerateTarget.RESOURCE in targets:
-        from restrun.generator.get_request import GetRequestGenerator
-        from restrun.generator.resources_module import ResourcesModuleGenerator
-
-        resources = context.resources
-        for resource in resources.get_requests:
-            with open(
-                base_path
-                / strcase.module_name(config.name)
-                / "resources"
-                / f"{resource}.py",
-                "w",
-            ) as file:
-                file.write(GetRequestGenerator().generate(context))
-
-        with open(
-            base_path / strcase.module_name(config.name) / "resources" / "__init__.py",
-            "w",
-        ) as file:
-            file.write(ResourcesModuleGenerator().generate(context))
+        write_resources(base_path, context)
 
     if config.lint:
         RuffLinter().lint(base_path)
@@ -116,3 +86,30 @@ def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:
             return list([t for t in GenerateTarget if t != GenerateTarget.ALL])
 
     return targets
+
+
+def write_clients(base_path: Path, context: RestrunContext) -> None:
+    from restrun.generator.client import ClientGenerator
+    from restrun.generator.client_module import ClientModuleGenerator
+    from restrun.generator.mock_client import MockClientGenerator
+
+    for filename, generator in [
+        ("client.py", ClientGenerator()),
+        ("mock_client.py", MockClientGenerator()),
+        ("__init__.py", ClientModuleGenerator()),
+    ]:
+        with open(base_path / "client" / filename, "w") as file:
+            file.write(generator.generate(context))
+
+
+def write_resources(base_path: Path, context: RestrunContext) -> None:
+    from restrun.generator.get_request import GetRequestGenerator
+    from restrun.generator.resources_module import ResourcesModuleGenerator
+
+    resources = context.resources
+    for resource in resources.get_requests:
+        with open(base_path / "resources" / f"{resource}.py", "w") as file:
+            file.write(GetRequestGenerator().generate(context))
+
+    with open(base_path / "resources" / "__init__.py", "w") as file:
+        file.write(ResourcesModuleGenerator().generate(context))
