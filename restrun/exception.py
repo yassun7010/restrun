@@ -19,7 +19,10 @@ class RestrunError(RestrunException):
 class MockResponseNotFoundError(RestrunError):
     @property
     def message(self) -> str:
-        return "Mock response data does not found. Please set use `MockClient.inject_*` methods."
+        return (
+            "Mock response data does not found."
+            " Please set use `MockClient.inject_*` methods."
+        )
 
 
 class FileExtensionError(RestrunError):
