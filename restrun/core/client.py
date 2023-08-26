@@ -11,7 +11,7 @@ class RestrunClient(ABC):
         ...
 
 
-class RestrunClientMixin:
+class RestrunClientMixin(RestrunClient):
     pass
 
 
@@ -19,7 +19,7 @@ class RestrunRealClient(RestrunClient):
     pass
 
 
-class RestrunRealClientMixin:
+class RestrunRealClientMixin(RestrunRealClient):
     pass
 
 
@@ -27,5 +27,5 @@ class RestrunMockClient(RestrunClient):
     pass
 
 
-class RestrunMockClientMixin:
+class RestrunMockClientMixin(RestrunMockClient):
     pass
