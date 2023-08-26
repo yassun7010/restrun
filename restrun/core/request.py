@@ -1,9 +1,7 @@
-from abc import abstractmethod
-from dataclasses import dataclass
+from typing import Union
 
-from typing_extensions import Literal
+from typing_extensions import Literal, final
 
-from restrun.core.http import URL
 from restrun.core.resource import Resource
 
 RequestMethod = Literal[
@@ -15,14 +13,52 @@ RequestMethod = Literal[
 ]
 
 
-@dataclass(frozen=True)
-class Request:
-    method: RequestMethod
-    url: URL
+class Request(Resource):
+    pass
 
 
-class RequestResource(Resource):
-    @classmethod
-    @abstractmethod
-    def request(cls) -> Request:
-        ...
+class GetRequest(Request):
+    @property
+    @final
+    def has_get_method(self) -> bool:
+        return True
+
+
+class PostRequest(Request):
+    @property
+    @final
+    def has_post_method(self) -> bool:
+        return True
+
+
+class PutRequest(Request):
+    @property
+    @final
+    def has_put_method(self) -> bool:
+        return True
+
+
+class PatchRequest(Request):
+    @property
+    @final
+    def has_patch_method(self) -> bool:
+        return True
+
+
+class DeleteRequest(Request):
+    @property
+    @final
+    def has_delete_method(self) -> bool:
+        return True
+
+
+def downcast(
+    request: Union[
+        DeleteRequest,
+        GetRequest,
+        PatchRequest,
+        PostRequest,
+        PutRequest,
+    ]
+) -> Request:
+    return request
