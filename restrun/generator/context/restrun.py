@@ -15,11 +15,11 @@ class RestrunContext:
 
     version: str = field(default=restrun.__version__)
 
-    client_middleware_classes: list[str] = field(default_factory=list)
+    client_mixins: list[str] = field(default_factory=list)
 
-    real_client_middleware_classes: list[str] = field(default_factory=list)
+    real_client_mixins: list[str] = field(default_factory=list)
 
-    mock_client_middleware_classes: list[str] = field(default_factory=list)
+    mock_client_mixins: list[str] = field(default_factory=list)
 
     resources: RequestResourceMap = field(default_factory=RequestResourceMap)
 

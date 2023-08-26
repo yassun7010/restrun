@@ -92,9 +92,11 @@ def write_clients(base_path: Path, context: RestrunContext) -> None:
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_module import ClientModuleGenerator
     from restrun.generator.mock_client import MockClientGenerator
+    from restrun.generator.real_client import RealClientGenerator
 
     for filename, generator in [
         ("client.py", ClientGenerator()),
+        ("real_client.py", RealClientGenerator()),
         ("mock_client.py", MockClientGenerator()),
         ("__init__.py", ClientModuleGenerator()),
     ]:
