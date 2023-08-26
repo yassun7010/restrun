@@ -71,11 +71,13 @@ def generate_command(space: Namespace) -> None:
 
     if GenerateTarget.CLIENT in targets:
         from restrun.generator.client import ClientGenerator
+        from restrun.generator.client_module import ClientModuleGenerator
         from restrun.generator.mock_client import MockClientGenerator
 
         for filename, generator in [
             ("client.py", ClientGenerator()),
             ("mock_client.py", MockClientGenerator()),
+            ("__init__.py", ClientModuleGenerator()),
         ]:
             with open(base_path / config.name / "client" / filename, "w") as file:
                 file.write(generator.generate(context))
