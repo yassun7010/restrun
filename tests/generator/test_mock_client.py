@@ -26,12 +26,14 @@ class TestMockClientGenerator:
             with open(Path(__file__).parent / "client.py", "w") as file:
                 file.write(ClientGenerator().generate(context))
 
-        code = MockClientGenerator().generate(context)
+        try:
+            code = MockClientGenerator().generate(context)
 
-        exec(code, None, locals)
+            exec(code, None, locals)
 
-        for file in files:
-            os.remove(file)
+            assert is_auto_generated(code)
+            assert locals["MyMockClient"] is not None
 
-        assert is_auto_generated(code)
-        assert locals["MyMockClient"] is not None
+        finally:
+            for file in files:
+                os.remove(file)
