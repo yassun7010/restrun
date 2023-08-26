@@ -10,7 +10,10 @@ from .request_resource_map import RequestResourceMap
 @dataclass
 class RestrunContext:
     config: Config
+
     client_prefix: str
+
+    version: str = field(default=restrun.__version__)
 
     client_middleware_classes: list[str] = field(default_factory=list)
 
@@ -19,10 +22,6 @@ class RestrunContext:
     mock_client_middleware_classes: list[str] = field(default_factory=list)
 
     resources: RequestResourceMap = field(default_factory=RequestResourceMap)
-
-    @property
-    def version(self):
-        return restrun.__version__
 
     @classmethod
     def from_config(cls, config: Config) -> Self:
