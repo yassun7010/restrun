@@ -7,12 +7,12 @@ from restrun.exception import FileNotFoundError
 
 if TYPE_CHECKING:
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context import Context
+    from restrun.generator.context.restrun import RestrunContext
 
 
-class BaseGenerator:
+class RestrunGenerator:
     def generate(
-        self, context: "Context", template_path: Path | None = None
+        self, context: "RestrunContext", template_path: Path | None = None
     ) -> "GeneratedPythonCode":
         if template_path is None:
             raise ValueError("template_path must be specified.")

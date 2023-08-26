@@ -1,16 +1,16 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator.base_generator import BaseGenerator
+from restrun.generator.restrun import RestrunGenerator
 
 if TYPE_CHECKING:
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context import Context
+    from restrun.generator.context.restrun import RestrunContext
 
 
-class ClientGenerator(BaseGenerator):
+class ClientGenerator(RestrunGenerator):
     def generate(
-        self, context: "Context", template_path: Path | None = None
+        self, context: "RestrunContext", template_path: Path | None = None
     ) -> "GeneratedPythonCode":
         if template_path is None:
             template_path = Path(__file__).parent / "client.py.jinja"

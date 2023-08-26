@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
 from typer import Option
 
 from restrun.config import DEFAULT_CONFIG_FILENAME, load
-from restrun.generator.context import Context
+from restrun.generator.context.restrun import RestrunContext
 from restrun.linter.ruff import RuffLinter
 
 if TYPE_CHECKING:
@@ -66,7 +66,7 @@ def generate_command(space: Namespace) -> None:
     with open(config_path, "br") as file:
         config = load(file)
 
-    context = Context.from_config(config)
+    context = RestrunContext.from_config(config)
     base_path = config_path.parent
 
     if GenerateTarget.CLIENT in targets:
