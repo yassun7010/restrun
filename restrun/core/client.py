@@ -11,5 +11,13 @@ class RestrunClient(ABC):
         ...
 
 
+class RestrunClientMixin:
+    pass
+
+
 class RestrunMockClient(RestrunClient):
+    pass
+
+
+class RestrunMockClientMixin:
     pass
