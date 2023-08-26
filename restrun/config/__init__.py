@@ -1,6 +1,6 @@
 from pydantic import RootModel
 
-from .v1.v1_config import V1Config
+from .v1 import V1Config
 
 DEFAULT_CONFIG_FILENAME = "restrun.toml"
 
