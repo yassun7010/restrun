@@ -1,3 +1,4 @@
+import glob
 from argparse import ArgumentParser, Namespace
 from enum import Enum
 from logging import getLogger
@@ -8,7 +9,7 @@ from typer import Option
 
 from restrun import strcase
 from restrun.config import DEFAULT_CONFIG_FILENAME, Config, load
-from restrun.generator import is_auto_generated
+from restrun.generator import ClassInfo, find_class_from_code, is_auto_generated
 from restrun.generator.context.restrun import RestrunContext
 from restrun.linter.ruff import RuffLinter
 
@@ -91,14 +92,29 @@ def get_targets(targets: list[GenerateTarget]) -> list[GenerateTarget]:
 
 def make_rustrun_context(base_path: Path, config: Config) -> RestrunContext:
     client_mixins_dir = base_path / "client" / "mixins"
-    if not client_mixins_dir.exists():
-        client_mixins = []
-        real_client_mixins = []
-        mock_client_mixins = []
-    else:
-        client_mixins = []
-        real_client_mixins = []
-        mock_client_mixins = []
+
+    client_mixins: list[ClassInfo] = []
+    real_client_mixins: list[ClassInfo] = []
+    mock_client_mixins: list[ClassInfo] = []
+
+    if client_mixins_dir.exists():
+        from restrun.core.client import (
+            RestrunClientMixin,
+            RestrunMockClientMixin,
+            RestrunRealClientMixin,
+        )
+
+        for pyfile in glob.glob(str(client_mixins_dir / "*.py")):
+            pypath = Path(pyfile)
+
+            if mixin := find_class_from_code(pypath, RestrunClientMixin):
+                client_mixins.append(mixin)
+
+            if mixin := find_class_from_code(pypath, RestrunRealClientMixin):
+                real_client_mixins.append(mixin)
+
+            if mixin := find_class_from_code(pypath, RestrunMockClientMixin):
+                mock_client_mixins.append(mixin)
 
     return RestrunContext(
         config=config,
