@@ -19,8 +19,8 @@ from .mixins import (
 
 
 class PetstoreClient(
-    bearer_token_login_mixin.bearerTokenLoginMixin,
-    bearer_token_login_mixin2.bearerTokenLoginMixin,
+    bearer_token_login_mixin.BearerTokenLoginMixin,
+    bearer_token_login_mixin2.BearerTokenLoginMixin,
     RestrunClient,
 ):
     """

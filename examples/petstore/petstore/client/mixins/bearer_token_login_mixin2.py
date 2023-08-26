@@ -1,6 +1,6 @@
 from restrun.core.client import RestrunClientMixin
 
 
-class bearerTokenLoginMixin(RestrunClientMixin):
+class BearerTokenLoginMixin(RestrunClientMixin):
     def from_bearer_token(self, token: str):
         ...
