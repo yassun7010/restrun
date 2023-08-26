@@ -8,6 +8,7 @@ import tomllib
 from typer import Option
 
 from restrun.config import DEFAULT_CONFIG_FILENAME, Config
+from restrun.generator.context import Context
 from restrun.linter.ruff import RuffLinter
 
 if TYPE_CHECKING:
@@ -66,7 +67,7 @@ def generate_command(space: Namespace) -> None:
     with open(config_path, "br") as file:
         config = Config.model_validate(tomllib.load(file))
 
-    context = config.to_context()
+    context = Context.from_config(config)
     base_path = config_path.parent
 
     if GenerateTarget.CLIENT in targets:

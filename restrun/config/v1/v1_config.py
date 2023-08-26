@@ -4,7 +4,6 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 from restrun.core.model import ExtraForbidModel
-from restrun.generator.context import Context
 
 
 class V1Config(ExtraForbidModel):
@@ -18,8 +17,3 @@ class V1Config(ExtraForbidModel):
         bool,
         Field(title="lint generated code. default linter is 'ruffo'"),
     ] = True
-
-    def to_context(self) -> "Context":
-        return Context(
-            client_prefix=self.name,
-        )
