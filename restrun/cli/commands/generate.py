@@ -4,10 +4,9 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
 
-import tomllib
 from typer import Option
 
-from restrun.config import DEFAULT_CONFIG_FILENAME, Config
+from restrun.config import DEFAULT_CONFIG_FILENAME, load
 from restrun.generator.context import Context
 from restrun.linter.ruff import RuffLinter
 
@@ -65,7 +64,7 @@ def generate_command(space: Namespace) -> None:
     config_path: Path = space.config
 
     with open(config_path, "br") as file:
-        config = Config.model_validate(tomllib.load(file))
+        config = load(file)
 
     context = Context.from_config(config)
     base_path = config_path.parent

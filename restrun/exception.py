@@ -22,7 +22,17 @@ class MockResponseNotFoundError(RestrunError):
         return "Mock response data does not found. Please set use `MockClient.inject_*` methods."
 
 
-class RestrunFileNotFoundError(RestrunError, FileNotFoundError):
+class FileExtensionError(RestrunError):
+    def __init__(self, file: str, extension: str) -> None:
+        self._file = file
+        self._extension = extension
+
+    @property
+    def message(self) -> str:
+        return f'file extension "{self._extension}" of "{self._file}" is not supported.'
+
+
+class FileNotFoundError(RestrunError, FileNotFoundError):
     def __init__(self, filepath: str | Path) -> None:
         self.filepath = Path(filepath) if isinstance(filepath, str) else filepath
 
