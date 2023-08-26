@@ -8,7 +8,7 @@
 from typing import Self
 
 from restrun.core.client import RestrunMockClient
-from restrun.core.endpoint import Endpoint
+from restrun.core.request import Request
 
 from .client import {{ client_class }}
 
@@ -20,7 +20,7 @@ class {{ mock_client_class }}({{ (["RestrunMockClient"] + mock_client_middleware
 {% for method, resources in api_method_resources %}
 {% if resources|length != 0 %}
     def inject_{{ method|lower }}_response_body(self, url, response_body) -> Self:
-        self._client.inject_response_body(Endpoint({{ method|upper }}, url), response_body)
+        self._client.inject_response_body(Request({{ method|upper }}, url), response_body)
 
         return self
 {% endif %}

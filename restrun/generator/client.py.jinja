@@ -7,7 +7,7 @@
 from typing import Self
 
 from restrun.core.client import RestrunClient
-from restrun.core.endpoint import Endpoint
+from restrun.core.request import Request
 
 class {{ client_class }}({{ (client_middleware_classes + ["RestrunClient"])|join(", ") }}):
     """
@@ -16,7 +16,7 @@ class {{ client_class }}({{ (client_middleware_classes + ["RestrunClient"])|join
 {# {% for url in api_method_resources.urls %}
 {% if resources|length != 0 %}
     def inject_{{ method|lower }}_response_body(self, url, response_body) -> Self:
-        self._client.inject_response_body(Endpoint({{ method|upper }}, url), response_body)
+        self._client.inject_response_body(Request({{ method|upper }}, url), response_body)
 
         return self
 {% endif %}
