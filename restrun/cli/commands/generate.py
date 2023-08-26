@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Annotated, NotRequired, TypedDict
 
 from typer import Option
 
+from restrun import strcase
 from restrun.config import DEFAULT_CONFIG_FILENAME, load
 from restrun.generator.context.restrun import RestrunContext
 from restrun.linter.ruff import RuffLinter
@@ -80,7 +81,7 @@ def generate_command(space: Namespace) -> None:
             ("__init__.py", ClientModuleGenerator()),
         ]:
             with open(
-                base_path / config.name.lower() / "client" / filename, "w"
+                base_path / strcase.module_name(config.name) / "client" / filename, "w"
             ) as file:
                 file.write(generator.generate(context))
 
@@ -91,12 +92,17 @@ def generate_command(space: Namespace) -> None:
         resources = context.resources
         for resource in resources.get_requests:
             with open(
-                base_path / config.name.lower() / "resources" / f"{resource}.py", "w"
+                base_path
+                / strcase.module_name(config.name)
+                / "resources"
+                / f"{resource}.py",
+                "w",
             ) as file:
                 file.write(GetRequestGenerator().generate(context))
 
         with open(
-            base_path / config.name.lower() / "resources" / "__init__.py", "w"
+            base_path / strcase.module_name(config.name) / "resources" / "__init__.py",
+            "w",
         ) as file:
             file.write(ResourcesModuleGenerator().generate(context))
 
