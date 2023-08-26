@@ -2,7 +2,7 @@
 name = "petstore"
 version = "0.1.0"
 description = ""
-authors = ["yasutani_naoto <yasutani_naoto@cyberagent.co.jp>"]
+authors = ["yassun7010 <yassun7010@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
