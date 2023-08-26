@@ -27,4 +27,4 @@ class RestrunGenerator:
                 .render(
                     restrun=context,
                 )
-            )
+            ) + "\n"
