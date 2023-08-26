@@ -1,0 +1,47 @@
+{
+    "$defs": {
+        "V1Config": {
+            "additionalProperties": false,
+            "properties": {
+                "version": {
+                    "const": "1",
+                    "title": "Version"
+                },
+                "name": {
+                    "title": "client name.",
+                    "type": "string"
+                },
+                "output": {
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "output directory."
+                },
+                "lint": {
+                    "default": true,
+                    "title": "lint generated code. default linter is 'ruffo'",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "version",
+                "name"
+            ],
+            "title": "V1Config",
+            "type": "object"
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/$defs/V1Config"
+        }
+    ],
+    "title": "Config"
+}

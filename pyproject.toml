@@ -12,6 +12,7 @@ restrun = "restrun.__main__:app"
 test = "pytest"
 format = "black ."
 lint = "pyright restrun/** tests/**"
+generate-config-jsonschema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
 
 [tool.poetry.dependencies]
 python = "^3.11"

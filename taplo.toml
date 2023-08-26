@@ -1,0 +1,6 @@
+[[rule]]
+include = ["**/restrun.toml"]
+
+[rule.schema]
+path = "./schemas/config.schema.json"
+enabled = true
