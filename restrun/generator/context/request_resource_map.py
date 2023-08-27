@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Iterator
 
+from restrun.core import http
 from restrun.core.request import (
     DeleteRequest,
     GetRequest,
@@ -8,7 +9,6 @@ from restrun.core.request import (
     PostRequest,
     PutRequest,
     Request,
-    RequestMethod,
     downcast,
 )
 
@@ -23,7 +23,7 @@ class RequestResourceMap:
 
     def __iter__(
         self,
-    ) -> Iterator[tuple[RequestMethod, Iterator[Request]]]:
+    ) -> Iterator[tuple[http.Method, Iterator[Request]]]:
         return iter(
             [
                 ("GET", map(downcast, self.get_requests)),
