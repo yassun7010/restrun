@@ -1,12 +1,24 @@
-from typing import LiteralString
+from typing import (
+    Literal,
+    LiteralString,
+)
 
-from typing_extensions import TypeAlias, TypeVar
+from typing_extensions import TypeAlias
 
 from restrun.core.model import Model
 
 URL: TypeAlias = LiteralString
-Headers = TypeVar("Headers", bound=dict)
-QuryParameters = TypeVar("QuryParameters", bound=dict)
-RequestJsonBody = TypeVar("RequestJsonBody", bound=dict)
-ResponseJsonBody = TypeVar("ResponseJsonBody", bound=dict)
-ResponseModelBody = TypeVar("ResponseModelBody", bound=Model)
+Headers: TypeAlias = dict
+QuryParameters: TypeAlias = dict
+RequestJsonBody: TypeAlias = dict
+ResponseBody: TypeAlias = str
+ResponseJsonBody: TypeAlias = dict
+ResponseModelBody: TypeAlias = Model
+
+Method = Literal[
+    "DELETE",
+    "GET",
+    "PATCH",
+    "POST",
+    "PUT",
+]

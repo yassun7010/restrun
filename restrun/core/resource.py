@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from restrun.core import http
+
 
 class HttpClient:
     pass
@@ -12,7 +14,7 @@ class Resource(ABC):
     @property
     @classmethod
     @abstractmethod
-    def url(cls) -> str:
+    def url(cls) -> http.URL:
         ...
 
     @property
