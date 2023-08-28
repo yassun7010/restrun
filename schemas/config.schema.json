@@ -1,0 +1,79 @@
+{
+    "$defs": {
+        "V1Config": {
+            "additionalProperties": false,
+            "properties": {
+                "version": {
+                    "const": "1",
+                    "title": "Version"
+                },
+                "name": {
+                    "title": "client name.",
+                    "type": "string"
+                },
+                "output": {
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "output directory."
+                },
+                "source": {
+                    "items": {
+                        "$ref": "#/$defs/V1OpenAPISource"
+                    },
+                    "title": "source files.",
+                    "type": "array"
+                },
+                "format": {
+                    "default": true,
+                    "title": "format generated code. default formatter is 'black'",
+                    "type": "boolean"
+                },
+                "lint": {
+                    "default": true,
+                    "title": "lint generated code. default linter is 'ruffo'",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "version",
+                "name"
+            ],
+            "title": "V1Config",
+            "type": "object"
+        },
+        "V1OpenAPISource": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "openapi",
+                    "title": "Type"
+                },
+                "location": {
+                    "format": "path",
+                    "title": "openapi file location.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "location"
+            ],
+            "title": "V1OpenAPISource",
+            "type": "object"
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/$defs/V1Config"
+        }
+    ],
+    "title": "Config"
+}

@@ -1,23 +1,18 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from jinja2 import BaseLoader, Environment
+from .restrun import RestrunGenerator
 
 if TYPE_CHECKING:
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context import Context
+    from restrun.generator.context.restrun import RestrunContext
 
 
-class MockClientGenerator:
+class MockClientGenerator(RestrunGenerator):
     def generate(
-        self, context: "Context", template_path: Path | None = None
+        self, context: "RestrunContext", template_path: Path | None = None
     ) -> "GeneratedPythonCode":
         if template_path is None:
             template_path = Path(__file__).parent / "mock_client.py.jinja"
 
-        with open(template_path, "r") as f:
-            return (
-                Environment(loader=BaseLoader())
-                .from_string(f.read())
-                .render(context.model_dump())
-            )
+        return super().generate(context, template_path)
