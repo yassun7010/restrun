@@ -1,0 +1,3 @@
+[[rule]]
+include = ["**/restrun.toml"]
+schema = { path = "./schemas/restrun.schema.json", enabled = true }

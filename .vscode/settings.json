@@ -1,0 +1,44 @@
+{
+    "editor.comments.insertSpace": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true,
+    "editor.trimAutoWhitespace": true,
+    "editor.useTabStops": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "python.analysis.addImport.exactMatchOnly": false,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.extraPaths": [],
+    "python.analysis.importFormat": "absolute",
+    "python.analysis.indexing": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.globalModuleInstallation": true,
+    "python.testing.pytestEnabled": true,
+    "yaml.schemas": {
+        "./schemas/config.schema.json": "**/restrun.yml"
+    },
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true,
+            "source.fixAll": true
+        },
+        "editor.tabSize": 4,
+        "editor.rulers": [
+            88
+        ],
+        "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    },
+    "[json]": {
+        "editor.tabSize": 4
+    },
+    "[yaml]": {
+        "editor.tabSize": 2
+    },
+}
