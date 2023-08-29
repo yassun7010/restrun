@@ -1,6 +1,7 @@
 import json
 import os
 from io import StringIO
+from pathlib import Path
 from typing import IO
 
 import jinja2
@@ -12,7 +13,12 @@ from restrun.exception import FileExtensionError
 
 from .v1 import V1Config
 
-DEFAULT_CONFIG_FILENAME = "restrun.toml"
+DEFAULT_CONFIG_FILES = [
+    Path("restrun.toml"),
+    Path("restrun.yaml"),
+    Path("restrun.yml"),
+]
+DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
 
 
 class Config(RootModel):
