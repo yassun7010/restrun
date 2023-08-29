@@ -1,7 +1,6 @@
-import argparse
 import logging
 import sys
-from argparse import BooleanOptionalAction
+from argparse import ArgumentParser, BooleanOptionalAction
 from logging import getLogger
 from typing import NoReturn
 
@@ -13,7 +12,7 @@ import restrun
 from restrun.cli.commands import generate
 
 
-class ArgumentParser(argparse.ArgumentParser):
+class RestrunArgumentParser(ArgumentParser):
     def error(self, message: str) -> NoReturn:
         self.print_usage(sys.stderr)
         raise RuntimeError(message)
@@ -22,7 +21,7 @@ class ArgumentParser(argparse.ArgumentParser):
 class App:
     @classmethod
     def run(cls, args: list[str] | None = None) -> None:
-        parser = ArgumentParser(
+        parser = RestrunArgumentParser(
             prog="restrun",
             description="A tool to generate REST API clients.",
             formatter_class=RichHelpFormatter,
