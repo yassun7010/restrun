@@ -137,7 +137,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
                     class_infos,
                 )
     urls = set(
-        cast(ClassInfo[Request], request).class_type.url
+        cast(ClassInfo[Request], request).class_type.url()
         for request in resource_context.method_map.values()
     )
 
@@ -145,6 +145,10 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
         case 0:
             return None
         case 1:
-            return resource_context
+            return ResourceContext(
+                module_name=resource_context.module_name,
+                url=next(iter(urls)),
+                method_map=resource_context.method_map,
+            )
         case _:
             raise RequestURLInvalidError(resource_context.methods)

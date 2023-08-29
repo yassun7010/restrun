@@ -7,10 +7,15 @@ from restrun.core.request import RequestMockClient
 from restrun.exception import RestrunError
 
 if TYPE_CHECKING:
+    from restrun.core.request import RequestClient
     from restrun.core.resource import Resource
 
 
 class RestrunClient(ABC):
+    @property
+    def _client(self) -> "RequestClient":
+        ...
+
     @abstractmethod
     def request(self, url: str) -> "Resource":
         ...
