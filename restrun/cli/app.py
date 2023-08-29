@@ -4,6 +4,7 @@ from logging import getLogger
 
 from rich.console import Console as RichConsole
 from rich.logging import RichHandler
+from rich_argparse import RichHelpFormatter
 
 import restrun
 from restrun.cli.commands import generate
@@ -15,6 +16,7 @@ class App:
         parser = ArgumentParser(
             prog="restrun",
             description="A tool to generate REST API clients.",
+            formatter_class=RichHelpFormatter,
         )
 
         parser.add_argument(
@@ -30,7 +32,7 @@ class App:
         )
 
         subparser = parser.add_subparsers(dest="command", required=True)
-        generate.add_subparser(subparser)
+        generate.add_subparser(subparser, formatter_class=parser.formatter_class)
 
         space = parser.parse_args(args)
 

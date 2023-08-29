@@ -60,10 +60,11 @@ class GenerateArgs(TypedDict):
     ]
 
 
-def add_subparser(subparsers: "_SubParsersAction") -> None:
+def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
     parser: ArgumentParser = subparsers.add_parser(
         "generate",
         help="Generate REST API clients.",
+        **kwargs,
     )
 
     parser.add_argument(
