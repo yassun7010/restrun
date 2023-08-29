@@ -21,13 +21,11 @@ class RestrunArgumentParser(ArgumentParser):
 class App:
     @classmethod
     def run(cls, args: list[str] | None = None) -> None:
-        RichHelpFormatter.styles["argparse.restrun"] = "bold itaric green"
+        RichHelpFormatter.styles["restrun"] = "italic bold green"
 
         parser = RestrunArgumentParser(
             prog="restrun",
-            description=(
-                "[argparse.restrun]RESTRUN[/] is a tool to generate REST API clients."
-            ),
+            description="[restrun]RESTRUN[/] is a tool to generate REST API clients.",
             formatter_class=RichHelpFormatter,
         )
 
