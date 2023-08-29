@@ -6,6 +6,7 @@ from jinja2 import BaseLoader, Environment
 
 from restrun.exception import (
     FileNotFoundError,
+    JinjaRenderError,
     JinjaTemplateRuntimeError,
     JinjaTemplateSyntaxError,
 )
@@ -33,7 +34,12 @@ class RestrunGenerator:
         with open(template_path, "r") as f:
             try:
                 return (
-                    add_strcase_filters(Environment(loader=BaseLoader()))
+                    add_strcase_filters(
+                        Environment(
+                            loader=BaseLoader(),
+                            undefined=jinja2.StrictUndefined,
+                        )
+                    )
                     .from_string(f.read())
                     .render(
                         config=config,
@@ -46,3 +52,6 @@ class RestrunGenerator:
 
             except jinja2.TemplateRuntimeError as error:
                 raise JinjaTemplateRuntimeError(template_path, error)
+
+            except Exception as error:
+                raise JinjaRenderError(template_path, error)

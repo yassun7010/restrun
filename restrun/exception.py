@@ -73,6 +73,15 @@ class MockResponseTypeError(RestrunError, KeyError):
         )
 
 
+class URLNotSupportedError(RestrunError, ValueError):
+    def __init__(self, url: "http.URL") -> None:
+        self.url = url
+
+    @property
+    def message(self) -> str:
+        return f'"{self.url}" is not supported.'
+
+
 class JinjaTemplateSyntaxError(jinja2.TemplateSyntaxError, RestrunError):
     def __init__(self, template_path: Path, error: jinja2.TemplateSyntaxError) -> None:
         self.template_path = template_path
@@ -91,6 +100,16 @@ class JinjaTemplateRuntimeError(jinja2.TemplateRuntimeError, RestrunError):
     @property
     def message(self) -> str:
         return f'"{self.template_path}" jinja runtime error: {self.error}'
+
+
+class JinjaRenderError(RestrunError):
+    def __init__(self, template_path: Path, error: Exception) -> None:
+        self.template_path = template_path
+        self.error = error
+
+    @property
+    def message(self) -> str:
+        return f'"{self.template_path}" jinja render error: {self.error}'
 
 
 class UnknownRequestTypeError(RestrunError, TypeError):
