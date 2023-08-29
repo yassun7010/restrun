@@ -2,21 +2,13 @@ from argparse import ArgumentParser, BooleanOptionalAction, Namespace
 from enum import Enum
 from logging import getLogger
 from pathlib import Path
-from typing import (
-    TYPE_CHECKING,
-    Annotated,
-    Iterable,
-    NotRequired,
-    TypedDict,
-)
+from typing import TYPE_CHECKING, Annotated, Iterable, NotRequired, TypedDict
 
 from typer import Option
 
 from restrun import strcase
 from restrun.config import DEFAULT_CONFIG_FILE, Config, get_path, load
-from restrun.generator import (
-    is_auto_generated_or_empty,
-)
+from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.context.restrun import RestrunContext, make_rustrun_context
 from restrun.generator.resource_module import ResourceModuleGenerator
 
@@ -64,13 +56,13 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
     parser.add_argument(
         "--format",
         action=BooleanOptionalAction,
-        help="format generated code.",
+        help="format generated code. default is true.",
     )
 
     parser.add_argument(
         "--lint",
         action=BooleanOptionalAction,
-        help="lint generated code.",
+        help="lint generated code. default is true.",
     )
 
     parser.set_defaults(handler=generate_command)
