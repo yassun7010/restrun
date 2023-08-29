@@ -36,7 +36,6 @@ def config() -> Config:
 @fixture
 def restrun_context(config: Config) -> RestrunContext:
     return RestrunContext(
-        config=config,
         resources=[],
         client_prefix=config.root.name,
         client_mixins=[],

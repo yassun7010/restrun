@@ -12,6 +12,7 @@ from restrun.exception import (
 from restrun.strcase import add_strcase_filters
 
 if TYPE_CHECKING:
+    from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
     from restrun.generator.context.resource import ResourceContext
     from restrun.generator.context.restrun import RestrunContext
@@ -20,6 +21,7 @@ if TYPE_CHECKING:
 class ResourceGenerator:
     def generate(
         self,
+        config: "Config",
         restrun_context: "RestrunContext",
         resource_context: "ResourceContext",
         template_path: Path | None = None,
@@ -36,6 +38,7 @@ class ResourceGenerator:
                     add_strcase_filters(Environment(loader=BaseLoader()))
                     .from_string(f.read())
                     .render(
+                        config=config,
                         restrun=restrun_context,
                         resource=resource_context,
                     )

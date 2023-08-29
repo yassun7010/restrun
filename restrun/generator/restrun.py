@@ -12,13 +12,17 @@ from restrun.exception import (
 from restrun.strcase import add_strcase_filters
 
 if TYPE_CHECKING:
+    from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
     from restrun.generator.context.restrun import RestrunContext
 
 
 class RestrunGenerator:
     def generate(
-        self, context: "RestrunContext", template_path: Path | None = None
+        self,
+        config: "Config",
+        context: "RestrunContext",
+        template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
             raise ValueError("template_path must be specified.")
@@ -32,6 +36,7 @@ class RestrunGenerator:
                     add_strcase_filters(Environment(loader=BaseLoader()))
                     .from_string(f.read())
                     .render(
+                        config=config,
                         restrun=context,
                     )
                 ).strip() + "\n"

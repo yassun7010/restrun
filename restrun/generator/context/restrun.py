@@ -11,9 +11,8 @@ from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.generator.context.resource import ResourceContext, make_resource_contexts
 
 
-@dataclass
+@dataclass(frozen=True)
 class RestrunContext:
-    config: Config
     resources: list[ResourceContext]
 
     client_prefix: str
@@ -47,7 +46,7 @@ class RestrunContext:
         ]
 
     @property
-    def request_infos_map(self) -> dict[http.Method, list[ClassInfo[Request]]]:
+    def request_infos_map(self) -> dict[http.Method, tuple[ClassInfo[Request]]]:
         results: dict[http.Method, list[ClassInfo[Request]]] = {
             "GET": [],
             "POST": [],
@@ -62,7 +61,9 @@ class RestrunContext:
                     cast(ClassInfo[Request], request_info)
                 )
 
-        return results
+        return {
+            method: tuple(request_infos) for method, request_infos in results.items()
+        }
 
 
 def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
@@ -93,7 +94,6 @@ def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
             mock_client_mixins.extend(mixins_map[RestrunMockClientMixin])
 
     return RestrunContext(
-        config=config,
         client_prefix=config.name,
         client_mixins=client_mixins,
         real_client_mixins=real_client_mixins,

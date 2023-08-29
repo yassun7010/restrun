@@ -13,7 +13,7 @@ from typing import (
 from typer import Option
 
 from restrun import strcase
-from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
+from restrun.config import DEFAULT_CONFIG_FILE, Config, get_path, load
 from restrun.generator import (
     is_auto_generated_or_empty,
 )
@@ -87,10 +87,10 @@ def generate_command(space: Namespace) -> None:
     context = make_rustrun_context(base_dir, config)
 
     if GenerateTarget.RESOURCE in targets:
-        write_resources(base_dir, context)
+        write_resources(base_dir, config, context)
 
     if GenerateTarget.CLIENT in targets:
-        write_clients(base_dir, context)
+        write_clients(base_dir, config, context)
 
     if space.format if space.format is not None else config.format:
         from restrun.formatter.black import BlackFormatter
@@ -113,7 +113,7 @@ def get_targets(
     return set(targets)
 
 
-def write_clients(base_dir: Path, restrun_context: RestrunContext) -> None:
+def write_clients(base_dir: Path, config: Config, context: RestrunContext) -> None:
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator
     from restrun.generator.client_module import ClientModuleGenerator
@@ -130,21 +130,21 @@ def write_clients(base_dir: Path, restrun_context: RestrunContext) -> None:
         filepath = base_dir / "client" / filename
 
         if not filepath.exists() or is_auto_generated_or_empty(filepath):
-            code = generator.generate(restrun_context)
+            code = generator.generate(config, context)
             with open(filepath, "w") as file:
                 file.write(code)
 
 
-def write_resources(base_dir: Path, context: RestrunContext) -> None:
+def write_resources(base_dir: Path, config: Config, context: RestrunContext) -> None:
     from restrun.generator.resources_module import ResourcesModuleGenerator
 
     for resource_context in context.resources:
-        code = ResourceModuleGenerator().generate(context, resource_context)
+        code = ResourceModuleGenerator().generate(config, context, resource_context)
         with open(
             base_dir / "resources" / resource_context.module_name / "__init__.py", "w"
         ) as file:
             file.write(code)
 
-    code = ResourcesModuleGenerator().generate(context)
+    code = ResourcesModuleGenerator().generate(config, context)
     with open(base_dir / "resources" / "__init__.py", "w") as file:
         file.write(code)

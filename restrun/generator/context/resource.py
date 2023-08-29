@@ -24,7 +24,7 @@ class RequestMethodMap(TypedDict):
     DELETE: NotRequired[ClassInfo[DeleteRequest]]
 
 
-@dataclass
+@dataclass(frozen=True)
 class ResourceContext:
     module_name: str
     url: http.URL
