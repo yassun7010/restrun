@@ -3,11 +3,10 @@ from typing import TYPE_CHECKING, Self
 
 from restrun.core import http
 from restrun.core.model import Model
-from restrun.core.request import RequestMockClient
+from restrun.core.request import RequestClient, RequestMockClient
 from restrun.exception import RestrunError
 
 if TYPE_CHECKING:
-    from restrun.core.request import RequestClient
     from restrun.core.resource import Resource
 
 
@@ -35,7 +34,11 @@ class RestrunRealClientMixin(RestrunRealClient):
 
 class RestrunMockClient(RestrunClient):
     def __init__(self) -> None:
-        self._client = RequestMockClient()
+        self.__client = RequestMockClient()
+
+    @property
+    def _client(self) -> RequestMockClient:
+        return self.__client
 
     def inject_get_response_body(
         self, url: http.Method, response_body: Model | RestrunError
