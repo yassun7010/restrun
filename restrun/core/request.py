@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Type, Union
+from typing import Self, Type, Union
 
 from typing_extensions import override
 
@@ -15,6 +15,7 @@ from restrun.core.model import Model
 from restrun.core.resource import Resource
 from restrun.exception import (
     MockRequestError,
+    MockResponseBodyRemainsError,
     MockResponseNotFoundError,
     MockResponseTypeError,
     RestrunError,
@@ -131,6 +132,18 @@ class RequestClient(ABC):
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
+        ...
+
+    @abstractmethod
+    def close(self) -> None:
+        ...
+
+    @abstractmethod
+    def __enter__(self) -> Self:
+        ...
+
+    @abstractmethod
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
         ...
 
 
@@ -275,3 +288,13 @@ class RequestMockClient(RequestClient):
             url,
             response_body_type=response_body_type,
         )
+
+    def close(self) -> None:
+        if len(self._store) != 0:
+            raise MockResponseBodyRemainsError()
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        self.close()

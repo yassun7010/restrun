@@ -19,6 +19,17 @@ class RestrunClient(ABC):
     def request(self, url: str) -> "Resource":
         ...
 
+    def close(self) -> None:
+        self._client.close()
+
+    def __enter__(self) -> Self:
+        self._client.__enter__()
+
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        self._client.__exit__(exc_type, exc_value, traceback)
+
 
 class RestrunClientMixin(RestrunClient):
     pass

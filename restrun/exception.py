@@ -73,6 +73,12 @@ class MockResponseTypeError(RestrunError, KeyError):
         )
 
 
+class MockResponseBodyRemainsError(RestrunError, KeyError):
+    @property
+    def message(self) -> str:
+        return "Mock response body remains."
+
+
 class URLNotSupportedError(RestrunError, ValueError):
     def __init__(self, url: "http.URL") -> None:
         self.url = url
