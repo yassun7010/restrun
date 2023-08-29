@@ -1,4 +1,4 @@
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, BooleanOptionalAction, Namespace
 from enum import Enum
 from logging import getLogger
 from pathlib import Path
@@ -61,6 +61,18 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
         help="target to generate.",
     )
 
+    parser.add_argument(
+        "--format",
+        action=BooleanOptionalAction,
+        help="format generated code.",
+    )
+
+    parser.add_argument(
+        "--lint",
+        action=BooleanOptionalAction,
+        help="lint generated code.",
+    )
+
     parser.set_defaults(handler=generate_command)
 
 
@@ -80,12 +92,12 @@ def generate_command(space: Namespace) -> None:
     if GenerateTarget.CLIENT in targets:
         write_clients(base_dir, context)
 
-    if config.format:
+    if space.format if space.format is not None else config.format:
         from restrun.formatter.black import BlackFormatter
 
         BlackFormatter().format(base_dir)
 
-    if config.lint:
+    if space.lint if space.lint is not None else config.lint:
         from restrun.linter.ruff import RuffLinter
 
         RuffLinter().lint(base_dir)
