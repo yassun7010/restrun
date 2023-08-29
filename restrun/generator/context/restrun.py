@@ -46,6 +46,13 @@ class RestrunContext:
         ]
 
     @property
+    def has_request(self) -> bool:
+        return (
+            sum(len(request_infos) for request_infos in self.request_infos_map.values())
+            != 0
+        )
+
+    @property
     def request_infos_map(self) -> dict[http.Method, tuple[ClassInfo[Request]]]:
         results: dict[http.Method, list[ClassInfo[Request]]] = {
             "GET": [],

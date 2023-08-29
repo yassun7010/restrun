@@ -34,6 +34,9 @@ from .mixins import (
 
 
 class {{ mock_client_class }}({{ (restrun.mock_client_mixin_path_names + ["RestrunMockClient", client_class])|join(", ") }}):
+{% if not restrun.has_request %}
+    pass
+{% endif %}
 {% for method, request_infos in restrun.request_infos_map.items() %}
 {% if request_infos|length == 0 %}
 {% elif request_infos|length == 1 %}
