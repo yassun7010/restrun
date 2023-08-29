@@ -77,7 +77,7 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
         "--config",
         type=Path,
         help=(
-            f'Config filepath. Default is [argparse.metavar]"{DEFAULT_CONFIG_FILE}"[/].'
+            f'config filepath. default is [argparse.metavar]"{DEFAULT_CONFIG_FILE}"[/].'
         ),
     )
 
@@ -87,7 +87,7 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
         type=GenerateTarget,
         choices=list(GenerateTarget),
         default=[GenerateTarget.ALL],
-        help="Target to generate.",
+        help="target to generate.",
     )
 
     parser.set_defaults(handler=generate_command)
