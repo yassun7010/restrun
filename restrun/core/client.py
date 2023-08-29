@@ -34,11 +34,11 @@ class RestrunRealClientMixin(RestrunRealClient):
 
 class RestrunMockClient(RestrunClient):
     def __init__(self) -> None:
-        self.__client = RequestMockClient()
+        self._mock_client = RequestMockClient()
 
     @property
     def _client(self) -> RequestMockClient:
-        return self.__client
+        return self._mock_client
 
     def inject_get_response_body(
         self, url: http.Method, response_body: Model | RestrunError
