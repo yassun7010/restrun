@@ -33,7 +33,7 @@ class App:
         parser.add_argument(
             "--version",
             action="version",
-            version=f"%(prog)s {restrun.__version__}",
+            version=f"[argparse.prog]%(prog)s[/] {restrun.__version__}",
         )
 
         parser.add_argument(
