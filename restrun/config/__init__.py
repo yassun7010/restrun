@@ -2,7 +2,7 @@ import json
 import os
 from io import StringIO
 from pathlib import Path
-from typing import IO
+from typing import IO, overload
 
 import jinja2
 import tomllib
@@ -35,6 +35,27 @@ class Config(RootModel):
     @property
     def lint(self) -> bool:
         return self.root.lint
+
+
+@overload
+def get_path(path: Path | None, default: None) -> Path | None:
+    ...
+
+
+@overload
+def get_path(path: Path | None, default: Path) -> Path:
+    ...
+
+
+def get_path(path: Path | None = None, default: Path | None = None) -> Path | None:
+    if path is not None:
+        return path
+
+    for filename in DEFAULT_CONFIG_FILES:
+        if filename.exists():
+            return filename
+    else:
+        return default
 
 
 def load(file: IO, **kwargs) -> Config:

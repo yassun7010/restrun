@@ -16,12 +16,7 @@ from typing import (
 from typer import Option
 
 from restrun import strcase
-from restrun.config import (
-    DEFAULT_CONFIG_FILE,
-    DEFAULT_CONFIG_FILES,
-    Config,
-    load,
-)
+from restrun.config import DEFAULT_CONFIG_FILE, Config, get_path, load
 from restrun.core.request import (
     DeleteRequest,
     GetRequest,
@@ -74,14 +69,6 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
     )
 
     parser.add_argument(
-        "--config",
-        type=Path,
-        help=(
-            f'config filepath. default is [argparse.metavar]"{DEFAULT_CONFIG_FILE}"[/].'
-        ),
-    )
-
-    parser.add_argument(
         "--target",
         nargs="*",
         type=GenerateTarget,
@@ -95,16 +82,9 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
 
 def generate_command(space: Namespace) -> None:
     targets = get_targets(space.target)
-    config_path: Path | None = space.config
+    config_path = get_path(space.config, DEFAULT_CONFIG_FILE)
 
-    if config_path is None:
-        for filename in DEFAULT_CONFIG_FILES:
-            if filename.exists():
-                config_path = filename
-        else:
-            config_path = DEFAULT_CONFIG_FILE
-
-    with open(config_path, "br") as file:
+    with open(config_path) as file:
         config = load(file)
 
     base_dir = config_path.parent / strcase.module_name(config.name)

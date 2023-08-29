@@ -2,6 +2,7 @@ import logging
 import sys
 from argparse import ArgumentParser, BooleanOptionalAction
 from logging import getLogger
+from pathlib import Path
 from typing import NoReturn
 
 from rich.console import Console as RichConsole
@@ -10,6 +11,7 @@ from rich_argparse import RichHelpFormatter
 
 import restrun
 from restrun.cli.commands import generate, new
+from restrun.config import DEFAULT_CONFIG_FILE
 
 
 class RestrunArgumentParser(ArgumentParser):
@@ -27,6 +29,14 @@ class App:
             prog="restrun",
             description="[restrun]RESTRUN[/] is a tool to generate REST API clients.",
             formatter_class=RichHelpFormatter,
+        )
+
+        parser.add_argument(
+            "--config",
+            type=Path,
+            help=(
+                f'config filepath. default is [argparse.metavar]"{DEFAULT_CONFIG_FILE}"[/].'
+            ),
         )
 
         parser.add_argument(
