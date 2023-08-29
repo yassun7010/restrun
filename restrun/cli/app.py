@@ -9,7 +9,7 @@ from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
 
 import restrun
-from restrun.cli.commands import generate
+from restrun.cli.commands import generate, new
 
 
 class RestrunArgumentParser(ArgumentParser):
@@ -41,7 +41,13 @@ class App:
             help="output verbose log.",
         )
 
-        subparser = parser.add_subparsers(dest="command", required=True)
+        subparser = parser.add_subparsers(
+            title="commands",
+            metavar="command",
+            required=True,
+        )
+
+        new.add_subparser(subparser, formatter_class=parser.formatter_class)
         generate.add_subparser(subparser, formatter_class=parser.formatter_class)
 
         logging.basicConfig(
