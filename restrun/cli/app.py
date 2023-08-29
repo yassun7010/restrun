@@ -21,7 +21,7 @@ class RestrunArgumentParser(ArgumentParser):
 class App:
     @classmethod
     def run(cls, args: list[str] | None = None) -> None:
-        RichHelpFormatter.styles["argparse.restrun"] = "bold green"
+        RichHelpFormatter.styles["argparse.restrun"] = "bold itaric green"
 
         parser = RestrunArgumentParser(
             prog="restrun",
