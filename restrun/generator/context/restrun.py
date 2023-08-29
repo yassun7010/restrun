@@ -4,6 +4,7 @@ from pathlib import Path
 
 import restrun
 from restrun.config import Config
+from restrun.core.request import GetRequest
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.generator.context.resource import ResourceContext, make_resource_contexts
 
@@ -26,21 +27,29 @@ class RestrunContext:
     @property
     def client_mixin_path_names(self) -> list[str]:
         return [
-            f"{mixin.module_path}.{mixin.class_name}" for mixin in self.client_mixins
+            f"{mixin.module_name}.{mixin.class_name}" for mixin in self.client_mixins
         ]
 
     @property
     def real_client_mixin_path_names(self) -> list[str]:
         return [
-            f"{mixin.module_path}.{mixin.class_name}"
+            f"{mixin.module_name}.{mixin.class_name}"
             for mixin in self.real_client_mixins
         ]
 
     @property
     def mock_client_mixin_path_names(self) -> list[str]:
         return [
-            f"{mixin.module_path}.{mixin.class_name}"
+            f"{mixin.module_name}.{mixin.class_name}"
             for mixin in self.mock_client_mixins
+        ]
+
+    @property
+    def get_request_infos(self) -> list[ClassInfo[GetRequest]]:
+        return [
+            resource.get_request
+            for resource in self.resources
+            if resource.get_request is not None
         ]
 
 

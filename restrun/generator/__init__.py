@@ -27,7 +27,7 @@ def is_auto_generated(source: Path | PythonCode) -> bool:
 
 @dataclass(frozen=True)
 class ClassInfo(Generic[T]):
-    module_path: str
+    module_name: str
     class_name: str
     class_type: Type[T]
 
@@ -57,7 +57,7 @@ def find_classes_from_code(
                 if issubclass(variable, class_type) and variable is not class_type:
                     result[class_type].append(
                         ClassInfo(
-                            module_path=source.stem,
+                            module_name=source.stem,
                             class_name=name,
                             class_type=variable,
                         )

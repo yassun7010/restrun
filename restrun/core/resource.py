@@ -11,7 +11,6 @@ class Resource(ABC):
     def __init__(self, client: "RequestClient") -> None:
         self._client = client
 
-    @property
     @classmethod
     @abstractmethod
     def url(cls) -> http.URL:

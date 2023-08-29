@@ -1,9 +1,10 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import jinja2
 from jinja2 import BaseLoader, Environment
 
-from restrun.exception import FileNotFoundError
+from restrun.exception import FileNotFoundError, JinjaTemplateError
 from restrun.strcase import add_strcase_filters
 
 if TYPE_CHECKING:
@@ -22,10 +23,14 @@ class RestrunGenerator:
             raise FileNotFoundError(template_path)
 
         with open(template_path, "r") as f:
-            return (
-                add_strcase_filters(Environment(loader=BaseLoader()))
-                .from_string(f.read())
-                .render(
-                    restrun=context,
-                )
-            ).strip() + "\n"
+            try:
+                return (
+                    add_strcase_filters(Environment(loader=BaseLoader()))
+                    .from_string(f.read())
+                    .render(
+                        restrun=context,
+                    )
+                ).strip() + "\n"
+
+            except jinja2.TemplateError as error:
+                raise JinjaTemplateError(template_path, error)

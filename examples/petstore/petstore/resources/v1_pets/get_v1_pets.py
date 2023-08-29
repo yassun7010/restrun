@@ -8,12 +8,11 @@ class GetV1PetsRequestResponseBody(ExtraForbidModel):
 
 
 class GetV1PetsRequest(GetRequest):
-    @property
     @classmethod
     def url(cls) -> "http.URL":
         return "https://petstore3.swagger.io/api/v1/pets"
 
     def get(self) -> "GetV1PetsRequestResponseBody":
         return self._client.get(
-            self.url, response_body_type=GetV1PetsRequestResponseBody
+            self.url(), response_body_type=GetV1PetsRequestResponseBody
         )

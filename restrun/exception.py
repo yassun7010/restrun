@@ -2,6 +2,8 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import TYPE_CHECKING, Type
 
+import jinja2
+
 if TYPE_CHECKING:
     from restrun.core import http
     from restrun.core.model import Model
@@ -71,6 +73,16 @@ class MockResponseTypeError(RestrunError, KeyError):
         )
 
 
+class JinjaTemplateError(jinja2.TemplateError, RestrunError):
+    def __init__(self, template_path: Path, error: jinja2.TemplateError) -> None:
+        self.template_path = template_path
+        self.error = error
+
+    @property
+    def message(self) -> str:
+        return f'"{self.template_path}" jinja template error: {self.error}'
+
+
 class UnknownRequestTypeError(RestrunError, TypeError):
     def __init__(self, request_type: "Type[Request]") -> None:
         self.request_type = request_type
@@ -94,7 +106,7 @@ class DuplicateRequestTypeError(RestrunError, TypeError):
     @property
     def message(self) -> str:
         request_types = [
-            f"{info.module_path}.{info.class_name}" for info in self.class_infos
+            f"{info.module_name}.{info.class_name}" for info in self.class_infos
         ]
 
         return (

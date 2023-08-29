@@ -20,7 +20,7 @@ from .client import {{ client_class }}
 {%- if restrun.real_client_mixins|length != 0 %}
 from .mixins import (
 {%- for mixin in restrun.real_client_mixins %}
-    {{ mixin.module_path }},
+    {{ mixin.module_name }},
 {%- endfor %}
 )
 {% endif %}

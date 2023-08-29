@@ -24,21 +24,31 @@ def tempfilepath(path: Path):
 
 
 @fixture
-def restrun_context() -> RestrunContext:
-    return RestrunContext.from_config(
-        Config(
-            root=V1Config(
-                name="my",
-                version="1",
-            )
+def config() -> Config:
+    return Config(
+        root=V1Config(
+            name="my",
+            version="1",
         )
+    )
+
+
+@fixture
+def restrun_context(config: Config) -> RestrunContext:
+    return RestrunContext(
+        config=config,
+        resources=[],
+        client_prefix=config.root.name,
+        client_mixins=[],
+        real_client_mixins=[],
+        mock_client_mixins=[],
     )
 
 
 @fixture
 def resource_context() -> ResourceContext:
     return ResourceContext(
-        name="v1_pets",
+        module_name="v1_pets",
         method_map={},
         url="https://example.com/v1/pets",
     )

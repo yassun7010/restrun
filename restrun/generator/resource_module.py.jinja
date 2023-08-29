@@ -11,12 +11,12 @@
 #
 from restrun.core.resource import Resource
 {% for method in resource.methods %}
-from . import {{method.module_path}}
+from . import {{method.module_name}}
 {% endfor %}
 
-class {{ resource.name|class_name }}Resource(
+class {{ resource.module_name|class_name }}Resource(
 {% for method in resource.methods %}
-    {{ method.module_path }}.{{ method.class_name }},
+    {{ method.module_name }}.{{ method.class_name }},
 {% endfor %}
     Resource
 ):

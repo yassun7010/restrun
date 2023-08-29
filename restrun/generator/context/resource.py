@@ -26,7 +26,7 @@ class RequestMethodMap(TypedDict):
 
 @dataclass
 class ResourceContext:
-    name: str
+    module_name: str
     url: http.URL
     method_map: RequestMethodMap
 
@@ -119,7 +119,9 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
 
         for request_type in [GetRequest, PostRequest, PutRequest, PatchRequest]:
             request_class_infos[request_type].extend(requests_map[request_type])
-    resource_context = ResourceContext(name=resource_dir.name, url="", method_map={})
+    resource_context = ResourceContext(
+        module_name=resource_dir.name, url="", method_map={}
+    )
     for request_type, class_infos in request_class_infos.items():
         match len(class_infos):
             case 0:
@@ -130,7 +132,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
             case _:
                 raise DuplicateRequestTypeError(
                     get_method(request_type),
-                    request_type.url,
+                    request_type.url(),
                     class_infos,
                 )
     urls = set(

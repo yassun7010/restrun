@@ -141,7 +141,7 @@ def write_resources(base_dir: Path, context: RestrunContext) -> None:
     for resource_context in context.resources:
         code = ResourceModuleGenerator().generate(context, resource_context)
         with open(
-            base_dir / "resources" / resource_context.name / "__init__.py", "w"
+            base_dir / "resources" / resource_context.module_name / "__init__.py", "w"
         ) as file:
             file.write(code)
 

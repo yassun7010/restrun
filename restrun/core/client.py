@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from restrun.core import http
 from restrun.core.model import Model
@@ -33,29 +33,37 @@ class RestrunMockClient(RestrunClient):
         self._client = RequestMockClient()
 
     def inject_get_response_body(
-        self, url: http.Method, response: Model | RestrunError
-    ) -> None:
-        self._client.inject_get_response_body(url, response)
+        self, url: http.Method, response_body: Model | RestrunError
+    ) -> Self:
+        raise NotImplementedError()
 
     def inject_post_response_body(
-        self, url: http.Method, response: Model | RestrunError
-    ) -> None:
-        self._client.inject_post_response_body(url, response)
+        self, url: http.Method, response_body: Model | RestrunError
+    ) -> Self:
+        self._client.inject_post_response_body(url, response_body)
+
+        raise NotImplementedError()
 
     def inject_put_response_body(
-        self, url: http.Method, response: Model | RestrunError
-    ) -> None:
-        self._client.inject_put_response_body(url, response)
+        self, url: http.Method, response_body: Model | RestrunError
+    ) -> Self:
+        self._client.inject_put_response_body(url, response_body)
+
+        raise NotImplementedError()
 
     def inject_patch_response_body(
-        self, url: http.Method, response: Model | RestrunError
-    ) -> None:
-        self._client.inject_patch_response_body(url, response)
+        self, url: http.Method, response_body: Model | RestrunError
+    ) -> Self:
+        self._client.inject_patch_response_body(url, response_body)
+
+        raise NotImplementedError()
 
     def inject_delete_response_body(
-        self, url: http.Method, response: Model | RestrunError
-    ) -> None:
-        self._client.inject_delete_response_body(url, response)
+        self, url: http.Method, response_body: Model | RestrunError
+    ) -> Self:
+        self._client.inject_delete_response_body(url, response_body)
+
+        raise NotImplementedError()
 
 
 class RestrunMockClientMixin(RestrunMockClient):
