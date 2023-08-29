@@ -10,6 +10,7 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 from typing import Self, Literal
+from typing_extensions import override
 
 from restrun.core.client import RestrunMockClient
 from restrun.exception import RestrunError
@@ -20,22 +21,17 @@ from .mixins import (
 )
 
 
-from ..resources.v1_pets.get_v1_pets import GetV1PetsRequestResponseBody
+from ..resources.v1_pets import get_v1_pets
 
 
 class PetstoreMockClient(
     bearer_token_login_mixin.MockBearTokenLoginMixin, RestrunMockClient, PetstoreClient
 ):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def request(self, url):
-        raise NotImplementedError()
-
+    @override
     def inject_get_response_body(
         self,
         url: Literal["https://petstore3.swagger.io/api/v1/pets"],
-        response_body: GetV1PetsRequestResponseBody | RestrunError,
+        response_body: get_v1_pets.GetV1PetsRequestResponseBody | RestrunError,
     ) -> "Self":
         self._client.inject_get_response_body(url, response_body)
 
