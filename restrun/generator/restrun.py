@@ -4,7 +4,11 @@ from typing import TYPE_CHECKING
 import jinja2
 from jinja2 import BaseLoader, Environment
 
-from restrun.exception import FileNotFoundError, JinjaTemplateError
+from restrun.exception import (
+    FileNotFoundError,
+    JinjaTemplateRuntimeError,
+    JinjaTemplateSyntaxError,
+)
 from restrun.strcase import add_strcase_filters
 
 if TYPE_CHECKING:
@@ -32,5 +36,8 @@ class RestrunGenerator:
                     )
                 ).strip() + "\n"
 
-            except jinja2.TemplateError as error:
-                raise JinjaTemplateError(template_path, error)
+            except jinja2.TemplateSyntaxError as error:
+                raise JinjaTemplateSyntaxError(template_path, error)
+
+            except jinja2.TemplateRuntimeError as error:
+                raise JinjaTemplateRuntimeError(template_path, error)

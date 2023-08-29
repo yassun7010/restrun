@@ -73,14 +73,24 @@ class MockResponseTypeError(RestrunError, KeyError):
         )
 
 
-class JinjaTemplateError(jinja2.TemplateError, RestrunError):
-    def __init__(self, template_path: Path, error: jinja2.TemplateError) -> None:
+class JinjaTemplateSyntaxError(jinja2.TemplateSyntaxError, RestrunError):
+    def __init__(self, template_path: Path, error: jinja2.TemplateSyntaxError) -> None:
         self.template_path = template_path
         self.error = error
 
     @property
     def message(self) -> str:
-        return f'"{self.template_path}" jinja template error: {self.error}'
+        return f'"{self.template_path}" template syntax error: {self.error}'
+
+
+class JinjaTemplateRuntimeError(jinja2.TemplateRuntimeError, RestrunError):
+    def __init__(self, template_path: Path, error: jinja2.TemplateRuntimeError) -> None:
+        self.template_path = template_path
+        self.error = error
+
+    @property
+    def message(self) -> str:
+        return f'"{self.template_path}" jinja runtime error: {self.error}'
 
 
 class UnknownRequestTypeError(RestrunError, TypeError):
