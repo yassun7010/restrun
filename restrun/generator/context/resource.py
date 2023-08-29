@@ -33,7 +33,8 @@ class ResourceContext:
     @property
     def methods(self) -> list[ClassInfo[Request]]:
         return [
-            cast(ClassInfo[Request], request) for request in self.method_map.values()
+            cast(ClassInfo[Request], request_info)
+            for request_info in self.method_map.values()
         ]
 
     @property

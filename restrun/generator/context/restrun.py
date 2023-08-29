@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
 from glob import glob
 from pathlib import Path
+from typing import cast
 
 import restrun
 from restrun.config import Config
-from restrun.core.request import GetRequest
+from restrun.core import http
+from restrun.core.request import Request
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.generator.context.resource import ResourceContext, make_resource_contexts
 
@@ -45,12 +47,22 @@ class RestrunContext:
         ]
 
     @property
-    def get_request_infos(self) -> list[ClassInfo[GetRequest]]:
-        return [
-            resource.get_request
-            for resource in self.resources
-            if resource.get_request is not None
-        ]
+    def request_infos_map(self) -> dict[http.Method, list[ClassInfo[Request]]]:
+        results: dict[http.Method, list[ClassInfo[Request]]] = {
+            "GET": [],
+            "POST": [],
+            "PUT": [],
+            "PATCH": [],
+            "DELETE": [],
+        }
+
+        for resource in self.resources:
+            for method, request_info in resource.method_map.items():
+                results[cast(http.Method, method)].append(
+                    cast(ClassInfo[Request], request_info)
+                )
+
+        return results
 
 
 def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:

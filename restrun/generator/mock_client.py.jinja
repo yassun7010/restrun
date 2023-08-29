@@ -11,12 +11,18 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-from typing import Self, Literal, overload
+from typing import Literal, Self, overload
+
 from typing_extensions import override
 
 from restrun.core.client import RestrunMockClient
 from restrun.exception import RestrunError
 
+{% for resource in restrun.resources %}
+{% for request_info in resource.methods -%}
+from ..resources.{{ resource.module_name }} import {{ request_info.module_name }}
+{% endfor %}
+{% endfor %}
 from .client import {{ client_class }}
 {%- if restrun.client_mixins|length != 0 %}
 from .mixins import (
@@ -26,31 +32,28 @@ from .mixins import (
 )
 {% endif %}
 
-{% for resource in restrun.resources %}
-{% for request_info in resource.methods %}
-from ..resources.{{ resource.module_name }} import {{ request_info.module_name }}
-{% endfor %}
-{% endfor %}
 
 class {{ mock_client_class }}({{ (restrun.mock_client_mixin_path_names + ["RestrunMockClient", client_class])|join(", ") }}):
-{% if restrun.get_request_infos|length == 0 %}
-{% elif restrun.get_request_infos|length == 1 %}
-{% set request_info = restrun.get_request_infos[0] %}
+{% for method, request_infos in restrun.request_infos_map.items() %}
+{% if request_infos|length == 0 %}
+{% elif request_infos|length == 1 %}
+{% set request_info = request_infos[0] %}
     @override
-    def inject_get_response_body(self, url: Literal["{{ request_info.class_type.url() }}"], response_body: {{ request_info.module_name }}.{{ request_info.class_name }}ResponseBody | RestrunError) -> "Self":
-        self._client.inject_get_response_body(url, response_body)
+    def inject_{{ method|lower }}_response_body(self, url: Literal["{{ request_info.class_type.url() }}"], response_body: {{ request_info.module_name }}.{{ request_info.class_name }}ResponseBody | RestrunError) -> "Self":
+        self._client.inject_{{ method|lower }}_response_body(url, response_body)
 
         return self
 {% else %}
-{% for request_info in restrun.get_request_infos %}
+{% for request_info in request_infos %}
     @overload
-    def inject_get_response_body(self, url: Literal["{{ request_info.class_type.url() }}"], response_body: {{ request_info.module_name }}.{{ request_info.class_name }}ResponseBody | RestrunError) -> "Self":
+    def inject_{{ method|lower }}_response_body(self, url: Literal["{{ request_info.class_type.url() }}"], response_body: {{ request_info.module_name }}.{{ request_info.class_name }}ResponseBody | RestrunError) -> "Self":
         ...
 {% endfor %}
 
     @override
-    def inject_get_response_body(self, url, response_body):
-        self._client.inject_get_response_body(url, response_body)
+    def inject_{{ method|lower }}_response_body(self, url, response_body):
+        self._client.inject_{{ method|lower }}_response_body(url, response_body)
 
         return self
 {% endif %}
+{% endfor %}

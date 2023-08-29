@@ -15,7 +15,7 @@ from typer import Option
 from restrun import strcase
 from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
 from restrun.generator import (
-    is_auto_generated,
+    is_auto_generated_or_empty,
 )
 from restrun.generator.context.restrun import RestrunContext, make_rustrun_context
 from restrun.generator.resource_module import ResourceModuleGenerator
@@ -129,7 +129,7 @@ def write_clients(base_dir: Path, restrun_context: RestrunContext) -> None:
     ]:
         filepath = base_dir / "client" / filename
 
-        if not filepath.exists() or is_auto_generated(filepath):
+        if not filepath.exists() or is_auto_generated_or_empty(filepath):
             code = generator.generate(restrun_context)
             with open(filepath, "w") as file:
                 file.write(code)
