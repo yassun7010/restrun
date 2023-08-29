@@ -1,4 +1,3 @@
-import glob
 from argparse import ArgumentParser, Namespace
 from enum import Enum
 from logging import getLogger
@@ -8,32 +7,17 @@ from typing import (
     Annotated,
     Iterable,
     NotRequired,
-    Type,
     TypedDict,
-    cast,
 )
 
 from typer import Option
 
 from restrun import strcase
-from restrun.config import DEFAULT_CONFIG_FILE, Config, get_path, load
-from restrun.core.request import (
-    DeleteRequest,
-    GetRequest,
-    PatchRequest,
-    PostRequest,
-    PutRequest,
-    Request,
-    get_method,
-)
-from restrun.exception import DuplicateRequestTypeError, RequestURLInvalidError
+from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
 from restrun.generator import (
-    ClassInfo,
-    find_classes_from_code,
     is_auto_generated,
 )
-from restrun.generator.context.resource import ResourceContext
-from restrun.generator.context.restrun import RestrunContext
+from restrun.generator.context.restrun import RestrunContext, make_rustrun_context
 from restrun.generator.resource_module import ResourceModuleGenerator
 
 if TYPE_CHECKING:
@@ -90,10 +74,8 @@ def generate_command(space: Namespace) -> None:
     base_dir = config_path.parent / strcase.module_name(config.name)
     context = make_rustrun_context(base_dir, config)
 
-    resource_contexts = make_resource_contexts(base_dir, context)
-
     if GenerateTarget.RESOURCE in targets:
-        write_resources(base_dir, context, resource_contexts)
+        write_resources(base_dir, context)
 
     if GenerateTarget.CLIENT in targets:
         write_clients(base_dir, context)
@@ -119,117 +101,7 @@ def get_targets(
     return set(targets)
 
 
-def make_resource_contexts(
-    base_dir: Path, context: RestrunContext
-) -> list[ResourceContext]:
-    resource_contexts = []
-
-    for resource_dir in (base_dir / "resources").iterdir():
-        if not resource_dir.is_dir():
-            continue
-
-        resource_context = make_resource_context(resource_dir, context)
-        if (resource_context) is not None:
-            resource_contexts.append(resource_context)
-
-    return resource_contexts
-
-
-def make_resource_context(
-    resource_dir: Path, context: RestrunContext
-) -> ResourceContext | None:
-    request_class_infos: dict[Type[Request], list[ClassInfo[Request]]] = {
-        GetRequest: [],
-        PostRequest: [],
-        PutRequest: [],
-        PatchRequest: [],
-        DeleteRequest: [],
-    }
-
-    for request_file in resource_dir.iterdir():
-        if (
-            not request_file.is_file()
-            or request_file.suffix != ".py"
-            or request_file.name == "__init__.py"
-        ):
-            continue
-
-        requests_map = find_classes_from_code(
-            request_file,
-            GetRequest,
-            PostRequest,
-            PutRequest,
-            PatchRequest,
-            DeleteRequest,
-        )
-
-        for request_type in [GetRequest, PostRequest, PutRequest, PatchRequest]:
-            request_class_infos[request_type].extend(requests_map[request_type])
-    resource_context = ResourceContext(name=resource_dir.name, url="", method_map={})
-    for request_type, class_infos in request_class_infos.items():
-        match len(class_infos):
-            case 0:
-                continue
-            case 1:
-                method = get_method(request_type)
-                resource_context.method_map[method] = class_infos[0]  # type: ignore
-            case _:
-                raise DuplicateRequestTypeError(
-                    get_method(request_type),
-                    request_type.url,
-                    class_infos,
-                )
-    urls = set(
-        cast(ClassInfo[Request], request).class_type.url
-        for request in resource_context.method_map.values()
-    )
-
-    match len(urls):
-        case 0:
-            return None
-        case 1:
-            return resource_context
-        case _:
-            raise RequestURLInvalidError(resource_context.methods)
-
-
-def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
-    client_mixins_dir = base_dir / "client" / "mixins"
-
-    client_mixins: list[ClassInfo] = []
-    real_client_mixins: list[ClassInfo] = []
-    mock_client_mixins: list[ClassInfo] = []
-
-    if client_mixins_dir.exists():
-        from restrun.core.client import (
-            RestrunClientMixin,
-            RestrunMockClientMixin,
-            RestrunRealClientMixin,
-        )
-
-        for pyfile in glob.glob(str(client_mixins_dir / "*.py")):
-            pypath = Path(pyfile)
-
-            mixins_map = find_classes_from_code(
-                pypath,
-                RestrunClientMixin,
-                RestrunRealClientMixin,
-                RestrunMockClientMixin,
-            )
-            client_mixins.extend(mixins_map[RestrunClientMixin])
-            real_client_mixins.extend(mixins_map[RestrunRealClientMixin])
-            mock_client_mixins.extend(mixins_map[RestrunMockClientMixin])
-
-    return RestrunContext(
-        config=config,
-        client_prefix=config.name,
-        client_mixins=client_mixins,
-        real_client_mixins=real_client_mixins,
-        mock_client_mixins=mock_client_mixins,
-    )
-
-
-def write_clients(base_dir: Path, context: RestrunContext) -> None:
+def write_clients(base_dir: Path, restrun_context: RestrunContext) -> None:
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator
     from restrun.generator.client_module import ClientModuleGenerator
@@ -246,25 +118,21 @@ def write_clients(base_dir: Path, context: RestrunContext) -> None:
         filepath = base_dir / "client" / filename
 
         if not filepath.exists() or is_auto_generated(filepath):
-            code = generator.generate(context)
+            code = generator.generate(restrun_context)
             with open(filepath, "w") as file:
                 file.write(code)
 
 
-def write_resources(
-    base_dir: Path,
-    restrun_context: RestrunContext,
-    resource_contexts: list[ResourceContext],
-) -> None:
+def write_resources(base_dir: Path, context: RestrunContext) -> None:
     from restrun.generator.resources_module import ResourcesModuleGenerator
 
-    for resource_context in resource_contexts:
-        code = ResourceModuleGenerator().generate(restrun_context, resource_context)
+    for resource_context in context.resources:
+        code = ResourceModuleGenerator().generate(context, resource_context)
         with open(
             base_dir / "resources" / resource_context.name / "__init__.py", "w"
         ) as file:
             file.write(code)
 
-    code = ResourcesModuleGenerator().generate(restrun_context)
+    code = ResourcesModuleGenerator().generate(context)
     with open(base_dir / "resources" / "__init__.py", "w") as file:
         file.write(code)
