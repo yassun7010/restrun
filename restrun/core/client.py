@@ -42,8 +42,6 @@ class RestrunMockClient(RestrunClient):
     def inject_post_response_body(
         self, url: http.Method, response_body: Model | RestrunError
     ) -> Self:
-        self._client.inject_post_response_body(url, response_body)
-
         raise NotImplementedError(
             "RestrunMockClient.inject_post_response_body is not implemented."
         )
@@ -51,8 +49,6 @@ class RestrunMockClient(RestrunClient):
     def inject_put_response_body(
         self, url: http.Method, response_body: Model | RestrunError
     ) -> Self:
-        self._client.inject_put_response_body(url, response_body)
-
         raise NotImplementedError(
             "RestrunMockClient.inject_put_response_body is not implemented."
         )
@@ -60,8 +56,6 @@ class RestrunMockClient(RestrunClient):
     def inject_patch_response_body(
         self, url: http.Method, response_body: Model | RestrunError
     ) -> Self:
-        self._client.inject_patch_response_body(url, response_body)
-
         raise NotImplementedError(
             "RestrunMockClient.inject_patch_response_body is not implemented."
         )
@@ -69,8 +63,6 @@ class RestrunMockClient(RestrunClient):
     def inject_delete_response_body(
         self, url: http.Method, response_body: Model | RestrunError
     ) -> Self:
-        self._client.inject_delete_response_body(url, response_body)
-
         raise NotImplementedError(
             "RestrunMockClient.inject_delete_response_body is not implemented."
         )
