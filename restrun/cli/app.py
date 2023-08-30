@@ -3,7 +3,6 @@ import sys
 from argparse import ArgumentParser, BooleanOptionalAction
 from logging import getLogger
 from pathlib import Path
-from typing import NoReturn
 
 from rich.console import Console as RichConsole
 from rich.logging import RichHandler
@@ -15,7 +14,7 @@ from restrun.config import DEFAULT_CONFIG_FILE
 
 
 class RestrunArgumentParser(ArgumentParser):
-    def error(self, message: str) -> NoReturn:
+    def error(self, message: str):
         self.print_usage(sys.stderr)
         raise RuntimeError(message)
 

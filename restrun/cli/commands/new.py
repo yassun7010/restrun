@@ -1,11 +1,7 @@
-from argparse import ArgumentParser, Namespace
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from argparse import _SubParsersAction
+from argparse import ArgumentParser, Namespace, _SubParsersAction
 
 
-def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
+def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     parser: ArgumentParser = subparsers.add_parser(
         "new",
         description="Create a new REST API client.",
