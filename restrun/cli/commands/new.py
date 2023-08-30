@@ -4,8 +4,8 @@ from argparse import ArgumentParser, Namespace, _SubParsersAction
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     parser: ArgumentParser = subparsers.add_parser(
         "new",
-        description="Create a new REST API client.",
-        help="Create a new REST API client.",
+        description="Create new [restrun]RESTRUN[/] project.",
+        help="Create new RESTRUN project.",
         **kwargs,
     )
 
