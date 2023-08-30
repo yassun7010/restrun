@@ -22,7 +22,7 @@ def is_auto_generated_or_empty(source: Path | PythonCode) -> bool:
     else:
         code = source
 
-    if len(code) == 0:
+    if code.strip() == "":
         return True
 
     return re.search(AUTO_GENERATED_COMMENT, code) is not None
