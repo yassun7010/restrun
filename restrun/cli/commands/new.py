@@ -20,4 +20,4 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 def new_command(space: Namespace) -> None:
     project_name = space.project
-    print(f"Create a new RESTRUN project: {project_name}")
+    print(f"Create a new project: {project_name}")
