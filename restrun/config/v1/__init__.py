@@ -15,7 +15,9 @@ class V1Config(ExtraForbidModel):
 
     output: Annotated[Path | None, Field(title="output directory.")] = None
 
-    source: list[V1Source] = Field(title="source files.", default_factory=list)
+    source: V1Source | list[V1Source] = Field(
+        title="source files.", default_factory=list
+    )
 
     format: Annotated[
         bool,
@@ -26,3 +28,9 @@ class V1Config(ExtraForbidModel):
         bool,
         Field(title="lint generated code. default linter is 'ruffo'"),
     ] = True
+
+    @property
+    def sources(self) -> list[V1Source]:
+        if isinstance(self.source, list):
+            return self.source
+        return [self.source]
