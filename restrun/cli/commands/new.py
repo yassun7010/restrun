@@ -10,14 +10,14 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     )
 
     parser.add_argument(
-        "client",
+        "project",
         type=str,
-        help="client name.",
+        help="project name.",
     )
 
     parser.set_defaults(handler=new_command)
 
 
 def new_command(space: Namespace) -> None:
-    client_name = space.client
-    print(f"Create a new REST API client: {client_name}")
+    project_name = space.project
+    print(f"Create a new RESTRUN project: {project_name}")
