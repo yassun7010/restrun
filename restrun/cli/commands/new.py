@@ -12,6 +12,7 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     parser.add_argument(
         "project",
         type=str,
+        metavar="PROJECT",
         help="project name.",
     )
 

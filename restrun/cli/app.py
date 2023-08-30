@@ -53,7 +53,7 @@ class App:
 
         subparser = parser.add_subparsers(
             title="commands",
-            metavar="command",
+            metavar="COMMAND",
             required=True,
         )
 
