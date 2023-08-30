@@ -56,13 +56,13 @@ def add_subparser(subparsers: "_SubParsersAction", **kwargs) -> None:
     parser.add_argument(
         "--format",
         action=BooleanOptionalAction,
-        help="format generated code. default is true.",
+        help="format generated code. default is [literal]true[/].",
     )
 
     parser.add_argument(
         "--lint",
         action=BooleanOptionalAction,
-        help="lint generated code. default is true.",
+        help="lint generated code. default is [literal]true[/].",
     )
 
     parser.set_defaults(handler=generate_command)

@@ -24,6 +24,9 @@ class App:
     @classmethod
     def run(cls, args: list[str] | None = None) -> None:
         RichHelpFormatter.styles["restrun"] = "italic bold green"
+        RichHelpFormatter.styles["literal"] = RichHelpFormatter.styles[
+            "argparse.metavar"
+        ]
 
         parser = RestrunArgumentParser(
             prog="restrun",
@@ -34,9 +37,7 @@ class App:
         parser.add_argument(
             "--config",
             type=Path,
-            help=(
-                f'config filepath. default is [argparse.metavar]"{DEFAULT_CONFIG_FILE}"[/].'
-            ),
+            help=f'config filepath. default is [literal]"{DEFAULT_CONFIG_FILE}"[/].',
         )
 
         parser.add_argument(
