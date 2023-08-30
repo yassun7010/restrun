@@ -1,4 +1,4 @@
-from restrun.cli.commands.generate import GenerateTarget, get_targets
+from restrun.config.v1.target import GenerateTarget, get_targets
 
 ALL_TARGETS = set(
     [
