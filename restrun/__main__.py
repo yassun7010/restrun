@@ -1,9 +1,9 @@
-from restrun import cli
+from restrun.cli import App
 
 
 def main() -> None:
     try:
-        cli.App.run()
+        App.run()
     except Exception:
         exit(1)
 
