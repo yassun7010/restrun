@@ -919,6 +919,20 @@ files = [
 setuptools = "*"
 
 [[package]]
+name = "openapi-pydantic"
+version = "0.3.2"
+description = "Pydantic OpenAPI schema implementation"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openapi_pydantic-0.3.2-py3-none-any.whl", hash = "sha256:24488566a0a61bee3b55de6d3665329adaf2aadfe8f292ac0bddfe22155fadac"},
+    {file = "openapi_pydantic-0.3.2.tar.gz", hash = "sha256:685aa631395c469ecfd04f01a2ffedd541f94d372943868a501b412e9de6ba8b"},
+]
+
+[package.dependencies]
+pydantic = ">=1.8"
+
+[[package]]
 name = "openapi-schema-validator"
 version = "0.4.4"
 description = "OpenAPI schema validation for Python"
@@ -1792,4 +1806,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b1fcb53774b96118edefbadfff22412ececca9df00557c4aa0fc3263f75d5fbc"
+content-hash = "05d9b95d8b31dfe60eb9dda68e9dc65c4b8e8ac63a37ba1e7b2721d14ac8d8bb"

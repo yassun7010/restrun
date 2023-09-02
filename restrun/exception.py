@@ -25,6 +25,15 @@ class RestrunError(RestrunException):
     pass
 
 
+class NeverReachError(RestrunError, ValueError):
+    def __init__(self, type: Type) -> None:
+        self.type = type
+
+    @property
+    def message(self) -> str:
+        return f"Never reach {self.type}."
+
+
 class MockResponseNotFoundError(RestrunError, KeyError):
     @property
     def message(self) -> str:
