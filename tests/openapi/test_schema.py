@@ -9,7 +9,7 @@ from tests.data import load_openapi
 
 class TestSchema:
     def test_petstore_order_schema(self):
-        openapi = load_openapi("petstore.openapi.json")
+        openapi = load_openapi("petstore.openapi_v3_0_2.json")
 
         assert openapi.root.components is not None
         assert openapi.root.components.schemas is not None

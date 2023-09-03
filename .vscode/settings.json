@@ -21,6 +21,12 @@
     "yaml.schemas": {
         "./schemas/config.schema.json": "**/restrun.yml"
     },
+    "json.schemas": [
+        {
+            "fileMatch": ["**/*.openapi_v3_0_2.json"],
+            "url": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json",
+        }
+    ],
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true,
