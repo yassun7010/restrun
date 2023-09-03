@@ -1,3 +1,4 @@
+from restrun.cli.app import App
 from restrun.config.v1.target import GenerateTarget, get_targets
 
 ALL_TARGETS = set(
@@ -18,3 +19,6 @@ class TestGetTargets:
     def test_get_targets_without_all(self) -> None:
         targets = [GenerateTarget.CLIENT, GenerateTarget.RESOURCE]
         assert get_targets(targets) == set(targets)
+
+    def test_petstore_example(self) -> None:
+        App.run(["--verbose", "--config", "examples/petstore/restrun.yml", "generate"])
