@@ -1,9 +1,12 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
+
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator.context.restrun_context import RestrunContext
+    from restrun.generator.context.schema_context import SchemaContext
 
 
 def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
@@ -27,6 +30,37 @@ def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -
             continue
 
         code = generator.generate(config, context)
+        with open(filepath, "w") as file:
+            file.write(code)
+
+
+def write_schemas(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    schema_contexts: "list[SchemaContext]",
+):
+    from restrun.generator import is_auto_generated_or_empty
+    from restrun.generator.schemas_module import SchemasModuleGenerator
+
+    schema_dir_path = base_dir / "schemas"
+    if not schema_dir_path.exists():
+        schema_dir_path.mkdir()
+
+    filepath = schema_dir_path / "__init__.py"
+
+    if filepath.exists() and not is_auto_generated_or_empty(filepath):
+        return
+
+    code = SchemasModuleGenerator().generate(config, restrun_context)
+    with open(filepath, "w") as file:
+        file.write(code)
+
+    for schema_context in schema_contexts:
+        filepath = schema_dir_path / f"{schema_context.file_name}.py"
+        code = SchemaTypedDictGenerator().generate(
+            config, restrun_context, schema_context
+        )
         with open(filepath, "w") as file:
             file.write(code)
 

@@ -6,7 +6,7 @@ from typing import Self
 from attr import dataclass
 
 from restrun.exception import NeverReachError
-from restrun.strcase import class_name
+from restrun.strcase import class_name, module_name
 
 from .openapi import (
     DataType,
@@ -28,10 +28,10 @@ class PythonLiteralType(str, Enum):
     FLOAT = "float"
     BOOL = "bool"
     STR = "str"
-    DATETIME = "datetime"
-    DATE = "date"
-    TIME = "time"
-    TIMEDELTA = "timedelta"
+    DATETIME = "datetime.datetime"
+    DATE = "datetime.date"
+    TIME = "datetime.time"
+    TIMEDELTA = "datetime.timedelta"
     EMAIL = "str"
     IDN_EMAIL = "str"
     HOSTNAME = "str"
@@ -47,7 +47,10 @@ class PythonLiteralType(str, Enum):
     JSON_POINTER = "str"
     RELATIVE_JSON_POINTER = "str"
     REGEX = "re.Pattern"
-    ANY = "Any"
+    ANY = "typing.Any"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 class PythonLiteralUnion:
@@ -63,7 +66,7 @@ class PythonLiteralUnion:
         return self.type == value.type and self.items == value.items
 
     def __str__(self) -> str:
-        return f"Literal[{','.join(map(repr, self.items))}]"
+        return f"typing.Literal[{','.join(map(repr, self.items))}]"
 
 
 class PythonCustomStr:
@@ -79,10 +82,13 @@ class PythonArray:
     name: str
     items: "PythonDataType"
 
+    def __str__(self) -> str:
+        return f"list[{self.items}]"
+
 
 @dataclass(frozen=True)
 class PythonObjectProperty:
-    type: "PythonDataType"
+    data_type: "PythonDataType"
     required: bool = False
     description: str | None = None
 
@@ -93,6 +99,9 @@ class PythonObject:
     properties: dict[str, PythonObjectProperty]
     additional_properties: bool = True
 
+    def __str__(self) -> str:
+        return self.class_name
+
 
 @dataclass(frozen=True)
 class PythonReference:
@@ -100,8 +109,15 @@ class PythonReference:
     target: "PythonDataType"
 
     @cached_property
-    def name(self) -> str:
-        return self.ref.split("/")[-1]
+    def class_name(self) -> str:
+        return class_name(self.ref.split("/")[-1])
+
+    @cached_property
+    def module_name(self) -> str:
+        return module_name(self.ref.split("/")[-1])
+
+    def __str__(self) -> str:
+        return f"{self.module_name}.{self.class_name}"
 
 
 PythonDataType = (
@@ -112,6 +128,30 @@ PythonDataType = (
     | PythonObject
     | PythonReference
 )
+
+
+@dataclass
+class PythonDataField:
+    description: str | None = None
+    default: str | None = None
+
+    # string
+    min_length: int | None = None
+    max_length: int | None = None
+    pattern: str | None = None
+
+    # numeric
+    minimum: float | None = None
+    maxmum: float | None = None
+    exclusive_minimum: bool | None = None
+    exclusive_maxmum: bool | None = None
+    multiple_of: float | None = None
+
+
+@dataclass
+class PythonDataSchema:
+    name: str
+    type: PythonDataType
 
 
 def get_data_type(
@@ -252,7 +292,7 @@ def get_data_type(
                             (
                                 name,
                                 PythonObjectProperty(
-                                    type=get_data_type(name, property, schemas),
+                                    data_type=get_data_type(name, property, schemas),
                                     required=name in required_properties,
                                     description=(
                                         property.description
@@ -278,28 +318,66 @@ def get_data_type(
     return PythonLiteralType("Any")
 
 
-@dataclass
-class PythonDataField:
-    description: str | None = None
-    default: str | None = None
+def get_import_modules(data_type: PythonDataType) -> list[str]:
+    match data_type:
+        case PythonCustomStr():
+            return []
 
-    # string
-    min_length: int | None = None
-    max_length: int | None = None
-    pattern: str | None = None
+        case PythonLiteralUnion():
+            return []
 
-    # numeric
-    minimum: float | None = None
-    maxmum: float | None = None
-    exclusive_minimum: bool | None = None
-    exclusive_maxmum: bool | None = None
-    multiple_of: float | None = None
+        case PythonArray():
+            return get_import_modules(data_type.items)
 
+        case PythonObject():
+            imports = ["import typing"]
+            for property in data_type.properties.values():
+                imports.extend(get_import_modules(property.data_type))
 
-@dataclass
-class PythonDataSchema:
-    name: str
-    type: PythonDataType
+            return imports
+
+        case PythonReference():
+            return [f"from .import {data_type.module_name}"]
+
+        case (
+            PythonLiteralType.NONE
+            | PythonLiteralType.INT
+            | PythonLiteralType.FLOAT
+            | PythonLiteralType.BOOL
+            | PythonLiteralType.STR
+            | PythonLiteralType.EMAIL
+            | PythonLiteralType.IDN_EMAIL
+            | PythonLiteralType.HOSTNAME
+            | PythonLiteralType.IDN_HOSTNAME
+            | PythonLiteralType.IP_V4
+            | PythonLiteralType.IP_V6
+            | PythonLiteralType.UUID
+            | PythonLiteralType.URI
+            | PythonLiteralType.URI_REFERENCE
+            | PythonLiteralType.IRI
+            | PythonLiteralType.IRI_REFERENCE
+            | PythonLiteralType.URI_TEMPLATE
+            | PythonLiteralType.JSON_POINTER
+            | PythonLiteralType.RELATIVE_JSON_POINTER
+        ):
+            return []
+
+        case (
+            PythonLiteralType.DATETIME
+            | PythonLiteralType.DATE
+            | PythonLiteralType.TIME
+            | PythonLiteralType.TIMEDELTA
+        ):
+            return ["import datetime"]
+
+        case PythonLiteralType.REGEX:
+            return ["import re"]
+
+        case PythonLiteralType.ANY:
+            return ["import typing"]
+
+        case _:
+            raise NeverReachError(data_type)
 
 
 def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:

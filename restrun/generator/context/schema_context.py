@@ -11,14 +11,16 @@ from restrun.openapi.schema import (
     PythonLiteralUnion,
     PythonObject,
     PythonReference,
+    get_import_modules,
     get_schemas,
 )
-from restrun.strcase import class_name
+from restrun.strcase import class_name, module_name
 
 
 @dataclass(frozen=True)
 class SchemaContext:
     type_name: str
+    file_name: str
     data_type: PythonDataType
 
     @property
@@ -47,11 +49,15 @@ class SchemaContext:
 
     @property
     def import_field_types(self) -> list[str]:
-        return []
+        return get_import_modules(self.data_type)
 
 
 def make_schema_contexts(source: V1OpenAPISource) -> list[SchemaContext]:
     return [
-        SchemaContext(type_name=class_name(schema.name), data_type=schema.type)
+        SchemaContext(
+            type_name=class_name(schema.name),
+            file_name=module_name(schema.name),
+            data_type=schema.type,
+        )
         for schema in get_schemas(OpenAPI.from_url(source.location))
     ]

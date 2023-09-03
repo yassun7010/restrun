@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Type
+from typing import TYPE_CHECKING, Never, Type
 
 import jinja2
 
@@ -28,7 +28,7 @@ class RestrunError(RestrunException):
 
 
 class NeverReachError(RestrunError, ValueError):
-    def __init__(self, type: Type) -> None:
+    def __init__(self, type: Never) -> None:
         self.type = type
 
     @property

@@ -3,4 +3,5 @@ name: "petstore"
 
 source:
   - type: "openapi"
-    location: "https://petstore3.swagger.io/api/v3/openapi.json"
+    location: "petstore.openapi_v3_0_2.json"
+    # location: "https://petstore3.swagger.io/api/v3/openapi.json"

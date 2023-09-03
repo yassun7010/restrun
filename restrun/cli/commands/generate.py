@@ -1,5 +1,9 @@
 from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParsersAction
 from logging import getLogger
+from pathlib import Path
+
+from restrun.generator.context.schema_context import make_schema_contexts
+from restrun.writer import write_schemas
 
 logger = getLogger(__name__)
 
@@ -39,11 +43,24 @@ def generate_command(space: "Namespace") -> None:
         config = load(file)
 
     base_dir = config_path.parent / strcase.module_name(config.name)
-    context = make_rustrun_context(base_dir, config)
+    restrun_context = make_rustrun_context(base_dir, config)
 
-    write_resources(base_dir, config, context)
+    for source in config.root.sources:
+        if source.type == "openapi":
+            if (
+                isinstance(source.location, Path)
+                and not source.location.exists()
+                and (config_path.parent / source.location).exists()
+            ):
+                source.location = config_path.parent / source.location
 
-    write_clients(base_dir, config, context)
+            write_schemas(
+                base_dir, config, restrun_context, make_schema_contexts(source)
+            )
+
+    write_resources(base_dir, config, restrun_context)
+
+    write_clients(base_dir, config, restrun_context)
 
     if space.format is not False:
         for format in config.formats or []:

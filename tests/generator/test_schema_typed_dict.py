@@ -12,6 +12,7 @@ from restrun.openapi.schema import PythonLiteralType, PythonObject, PythonObject
 def schema_context() -> SchemaContext:
     return SchemaContext(
         type_name="User",
+        file_name="user",
         data_type=PythonObject(
             class_name="User",
             properties={
