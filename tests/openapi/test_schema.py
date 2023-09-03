@@ -87,3 +87,21 @@ class TestSchema:
                 "zip": PythonLiteralType.STR,
             },
         )
+
+    def test_petstore_category_schema(self):
+        openapi = load_openapi("petstore.openapi_v3_0_2.json")
+
+        assert openapi.root.components is not None
+        assert openapi.root.components.schemas is not None
+
+        assert get_data_type(
+            "Category",
+            openapi.root.components.schemas["Category"],
+            openapi.root.components.schemas,
+        ) == PythonDict(
+            class_name="Category",
+            properties={
+                "id": PythonLiteralType.INT,
+                "name": PythonLiteralType.STR,
+            },
+        )
