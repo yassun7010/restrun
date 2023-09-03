@@ -5,22 +5,11 @@ logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
-    from restrun.config.v1.target import GenerateTarget
-
     parser: ArgumentParser = subparsers.add_parser(
         "generate",
         description="Generate REST API clients.",
         help="Generate REST API clients.",
         **kwargs,
-    )
-
-    parser.add_argument(
-        "--target",
-        nargs="*",
-        type=GenerateTarget,
-        choices=list(GenerateTarget),
-        default=[GenerateTarget.ALL],
-        help="target to generate.",
     )
 
     parser.add_argument(
@@ -41,11 +30,9 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 def generate_command(space: "Namespace") -> None:
     from restrun import strcase
     from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
-    from restrun.config.v1.target import GenerateTarget, get_targets
     from restrun.generator.context.restrun_context import make_rustrun_context
     from restrun.writer import write_clients, write_resources
 
-    targets = get_targets(space.target)
     config_path = get_path(space.config, DEFAULT_CONFIG_FILE)
 
     with open(config_path) as file:
@@ -54,11 +41,9 @@ def generate_command(space: "Namespace") -> None:
     base_dir = config_path.parent / strcase.module_name(config.name)
     context = make_rustrun_context(base_dir, config)
 
-    if GenerateTarget.RESOURCE in targets:
-        write_resources(base_dir, config, context)
+    write_resources(base_dir, config, context)
 
-    if GenerateTarget.CLIENT in targets:
-        write_clients(base_dir, config, context)
+    write_clients(base_dir, config, context)
 
     if space.format is not False:
         for format in config.formats or []:
