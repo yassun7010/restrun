@@ -1,4 +1,5 @@
 import jinja2
+from humps import pascalize
 
 
 def module_name(name: str) -> str:
@@ -9,10 +10,7 @@ def module_name(name: str) -> str:
 def class_name(name: str) -> str:
     """Convert string to python class name."""
     return "".join(
-        [
-            s.capitalize()
-            for s in _convert_unavailable_chars_to_underbar(name).split("_")
-        ]
+        [pascalize(s) for s in _convert_unavailable_chars_to_underbar(name).split("_")]
     )
 
 
