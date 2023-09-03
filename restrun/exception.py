@@ -103,6 +103,7 @@ class JinjaTemplateSyntaxError(jinja2.TemplateSyntaxError, RestrunError):
     def __init__(self, template_path: Path, error: jinja2.TemplateSyntaxError) -> None:
         self.template_path = template_path
         self.error = error
+        self.__traceback__ = error.__traceback__
 
     @property
     def message(self) -> str:
@@ -113,6 +114,7 @@ class JinjaTemplateRuntimeError(jinja2.TemplateRuntimeError, RestrunError):
     def __init__(self, template_path: Path, error: jinja2.TemplateRuntimeError) -> None:
         self.template_path = template_path
         self.error = error
+        self.__traceback__ = error.__traceback__
 
     @property
     def message(self) -> str:
@@ -123,6 +125,7 @@ class JinjaRenderError(RestrunError):
     def __init__(self, template_path: Path, error: Exception) -> None:
         self.template_path = template_path
         self.error = error
+        self.__traceback__ = error.__traceback__
 
     @property
     def message(self) -> str:
@@ -201,6 +204,7 @@ class PythonFileExecutionError(RestrunError, ValueError):
     def __init__(self, filepath: Path, error: Exception) -> None:
         self.filepath = filepath
         self.error = error
+        self.__traceback__ = error.__traceback__
 
     @property
     def message(self) -> str:
@@ -259,6 +263,7 @@ class ResponseJsonBodyValidationError(RestrunError, ValueError):
         self.url = url
         self.response_body = response_body
         self.error = error
+        self.__traceback__ = error.__traceback__
 
     @property
     def message(self) -> str:
