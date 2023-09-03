@@ -85,12 +85,36 @@ class PythonArray:
     def __str__(self) -> str:
         return f"list[{self.items}]"
 
+    def get_data_type(self, object_suffix: str | None = None) -> str:
+        items = self.items
+        if isinstance(self.items, PythonReference) and isinstance(
+            self.items.target, PythonObject
+        ):
+            items = f"{self.items}{object_suffix or ''}"
+
+        elif isinstance(self.items, PythonArray):
+            items = self.items.get_data_type(object_suffix)
+
+        return f"list[{items}]"
+
 
 @dataclass(frozen=True)
 class PythonObjectProperty:
     data_type: "PythonDataType"
     required: bool = False
     description: str | None = None
+
+    def get_data_type(self, object_suffix: str | None = None) -> str:
+        if isinstance(self.data_type, PythonReference) and isinstance(
+            self.data_type.target, PythonObject
+        ):
+            return f"{self.data_type}{object_suffix or ''}"
+
+        elif isinstance(self.data_type, PythonArray):
+            return self.data_type.get_data_type(object_suffix)
+
+        else:
+            return str(self.data_type)
 
 
 @dataclass(frozen=True)

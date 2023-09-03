@@ -12,7 +12,7 @@
 import typing
 
 
-class Address(typing.TypedDict):
+class AddressDict(typing.TypedDict):
     street: typing.NotRequired[str]
 
     city: typing.NotRequired[str]

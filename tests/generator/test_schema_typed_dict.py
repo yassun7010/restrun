@@ -50,4 +50,4 @@ class TestSchemaTypedDictGenerator:
 
         print(code)
 
-        assert locales["User"] is not None
+        assert locales["UserDict"] is not None

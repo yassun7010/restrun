@@ -13,7 +13,7 @@ import datetime
 import typing
 
 
-class Order(typing.TypedDict):
+class OrderDict(typing.TypedDict):
     id: typing.NotRequired[int]
 
     petId: typing.NotRequired[int]
