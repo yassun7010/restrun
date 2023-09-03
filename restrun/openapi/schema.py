@@ -98,6 +98,7 @@ class PythonObject:
     class_name: str
     properties: dict[str, PythonObjectProperty]
     additional_properties: bool = True
+    description: str | None = None
 
     def __str__(self) -> str:
         return self.class_name
@@ -310,6 +311,7 @@ def get_data_type(
                     class_name=class_name(name),
                     properties=properties,
                     additional_properties=schema.additionalProperties is not False,
+                    description=schema.description,
                 )
 
             case _:

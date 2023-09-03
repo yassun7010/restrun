@@ -16,6 +16,12 @@
 {% if schema.type == "object" %}
 {% set data_type = schema.data_type %}
 class {{ data_type.class_name }}(typing.TypedDict):
+{%- if data_type.description is not none %}
+    """
+    {{ data_type.description|indent(4) }}
+    """
+
+{% endif %}
 {% for name, property in data_type.properties.items() %}
     {{ name }}: {% if not property.required -%}typing.NotRequired[{% endif %}{{ property.data_type }}{% if not property.required %}]{% endif %}
 {%- if property.description is not none %}
