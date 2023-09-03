@@ -84,6 +84,7 @@ class PythonArray:
 class PythonDictField:
     data: "PythonDataType"
     required: bool = False
+    description: str | None = None
 
 
 @dataclass(frozen=True)
@@ -253,6 +254,11 @@ def get_data_type(
                                 PythonDictField(
                                     data=get_data_type(name, property, schemas),
                                     required=name in required_properties,
+                                    description=(
+                                        property.description
+                                        if isinstance(property, Schema)
+                                        else None
+                                    ),
                                 ),
                             )
                             for name, property in properties.items()

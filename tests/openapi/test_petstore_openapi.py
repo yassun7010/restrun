@@ -33,7 +33,8 @@ class TestSchema:
                     PythonLiteralUnion(
                         PythonLiteralType.STR,
                         ["placed", "approved", "delivered"],
-                    )
+                    ),
+                    description="Order Status",
                 ),
                 "complete": PythonDictField(PythonLiteralType.BOOL),
             },
@@ -132,7 +133,9 @@ class TestSchema:
                 "email": PythonDictField(PythonLiteralType.STR),
                 "password": PythonDictField(PythonLiteralType.STR),
                 "phone": PythonDictField(PythonLiteralType.STR),
-                "userStatus": PythonDictField(PythonLiteralType.INT),
+                "userStatus": PythonDictField(
+                    PythonLiteralType.INT, description="User Status"
+                ),
             },
         )
 
@@ -210,7 +213,8 @@ class TestSchema:
                     PythonLiteralUnion(
                         PythonLiteralType.STR,
                         ["available", "pending", "sold"],
-                    )
+                    ),
+                    description="pet status in the store",
                 ),
             },
         )
