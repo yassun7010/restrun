@@ -25,16 +25,39 @@ class PythonDataType(str, Enum):
     DATE = "date"
     TIME = "time"
     TIMEDELTA = "timedelta"
+    EMAIL = "str"
+    IDN_EMAIL = "str"
+    HOSTNAME = "str"
+    IDN_HOSTNAME = "str"
+    IP_V4 = "str"
+    IP_V6 = "str"
+    UUID = "uuid"
+    URI = "str"
+    URI_REFERENCE = "str"
+    IRI = "str"
+    IRI_REFERENCE = "str"
+    URI_TEMPLATE = "str"
+    JSON_POINTER = "str"
+    RELATIVE_JSON_POINTER = "str"
+    REGEX = "re.Pattern"
     ANY = "Any"
     DICT = "dict"
     LIST = "list"
+
+
+class PythonCustomDataType:
+    def __init__(self, name: str):
+        self.name = name
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class PythonDataTypeStr(str):
     @classmethod
     def from_schema(
         cls, schema: Schema | Reference, type: DataType | None = None
-    ) -> PythonDataType | Self:
+    ) -> PythonDataType | PythonCustomDataType | Self:
         if isinstance(schema, Reference):
             return PythonDataType.ANY
         schema_type = type or schema.type
@@ -43,11 +66,11 @@ class PythonDataTypeStr(str):
             match schema_type:
                 case list():
                     # NOTE: `openapi_pydantic` defined it case,
-                    #       but we do not expect arrays to come.
+                    #       but we do not expect list to come.
                     return PythonDataTypeStr(
                         " | ".join(
                             [
-                                cls.from_schema(schema, s)
+                                str(cls.from_schema(schema, s))
                                 for s in schema_type
                                 if not isinstance(s, list)
                             ]
@@ -73,6 +96,54 @@ class PythonDataTypeStr(str):
 
                             case "duration":
                                 return PythonDataType.TIMEDELTA
+
+                            case "email":
+                                return PythonDataType.EMAIL
+
+                            case "idn-email":
+                                return PythonDataType.IDN_EMAIL
+
+                            case "hostname":
+                                return PythonDataType.HOSTNAME
+
+                            case "idn-hostname":
+                                return PythonDataType.IDN_HOSTNAME
+
+                            case "ipv4":
+                                return PythonDataType.IP_V4
+
+                            case "ipv6":
+                                return PythonDataType.IP_V6
+
+                            case "uuid":
+                                return PythonDataType.UUID
+
+                            case "uri":
+                                return PythonDataType.URI
+
+                            case "uri-reference":
+                                return PythonDataType.URI_REFERENCE
+
+                            case "iri":
+                                return PythonDataType.IRI
+
+                            case "iri-reference":
+                                return PythonDataType.IRI_REFERENCE
+
+                            case "uri-template":
+                                return PythonDataType.URI_TEMPLATE
+
+                            case "json-pointer":
+                                return PythonDataType.JSON_POINTER
+
+                            case "relative-json-pointer":
+                                return PythonDataType.RELATIVE_JSON_POINTER
+
+                            case "regex":
+                                return PythonDataType.REGEX
+
+                            case _:
+                                return PythonCustomDataType(schema.schema_format)
 
                     else:
                         return PythonDataType.STR
