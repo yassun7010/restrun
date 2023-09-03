@@ -81,9 +81,16 @@ class PythonArray:
 
 
 @dataclass(frozen=True)
+class PythonDictField:
+    data: "PythonDataType"
+    required: bool = False
+
+
+@dataclass(frozen=True)
 class PythonDict:
     class_name: str
-    properties: dict[str, "PythonDataType"]
+    properties: dict[str, PythonDictField]
+    additional_properties: bool = True
 
 
 @dataclass(frozen=True)
@@ -238,9 +245,16 @@ def get_data_type(
             case DataType_v3_1_0.OBJECT | DataType_v3_0_3.OBJECT:
                 properties = schema.properties or OrderedDict()
                 if isinstance(properties, dict):
+                    required_properties = schema.required or []
                     properties = OrderedDict(
                         [
-                            (name, get_data_type(name, property, schemas))
+                            (
+                                name,
+                                PythonDictField(
+                                    data=get_data_type(name, property, schemas),
+                                    required=name in required_properties,
+                                ),
+                            )
                             for name, property in properties.items()
                             if not isinstance(property, list)
                         ]
@@ -249,6 +263,7 @@ def get_data_type(
                 return PythonDict(
                     class_name=class_name(name),
                     properties=properties,
+                    additional_properties=schema.additionalProperties is not False,
                 )
 
             case _:
