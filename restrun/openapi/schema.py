@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from enum import Enum
+from typing import Self
 
 from attr import dataclass
 
@@ -22,7 +23,7 @@ class PythonLiteralType(str, Enum):
     FLOAT = "float"
     BOOL = "bool"
     STR = "str"
-    DATATIME = "datetime"
+    DATETIME = "datetime"
     DATE = "date"
     TIME = "time"
     TIMEDELTA = "timedelta"
@@ -44,6 +45,22 @@ class PythonLiteralType(str, Enum):
     ANY = "Any"
 
 
+class PythonLiteralUnion:
+    def __init__(
+        self,
+        type: PythonLiteralType,
+        items: list[str] | list[int] | list[float],
+    ):
+        self.type = type
+        self.items = items
+
+    def __eq__(self, value: Self) -> bool:
+        return self.type == value.type and self.items == value.items
+
+    def __str__(self) -> str:
+        return f"Literal[{','.join(map(repr, self.items))}]"
+
+
 class PythonCustomStr:
     def __init__(self, name: str):
         self.name = name
@@ -61,10 +78,12 @@ class PythonArray:
 @dataclass
 class PythonDict:
     name: str
-    properties: OrderedDict[str, "PythonDataType"]
+    properties: dict[str, "PythonDataType"]
 
 
-PythonDataType = PythonLiteralType | PythonCustomStr | PythonArray | PythonDict
+PythonDataType = (
+    PythonLiteralType | PythonCustomStr | PythonLiteralUnion | PythonArray | PythonDict
+)
 
 
 def get_data_type(
@@ -98,7 +117,7 @@ def get_data_type(
                 if schema.schema_format:
                     match schema.schema_format:
                         case "date-time":
-                            return PythonLiteralType.DATATIME
+                            return PythonLiteralType.DATETIME
 
                         case "date":
                             return PythonLiteralType.DATE
@@ -157,18 +176,21 @@ def get_data_type(
                         case _:
                             return PythonCustomStr(schema.schema_format)
 
+                elif schema.enum:
+                    return PythonLiteralUnion(PythonLiteralType.STR, schema.enum)
+
                 else:
                     return PythonLiteralType.STR
 
             case DataType_v3_1_0.NUMBER | DataType_v3_0_3.NUMBER:
                 if schema.enum:
-                    return PythonLiteralType(f"Literal[{','.join(schema.enum)}]")
+                    return PythonLiteralUnion(PythonLiteralType.FLOAT, schema.enum)
                 else:
                     return PythonLiteralType.FLOAT
 
             case DataType_v3_1_0.INTEGER | DataType_v3_0_3.INTEGER:
                 if schema.enum:
-                    return PythonLiteralType(f"Literal[{','.join(schema.enum)}]")
+                    return PythonLiteralUnion(PythonLiteralType.INT, schema.enum)
                 else:
                     return PythonLiteralType.INT
 
@@ -179,7 +201,20 @@ def get_data_type(
                 return PythonArray(name=name, items=[])
 
             case DataType_v3_1_0.OBJECT | DataType_v3_0_3.OBJECT:
-                return PythonDict(name=name, properties=OrderedDict())
+                properties = schema.properties or OrderedDict()
+                if isinstance(properties, dict):
+                    properties = OrderedDict(
+                        [
+                            (name, get_data_type(name, property))
+                            for name, property in properties.items()
+                            if not isinstance(property, list)
+                        ]
+                    )
+
+                return PythonDict(
+                    name=name,
+                    properties=properties,
+                )
 
             case _:
                 raise NeverReachError(schema_type)
