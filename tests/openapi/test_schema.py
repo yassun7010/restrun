@@ -105,3 +105,27 @@ class TestSchema:
                 "name": PythonLiteralType.STR,
             },
         )
+
+    def test_potstore_user_schema(self):
+        openapi = load_openapi("petstore.openapi_v3_0_2.json")
+
+        assert openapi.root.components is not None
+        assert openapi.root.components.schemas is not None
+
+        assert get_data_type(
+            "User",
+            openapi.root.components.schemas["User"],
+            openapi.root.components.schemas,
+        ) == PythonDict(
+            class_name="User",
+            properties={
+                "id": PythonLiteralType.INT,
+                "username": PythonLiteralType.STR,
+                "firstName": PythonLiteralType.STR,
+                "lastName": PythonLiteralType.STR,
+                "email": PythonLiteralType.STR,
+                "password": PythonLiteralType.STR,
+                "phone": PythonLiteralType.STR,
+                "userStatus": PythonLiteralType.INT,
+            },
+        )
