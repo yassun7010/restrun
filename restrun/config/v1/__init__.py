@@ -3,9 +3,9 @@ from typing import Annotated, Literal
 
 from pydantic import Field
 
-from restrun.config.v1.format import V1BlackConfig, V1FormatterConfig
+from restrun.config.v1.format import V1BlackConfig, V1FormatConfig
 from restrun.config.v1.format.isort_config import V1IsortConfig
-from restrun.config.v1.lint import V1LinterConfig
+from restrun.config.v1.lint import V1LintConfig
 from restrun.config.v1.lint.ruff_config import V1RuffConfig
 from restrun.core.model import ExtraForbidModel
 
@@ -24,12 +24,12 @@ class V1Config(ExtraForbidModel):
     )
 
     format: Annotated[
-        bool | V1FormatterConfig | list[V1FormatterConfig],
+        bool | V1FormatConfig | list[V1FormatConfig],
         Field(title="format generated code. default formatter is 'black'"),
     ] = True
 
     lint: Annotated[
-        bool | V1LinterConfig | list[V1LinterConfig],
+        bool | V1LintConfig | list[V1LintConfig],
         Field(title="lint generated code. default linter is 'ruffo'"),
     ] = True
 
@@ -40,7 +40,7 @@ class V1Config(ExtraForbidModel):
         return [self.source]
 
     @property
-    def formats(self) -> list[V1FormatterConfig] | None:
+    def formats(self) -> list[V1FormatConfig] | None:
         if self.format is False:
             return None
 
@@ -54,7 +54,7 @@ class V1Config(ExtraForbidModel):
             return self.format
 
     @property
-    def lints(self) -> list[V1LinterConfig] | None:
+    def lints(self) -> list[V1LintConfig] | None:
         if self.lint is False:
             return None
 

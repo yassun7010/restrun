@@ -9,8 +9,8 @@ import tomllib
 import yaml
 from pydantic import RootModel
 
-from restrun.config.v1.format import V1FormatterConfig
-from restrun.config.v1.lint import V1LinterConfig
+from restrun.config.v1.format import V1FormatConfig
+from restrun.config.v1.lint import V1LintConfig
 from restrun.exception import FileExtensionError
 
 from .v1 import V1Config
@@ -31,11 +31,11 @@ class Config(RootModel):
         return self.root.name
 
     @property
-    def formats(self) -> list[V1FormatterConfig] | None:
+    def formats(self) -> list[V1FormatConfig] | None:
         return self.root.formats
 
     @property
-    def lints(self) -> list[V1LinterConfig] | None:
+    def lints(self) -> list[V1LintConfig] | None:
         return self.root.lints
 
 
