@@ -26,11 +26,11 @@ class RuffLinter(Linter):
 
         if len(completed_process.stderr) > 0:
             logger.error("ruff error: \n" + completed_process.stderr.decode())
+        else:
+            logger.debug("ruff success")
 
         if len(completed_process.stdout) > 0:
             logger.debug("ruff output: \n" + completed_process.stdout.decode())
-        else:
-            logger.debug("ruff success")
 
         if completed_process.returncode != 0:
             sys.exit(completed_process.returncode)
