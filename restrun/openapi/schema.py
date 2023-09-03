@@ -1,5 +1,5 @@
+from collections import OrderedDict
 from enum import Enum
-from typing import Self
 
 from attr import dataclass
 
@@ -12,10 +12,11 @@ from .openapi import (
     OpenAPI,
     Reference,
     Schema,
+    SchemaName,
 )
 
 
-class PythonDataType(str, Enum):
+class PythonLiteralType(str, Enum):
     NONE = "None"
     INT = "int"
     FLOAT = "float"
@@ -41,11 +42,9 @@ class PythonDataType(str, Enum):
     RELATIVE_JSON_POINTER = "str"
     REGEX = "re.Pattern"
     ANY = "Any"
-    DICT = "dict"
-    LIST = "list"
 
 
-class PythonCustomDataType:
+class PythonCustomStr:
     def __init__(self, name: str):
         self.name = name
 
@@ -53,126 +52,139 @@ class PythonCustomDataType:
         return self.name
 
 
-class PythonDataTypeStr(str):
-    @classmethod
-    def from_schema(
-        cls, schema: Schema | Reference, type: DataType | None = None
-    ) -> PythonDataType | PythonCustomDataType | Self:
-        if isinstance(schema, Reference):
-            return PythonDataType.ANY
-        schema_type = type or schema.type
+@dataclass
+class PythonArray:
+    name: str
+    items: "list[PythonDataType]"
 
-        if schema_type:
-            match schema_type:
-                case list():
-                    # NOTE: `openapi_pydantic` defined it case,
-                    #       but we do not expect list to come.
-                    return PythonDataTypeStr(
-                        " | ".join(
-                            [
-                                str(cls.from_schema(schema, s))
-                                for s in schema_type
-                                if not isinstance(s, list)
-                            ]
-                        )
+
+@dataclass
+class PythonDict:
+    name: str
+    properties: OrderedDict[str, "PythonDataType"]
+
+
+PythonDataType = PythonLiteralType | PythonCustomStr | PythonArray | PythonDict
+
+
+def get_data_type(
+    name: SchemaName, schema: Schema | Reference, type: DataType | None = None
+) -> PythonDataType:
+    if isinstance(schema, Reference):
+        return PythonLiteralType.ANY
+    schema_type = type or schema.type
+
+    if schema_type:
+        match schema_type:
+            case list():
+                # NOTE: `openapi_pydantic` defined it case,
+                #       but we do not expect list to come.
+                return PythonLiteralType(
+                    " | ".join(
+                        [
+                            str(get_data_type(name, schema, s))
+                            for s in schema_type
+                            if not isinstance(s, list)
+                        ]
                     )
+                )
 
-                case DataType_v3_1_0.NULL:
-                    return PythonDataType.NONE
+            case DataType_v3_1_0.NULL:
+                return PythonLiteralType.NONE
 
-                case DataType_v3_1_0.STRING | DataType_v3_0_3.STRING:
-                    # NOTE: JsonSchema build-in formats.
-                    #       See: https://json-schema.org/understanding-json-schema/reference/string.html#id8
-                    if schema.schema_format:
-                        match schema.schema_format:
-                            case "date-time":
-                                return PythonDataType.DATATIME
+            case DataType_v3_1_0.STRING | DataType_v3_0_3.STRING:
+                # NOTE: JsonSchema build-in formats.
+                #       See: https://json-schema.org/understanding-json-schema/reference/string.html#id8
+                if schema.schema_format:
+                    match schema.schema_format:
+                        case "date-time":
+                            return PythonLiteralType.DATATIME
 
-                            case "date":
-                                return PythonDataType.DATE
+                        case "date":
+                            return PythonLiteralType.DATE
 
-                            case "time":
-                                return PythonDataType.TIME
+                        case "time":
+                            return PythonLiteralType.TIME
 
-                            case "duration":
-                                return PythonDataType.TIMEDELTA
+                        case "duration":
+                            return PythonLiteralType.TIMEDELTA
 
-                            case "email":
-                                return PythonDataType.EMAIL
+                        case "email":
+                            return PythonLiteralType.EMAIL
 
-                            case "idn-email":
-                                return PythonDataType.IDN_EMAIL
+                        case "idn-email":
+                            return PythonLiteralType.IDN_EMAIL
 
-                            case "hostname":
-                                return PythonDataType.HOSTNAME
+                        case "hostname":
+                            return PythonLiteralType.HOSTNAME
 
-                            case "idn-hostname":
-                                return PythonDataType.IDN_HOSTNAME
+                        case "idn-hostname":
+                            return PythonLiteralType.IDN_HOSTNAME
 
-                            case "ipv4":
-                                return PythonDataType.IP_V4
+                        case "ipv4":
+                            return PythonLiteralType.IP_V4
 
-                            case "ipv6":
-                                return PythonDataType.IP_V6
+                        case "ipv6":
+                            return PythonLiteralType.IP_V6
 
-                            case "uuid":
-                                return PythonDataType.UUID
+                        case "uuid":
+                            return PythonLiteralType.UUID
 
-                            case "uri":
-                                return PythonDataType.URI
+                        case "uri":
+                            return PythonLiteralType.URI
 
-                            case "uri-reference":
-                                return PythonDataType.URI_REFERENCE
+                        case "uri-reference":
+                            return PythonLiteralType.URI_REFERENCE
 
-                            case "iri":
-                                return PythonDataType.IRI
+                        case "iri":
+                            return PythonLiteralType.IRI
 
-                            case "iri-reference":
-                                return PythonDataType.IRI_REFERENCE
+                        case "iri-reference":
+                            return PythonLiteralType.IRI_REFERENCE
 
-                            case "uri-template":
-                                return PythonDataType.URI_TEMPLATE
+                        case "uri-template":
+                            return PythonLiteralType.URI_TEMPLATE
 
-                            case "json-pointer":
-                                return PythonDataType.JSON_POINTER
+                        case "json-pointer":
+                            return PythonLiteralType.JSON_POINTER
 
-                            case "relative-json-pointer":
-                                return PythonDataType.RELATIVE_JSON_POINTER
+                        case "relative-json-pointer":
+                            return PythonLiteralType.RELATIVE_JSON_POINTER
 
-                            case "regex":
-                                return PythonDataType.REGEX
+                        case "regex":
+                            return PythonLiteralType.REGEX
 
-                            case _:
-                                return PythonCustomDataType(schema.schema_format)
+                        case _:
+                            return PythonCustomStr(schema.schema_format)
 
-                    else:
-                        return PythonDataType.STR
+                else:
+                    return PythonLiteralType.STR
 
-                case DataType_v3_1_0.NUMBER | DataType_v3_0_3.NUMBER:
-                    if schema.enum:
-                        return PythonDataTypeStr(f"Literal[{','.join(schema.enum)}]")
-                    else:
-                        return PythonDataType.FLOAT
+            case DataType_v3_1_0.NUMBER | DataType_v3_0_3.NUMBER:
+                if schema.enum:
+                    return PythonLiteralType(f"Literal[{','.join(schema.enum)}]")
+                else:
+                    return PythonLiteralType.FLOAT
 
-                case DataType_v3_1_0.INTEGER | DataType_v3_0_3.INTEGER:
-                    if schema.enum:
-                        return PythonDataTypeStr(f"Literal[{','.join(schema.enum)}]")
-                    else:
-                        return PythonDataType.INT
+            case DataType_v3_1_0.INTEGER | DataType_v3_0_3.INTEGER:
+                if schema.enum:
+                    return PythonLiteralType(f"Literal[{','.join(schema.enum)}]")
+                else:
+                    return PythonLiteralType.INT
 
-                case DataType_v3_1_0.BOOLEAN | DataType_v3_0_3.BOOLEAN:
-                    return PythonDataType.BOOL
+            case DataType_v3_1_0.BOOLEAN | DataType_v3_0_3.BOOLEAN:
+                return PythonLiteralType.BOOL
 
-                case DataType_v3_1_0.ARRAY | DataType_v3_0_3.BOOLEAN:
-                    return PythonDataType.LIST
+            case DataType_v3_1_0.ARRAY | DataType_v3_0_3.BOOLEAN:
+                return PythonArray(name=name, items=[])
 
-                case DataType_v3_1_0.OBJECT | DataType_v3_0_3.OBJECT:
-                    return PythonDataType.DICT
+            case DataType_v3_1_0.OBJECT | DataType_v3_0_3.OBJECT:
+                return PythonDict(name=name, properties=OrderedDict())
 
-                case _:
-                    raise NeverReachError(schema_type)
+            case _:
+                raise NeverReachError(schema_type)
 
-        return PythonDataTypeStr("Any")
+    return PythonLiteralType("Any")
 
 
 @dataclass
@@ -196,7 +208,7 @@ class PythonDataField:
 @dataclass
 class PythonDataSchema:
     name: str
-    type: PythonDataType | PythonCustomDataType | PythonDataTypeStr
+    type: PythonDataType
     field: PythonDataField | None = None
 
 
@@ -209,7 +221,7 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
         schemas.append(
             PythonDataSchema(
                 name=name,
-                type=PythonDataTypeStr.from_schema(schema),
+                type=get_data_type(name, schema),
             )
         )
 
