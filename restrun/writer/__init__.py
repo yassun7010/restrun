@@ -58,6 +58,10 @@ def write_schemas(
 
     for schema_context in schema_contexts:
         filepath = schema_dir_path / f"{schema_context.file_name}.py"
+
+        if filepath.exists() and not is_auto_generated_or_empty(filepath):
+            continue
+
         code = SchemaTypedDictGenerator().generate(
             config, restrun_context, schema_context
         )
