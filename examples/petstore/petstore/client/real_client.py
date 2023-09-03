@@ -14,7 +14,9 @@ from restrun.core.client import RestrunRealClient
 from restrun.core.request import RequestRealClient
 
 from .client import PetstoreClient
-from .mixins import bearer_token_login_mixin
+from .mixins import (
+    bearer_token_login_mixin,
+)
 
 
 class PetstoreRealClient(

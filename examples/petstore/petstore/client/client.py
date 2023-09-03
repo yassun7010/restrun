@@ -16,8 +16,13 @@ from typing_extensions import override
 from restrun.core.client import RestrunClient
 from restrun.exception import URLNotSupportedError
 
+
 from ..resources import v1_pets
-from .mixins import bearer_token_login_mixin
+
+
+from .mixins import (
+    bearer_token_login_mixin,
+)
 
 
 class PetstoreClient(bearer_token_login_mixin.BearerTokenLoginMixin, RestrunClient):
