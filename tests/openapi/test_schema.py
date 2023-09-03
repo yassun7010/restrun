@@ -129,3 +129,21 @@ class TestSchema:
                 "userStatus": PythonLiteralType.INT,
             },
         )
+
+    def test_petstore_tag_schema(self):
+        openapi = load_openapi("petstore.openapi_v3_0_2.json")
+
+        assert openapi.root.components is not None
+        assert openapi.root.components.schemas is not None
+
+        assert get_data_type(
+            "Tag",
+            openapi.root.components.schemas["Tag"],
+            openapi.root.components.schemas,
+        ) == PythonDict(
+            class_name="Tag",
+            properties={
+                "id": PythonLiteralType.INT,
+                "name": PythonLiteralType.STR,
+            },
+        )
