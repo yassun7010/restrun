@@ -82,7 +82,7 @@ class PythonArray:
 
 @dataclass(frozen=True)
 class PythonDictField:
-    data: "PythonDataType"
+    type: "PythonDataType"
     required: bool = False
     description: str | None = None
 
@@ -252,7 +252,7 @@ def get_data_type(
                             (
                                 name,
                                 PythonDictField(
-                                    data=get_data_type(name, property, schemas),
+                                    type=get_data_type(name, property, schemas),
                                     required=name in required_properties,
                                     description=(
                                         property.description

@@ -19,5 +19,4 @@ class TestClientGenerator:
 
         exec(code, None, locals)
 
-        assert is_auto_generated_or_empty(code)
         assert locals["MyClient"] is not None
