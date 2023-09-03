@@ -16,14 +16,9 @@ from typing_extensions import override
 from restrun.core.client import RestrunMockClient
 from restrun.exception import RestrunError
 
-
 from ..resources.v1_pets import get_v1_pets
-
-
 from .client import PetstoreClient
-from .mixins import (
-    bearer_token_login_mixin,
-)
+from .mixins import bearer_token_login_mixin
 
 
 class PetstoreMockClient(

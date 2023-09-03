@@ -62,7 +62,9 @@ def generate_command(space: "Namespace") -> None:
 
     if space.format if space.format is not None else config.format:
         from restrun.formatter.black import BlackFormatter
+        from restrun.formatter.isort import IsortFormatter
 
+        IsortFormatter().format(base_dir)
         BlackFormatter().format(base_dir)
 
     if space.lint if space.lint is not None else config.lint:
