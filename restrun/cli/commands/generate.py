@@ -60,14 +60,21 @@ def generate_command(space: "Namespace") -> None:
     if GenerateTarget.CLIENT in targets:
         write_clients(base_dir, config, context)
 
-    if space.format if space.format is not None else config.format:
-        from restrun.formatter.black import BlackFormatter
-        from restrun.formatter.isort import IsortFormatter
+    if space.format is not False:
+        for format in config.formats or []:
+            if format.formatter == "isort":
+                from restrun.formatter.isort import IsortFormatter
 
-        IsortFormatter().format(base_dir)
-        BlackFormatter().format(base_dir)
+                IsortFormatter().format(base_dir)
 
-    if space.lint if space.lint is not None else config.lint:
-        from restrun.linter.ruff import RuffLinter
+            if format.formatter == "black":
+                from restrun.formatter.black import BlackFormatter
 
-        RuffLinter().lint(base_dir)
+                BlackFormatter().format(base_dir)
+
+    if space.lint is not False:
+        for lint in config.lints or []:
+            if lint.linter == "ruff":
+                from restrun.linter.ruff import RuffLinter
+
+                RuffLinter().lint(base_dir)

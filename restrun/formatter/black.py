@@ -26,9 +26,9 @@ class BlackFormatter(Formatter):
             filter(lambda x: x.startswith("error: "), result.stderr.splitlines())
         )
         if len(errors) != 0:
-            logger.error("Black error: \n" + "\n".join(errors))
+            logger.error("black error: \n" + "\n".join(errors))
         else:
-            logger.debug("Black success")
+            logger.debug("black success")
 
         if result.exit_code != 0:
             sys.exit(result.exit_code)
