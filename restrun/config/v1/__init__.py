@@ -23,21 +23,18 @@ class V1Config(ExtraForbidModel):
         title="source files.", default_factory=list
     )
 
-    format: Annotated[
-        bool | V1FormatConfig | list[V1FormatConfig],
-        Field(title="format generated code. default formatter is 'black'"),
-    ] = True
-
-    lint: Annotated[
-        bool | V1LintConfig | list[V1LintConfig],
-        Field(title="lint generated code. default linter is 'ruffo'"),
-    ] = True
-
     @property
     def sources(self) -> list[V1Source]:
         if isinstance(self.source, list):
             return self.source
         return [self.source]
+
+    format: Annotated[
+        bool | V1FormatConfig | list[V1FormatConfig],
+        Field(
+            title="format generated code. default formatters are 'isort' and 'black'.",
+        ),
+    ] = True
 
     @property
     def formats(self) -> list[V1FormatConfig] | None:
@@ -45,13 +42,21 @@ class V1Config(ExtraForbidModel):
             return None
 
         elif self.format is True:
-            return [V1IsortConfig(formatter="isort"), V1BlackConfig(formatter="black")]
+            return [
+                V1IsortConfig(formatter="isort"),
+                V1BlackConfig(formatter="black"),
+            ]
 
         elif not isinstance(self.format, list):
             return [self.format]
 
         else:
             return self.format
+
+    lint: Annotated[
+        bool | V1LintConfig | list[V1LintConfig],
+        Field(title="lint generated code. default linter is 'ruffo'"),
+    ] = True
 
     @property
     def lints(self) -> list[V1LintConfig] | None:
