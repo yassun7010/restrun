@@ -14,4 +14,9 @@ from typing import TypedDict, NotRequired
 class {{ schema.class_name }}(TypedDict):
 {% for name, field in schema.fields.items() %}
     {{ name }}: {% if not field.required -%}NotRequired[{% endif %}{{ field.type }}{% if not field.required %}]{% endif %}
+{% if field.description is not none %}
+    """
+    {{ field.description|indent(4) }}
+    """
+{% endif %}
 {% endfor %}
