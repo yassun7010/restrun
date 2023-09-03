@@ -1,7 +1,7 @@
 from restrun.config import Config
 from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.client import ClientGenerator
-from restrun.generator.context.restrun import RestrunContext
+from restrun.generator.context.restrun_context import RestrunContext
 
 
 class TestClientGenerator:

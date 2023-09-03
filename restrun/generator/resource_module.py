@@ -6,8 +6,8 @@ from restrun.generator.resource import ResourceGenerator
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context.resource import ResourceContext
-    from restrun.generator.context.restrun import RestrunContext
+    from restrun.generator.context.resource_context import ResourceContext
+    from restrun.generator.context.restrun_context import RestrunContext
 
 
 class ResourceModuleGenerator(ResourceGenerator):

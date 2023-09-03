@@ -8,7 +8,10 @@ from restrun.config import Config
 from restrun.core import http
 from restrun.core.request import Request
 from restrun.generator import ClassInfo, find_classes_from_code
-from restrun.generator.context.resource import ResourceContext, make_resource_contexts
+from restrun.generator.context.resource_context import (
+    ResourceContext,
+    make_resource_contexts,
+)
 
 
 @dataclass(frozen=True)

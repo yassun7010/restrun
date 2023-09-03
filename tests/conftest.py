@@ -7,8 +7,8 @@ from pytest import fixture
 
 from restrun.config import Config
 from restrun.config.v1 import V1Config
-from restrun.generator.context.resource import ResourceContext
-from restrun.generator.context.restrun import RestrunContext
+from restrun.generator.context.resource_context import ResourceContext
+from restrun.generator.context.restrun_context import RestrunContext
 
 
 @contextmanager

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from restrun.config import Config
-    from restrun.generator.context.restrun import RestrunContext
+    from restrun.generator.context.restrun_context import RestrunContext
 
 
 def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:

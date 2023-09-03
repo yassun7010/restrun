@@ -6,7 +6,7 @@ from .restrun import RestrunGenerator
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context.restrun import RestrunContext
+    from restrun.generator.context.restrun_context import RestrunContext
 
 
 class GetRequestGenerator(RestrunGenerator):

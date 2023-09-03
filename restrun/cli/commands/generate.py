@@ -42,7 +42,7 @@ def generate_command(space: "Namespace") -> None:
     from restrun import strcase
     from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
     from restrun.config.v1.target import GenerateTarget, get_targets
-    from restrun.generator.context.restrun import make_rustrun_context
+    from restrun.generator.context.restrun_context import make_rustrun_context
     from restrun.writer import write_clients, write_resources
 
     targets = get_targets(space.target)
