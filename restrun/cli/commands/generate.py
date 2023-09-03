@@ -65,7 +65,7 @@ def generate_command(space: "Namespace") -> None:
             if format.formatter == "isort":
                 from restrun.formatter.isort import IsortFormatter
 
-                IsortFormatter().format(base_dir)
+                IsortFormatter().format(base_dir, *format.args)
 
             if format.formatter == "black":
                 from restrun.formatter.black import BlackFormatter
