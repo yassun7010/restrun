@@ -1,9 +1,9 @@
 from restrun.openapi.schema import (
     PythonArray,
-    PythonDict,
-    PythonDictField,
     PythonLiteralType,
     PythonLiteralUnion,
+    PythonObject,
+    PythonObjectProperty,
     PythonReference,
     get_data_type,
 )
@@ -22,21 +22,21 @@ class TestSchema:
             "Order",
             openapi.root.components.schemas["Order"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Order",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "petId": PythonDictField(PythonLiteralType.INT),
-                "quantity": PythonDictField(PythonLiteralType.INT),
-                "shipDate": PythonDictField(PythonLiteralType.DATETIME),
-                "status": PythonDictField(
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "petId": PythonObjectProperty(PythonLiteralType.INT),
+                "quantity": PythonObjectProperty(PythonLiteralType.INT),
+                "shipDate": PythonObjectProperty(PythonLiteralType.DATETIME),
+                "status": PythonObjectProperty(
                     PythonLiteralUnion(
                         PythonLiteralType.STR,
                         ["placed", "approved", "delivered"],
                     ),
                     description="Order Status",
                 ),
-                "complete": PythonDictField(PythonLiteralType.BOOL),
+                "complete": PythonObjectProperty(PythonLiteralType.BOOL),
             },
         )
 
@@ -50,23 +50,27 @@ class TestSchema:
             "Customer",
             openapi.root.components.schemas["Customer"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Customer",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "username": PythonDictField(PythonLiteralType.STR),
-                "address": PythonDictField(
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "username": PythonObjectProperty(PythonLiteralType.STR),
+                "address": PythonObjectProperty(
                     PythonArray(
                         name="address",
                         items=PythonReference(
                             ref="#/components/schemas/Address",
-                            target=PythonDict(
+                            target=PythonObject(
                                 class_name="Address",
                                 properties={
-                                    "street": PythonDictField(PythonLiteralType.STR),
-                                    "city": PythonDictField(PythonLiteralType.STR),
-                                    "state": PythonDictField(PythonLiteralType.STR),
-                                    "zip": PythonDictField(PythonLiteralType.STR),
+                                    "street": PythonObjectProperty(
+                                        PythonLiteralType.STR
+                                    ),
+                                    "city": PythonObjectProperty(PythonLiteralType.STR),
+                                    "state": PythonObjectProperty(
+                                        PythonLiteralType.STR
+                                    ),
+                                    "zip": PythonObjectProperty(PythonLiteralType.STR),
                                 },
                             ),
                         ),
@@ -85,13 +89,13 @@ class TestSchema:
             "Address",
             openapi.root.components.schemas["Address"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Address",
             properties={
-                "street": PythonDictField(PythonLiteralType.STR),
-                "city": PythonDictField(PythonLiteralType.STR),
-                "state": PythonDictField(PythonLiteralType.STR),
-                "zip": PythonDictField(PythonLiteralType.STR),
+                "street": PythonObjectProperty(PythonLiteralType.STR),
+                "city": PythonObjectProperty(PythonLiteralType.STR),
+                "state": PythonObjectProperty(PythonLiteralType.STR),
+                "zip": PythonObjectProperty(PythonLiteralType.STR),
             },
         )
 
@@ -105,11 +109,11 @@ class TestSchema:
             "Category",
             openapi.root.components.schemas["Category"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Category",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "name": PythonDictField(PythonLiteralType.STR),
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "name": PythonObjectProperty(PythonLiteralType.STR),
             },
         )
 
@@ -123,17 +127,17 @@ class TestSchema:
             "User",
             openapi.root.components.schemas["User"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="User",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "username": PythonDictField(PythonLiteralType.STR),
-                "firstName": PythonDictField(PythonLiteralType.STR),
-                "lastName": PythonDictField(PythonLiteralType.STR),
-                "email": PythonDictField(PythonLiteralType.STR),
-                "password": PythonDictField(PythonLiteralType.STR),
-                "phone": PythonDictField(PythonLiteralType.STR),
-                "userStatus": PythonDictField(
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "username": PythonObjectProperty(PythonLiteralType.STR),
+                "firstName": PythonObjectProperty(PythonLiteralType.STR),
+                "lastName": PythonObjectProperty(PythonLiteralType.STR),
+                "email": PythonObjectProperty(PythonLiteralType.STR),
+                "password": PythonObjectProperty(PythonLiteralType.STR),
+                "phone": PythonObjectProperty(PythonLiteralType.STR),
+                "userStatus": PythonObjectProperty(
                     PythonLiteralType.INT, description="User Status"
                 ),
             },
@@ -149,11 +153,11 @@ class TestSchema:
             "Tag",
             openapi.root.components.schemas["Tag"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Tag",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "name": PythonDictField(PythonLiteralType.STR),
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "name": PythonObjectProperty(PythonLiteralType.STR),
             },
         )
 
@@ -167,49 +171,49 @@ class TestSchema:
             "Pet",
             openapi.root.components.schemas["Pet"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="Pet",
             properties={
-                "id": PythonDictField(PythonLiteralType.INT),
-                "name": PythonDictField(
+                "id": PythonObjectProperty(PythonLiteralType.INT),
+                "name": PythonObjectProperty(
                     PythonLiteralType.STR,
                     required=True,
                 ),
-                "category": PythonDictField(
+                "category": PythonObjectProperty(
                     PythonReference(
                         ref="#/components/schemas/Category",
-                        target=PythonDict(
+                        target=PythonObject(
                             class_name="Category",
                             properties={
-                                "id": PythonDictField(PythonLiteralType.INT),
-                                "name": PythonDictField(PythonLiteralType.STR),
+                                "id": PythonObjectProperty(PythonLiteralType.INT),
+                                "name": PythonObjectProperty(PythonLiteralType.STR),
                             },
                         ),
                     )
                 ),
-                "photoUrls": PythonDictField(
+                "photoUrls": PythonObjectProperty(
                     PythonArray(
                         name="photoUrls",
                         items=PythonLiteralType.STR,
                     ),
                     required=True,
                 ),
-                "tags": PythonDictField(
+                "tags": PythonObjectProperty(
                     PythonArray(
                         name="tags",
                         items=PythonReference(
                             ref="#/components/schemas/Tag",
-                            target=PythonDict(
+                            target=PythonObject(
                                 class_name="Tag",
                                 properties={
-                                    "id": PythonDictField(PythonLiteralType.INT),
-                                    "name": PythonDictField(PythonLiteralType.STR),
+                                    "id": PythonObjectProperty(PythonLiteralType.INT),
+                                    "name": PythonObjectProperty(PythonLiteralType.STR),
                                 },
                             ),
                         ),
                     )
                 ),
-                "status": PythonDictField(
+                "status": PythonObjectProperty(
                     PythonLiteralUnion(
                         PythonLiteralType.STR,
                         ["available", "pending", "sold"],
@@ -229,11 +233,11 @@ class TestSchema:
             "ApiResponse",
             openapi.root.components.schemas["ApiResponse"],
             openapi.root.components.schemas,
-        ) == PythonDict(
+        ) == PythonObject(
             class_name="ApiResponse",
             properties={
-                "code": PythonDictField(PythonLiteralType.INT),
-                "type": PythonDictField(PythonLiteralType.STR),
-                "message": PythonDictField(PythonLiteralType.STR),
+                "code": PythonObjectProperty(PythonLiteralType.INT),
+                "type": PythonObjectProperty(PythonLiteralType.STR),
+                "message": PythonObjectProperty(PythonLiteralType.STR),
             },
         )

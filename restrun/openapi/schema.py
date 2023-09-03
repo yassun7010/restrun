@@ -81,16 +81,16 @@ class PythonArray:
 
 
 @dataclass(frozen=True)
-class PythonDictField:
+class PythonObjectProperty:
     type: "PythonDataType"
     required: bool = False
     description: str | None = None
 
 
 @dataclass(frozen=True)
-class PythonDict:
+class PythonObject:
     class_name: str
-    properties: dict[str, PythonDictField]
+    properties: dict[str, PythonObjectProperty]
     additional_properties: bool = True
 
 
@@ -109,7 +109,7 @@ PythonDataType = (
     | PythonCustomStr
     | PythonLiteralUnion
     | PythonArray
-    | PythonDict
+    | PythonObject
     | PythonReference
 )
 
@@ -251,7 +251,7 @@ def get_data_type(
                         [
                             (
                                 name,
-                                PythonDictField(
+                                PythonObjectProperty(
                                     type=get_data_type(name, property, schemas),
                                     required=name in required_properties,
                                     description=(
@@ -266,7 +266,7 @@ def get_data_type(
                         ]
                     )
 
-                return PythonDict(
+                return PythonObject(
                     class_name=class_name(name),
                     properties=properties,
                     additional_properties=schema.additionalProperties is not False,
@@ -300,7 +300,6 @@ class PythonDataField:
 class PythonDataSchema:
     name: str
     type: PythonDataType
-    field: PythonDataField | None = None
 
 
 def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:

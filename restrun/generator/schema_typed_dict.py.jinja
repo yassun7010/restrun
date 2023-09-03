@@ -11,12 +11,16 @@
 #
 from typing import TypedDict, NotRequired
 
-class {{ schema.class_name }}(TypedDict):
-{% for name, field in schema.fields.items() %}
-    {{ name }}: {% if not field.required -%}NotRequired[{% endif %}{{ field.type }}{% if not field.required %}]{% endif %}
-{% if field.description is not none %}
+
+{% if schema.type == "object" %}
+{% set data_type = schema.data_type %}
+class {{ data_type.class_name }}(TypedDict):
+{% for name, property in data_type.properties.items() %}
+    {{ name }}: {% if not property.required -%}NotRequired[{% endif %}{{ property.type }}{% if not property.required %}]{% endif %}
+{% if property.description is not none %}
     """
-    {{ field.description|indent(4) }}
+    {{ property.description|indent(4) }}
     """
 {% endif %}
 {% endfor %}
+{% endif %}

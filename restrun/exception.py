@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Type
 import jinja2
 
 if TYPE_CHECKING:
+    import pydantic
+
     from restrun.core import http
     from restrun.core.model import Model
     from restrun.core.request import Request
@@ -263,4 +265,23 @@ class ResponseJsonBodyValidationError(RestrunError, ValueError):
         return (
             f'Failed to validate the response json body of {self.method} "{self.url}":'
             f" Error: {self.error}, Response body: {self.response_body}"
+        )
+
+
+class OpenAPIRequestError(RestrunError):
+    def __init__(
+        self,
+        method: "http.Method",
+        url: "pydantic.HttpUrl",
+        content: bytes,
+    ) -> None:
+        self.method = method
+        self.url = url
+        self.content = content
+
+    @property
+    def message(self) -> str:
+        return (
+            f'Failed to request the OpenAPI of {self.method} "{self.url}": '
+            f"{self.content}"
         )

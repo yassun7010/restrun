@@ -5,18 +5,21 @@ from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.context.restrun_context import RestrunContext
 from restrun.generator.context.schema_context import SchemaContext
 from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
-from restrun.openapi.schema import PythonDictField, PythonLiteralType
+from restrun.openapi.schema import PythonLiteralType, PythonObject, PythonObjectProperty
 
 
 @pytest.fixture
 def schema_context() -> SchemaContext:
     return SchemaContext(
-        class_name="User",
-        fields={
-            "id": PythonDictField(PythonLiteralType.INT, required=True),
-            "name": PythonDictField(PythonLiteralType.STR, required=True),
-            "age": PythonDictField(PythonLiteralType.INT, required=True),
-        },
+        type_name="User",
+        data_type=PythonObject(
+            class_name="User",
+            properties={
+                "id": PythonObjectProperty(PythonLiteralType.INT, required=True),
+                "name": PythonObjectProperty(PythonLiteralType.STR, required=True),
+                "age": PythonObjectProperty(PythonLiteralType.INT, required=True),
+            },
+        ),
     )
 
 
