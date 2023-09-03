@@ -25,11 +25,18 @@
                     "title": "output directory."
                 },
                 "source": {
-                    "items": {
-                        "$ref": "#/$defs/V1OpenAPISource"
-                    },
-                    "title": "source files.",
-                    "type": "array"
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/V1OpenAPISource"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/$defs/V1OpenAPISource"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "title": "source files."
                 },
                 "format": {
                     "default": true,
