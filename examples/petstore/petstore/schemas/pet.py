@@ -9,7 +9,6 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-
 import typing
 
 from . import category, tag
