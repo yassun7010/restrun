@@ -7,7 +7,8 @@ from restrun.openapi.schema import (
     PythonReference,
     get_data_type,
 )
-from tests.data import load_openapi
+
+from . import load_openapi
 
 
 class TestSchema:
