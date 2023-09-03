@@ -1,10 +1,12 @@
 from collections import OrderedDict
 from enum import Enum
+from functools import cached_property
 from typing import Self
 
 from attr import dataclass
 
 from restrun.exception import NeverReachError
+from restrun.strcase import class_name
 
 from .openapi import (
     DataType,
@@ -12,7 +14,10 @@ from .openapi import (
     DataType_v3_1_0,
     OpenAPI,
     Reference,
+    Reference_v3_0_3,
     Schema,
+    Schema_v3_0_3,
+    Schema_v3_1_0,
     SchemaName,
 )
 
@@ -69,28 +74,51 @@ class PythonCustomStr:
         return self.name
 
 
-@dataclass
+@dataclass(frozen=True)
 class PythonArray:
     name: str
-    items: "list[PythonDataType]"
+    items: "PythonDataType"
 
 
-@dataclass
+@dataclass(frozen=True)
 class PythonDict:
-    name: str
+    class_name: str
     properties: dict[str, "PythonDataType"]
 
 
+@dataclass(frozen=True)
+class PythonReference:
+    ref: str
+    target: "PythonDataType"
+
+    @cached_property
+    def name(self) -> str:
+        return self.ref.split("/")[-1]
+
+
 PythonDataType = (
-    PythonLiteralType | PythonCustomStr | PythonLiteralUnion | PythonArray | PythonDict
+    PythonLiteralType
+    | PythonCustomStr
+    | PythonLiteralUnion
+    | PythonArray
+    | PythonDict
+    | PythonReference
 )
 
 
 def get_data_type(
-    name: SchemaName, schema: Schema | Reference, type: DataType | None = None
+    name: SchemaName,
+    schema: Schema | Reference,
+    schemas: dict[str, Schema_v3_1_0] | dict[str, Schema_v3_0_3 | Reference_v3_0_3],
+    type: DataType | None = None,
 ) -> PythonDataType:
     if isinstance(schema, Reference):
-        return PythonLiteralType.ANY
+        schma_name = schema.ref.split("/")[-1]
+        return PythonReference(
+            ref=schema.ref,
+            target=get_data_type(schma_name, schemas[schma_name], schemas),
+        )
+
     schema_type = type or schema.type
 
     if schema_type:
@@ -101,7 +129,7 @@ def get_data_type(
                 return PythonLiteralType(
                     " | ".join(
                         [
-                            str(get_data_type(name, schema, s))
+                            str(get_data_type(name, schema, schemas, s))
                             for s in schema_type
                             if not isinstance(s, list)
                         ]
@@ -198,21 +226,28 @@ def get_data_type(
                 return PythonLiteralType.BOOL
 
             case DataType_v3_1_0.ARRAY | DataType_v3_0_3.BOOLEAN:
-                return PythonArray(name=name, items=[])
+                return PythonArray(
+                    name=name,
+                    items=(
+                        get_data_type(name, schema.items, schemas)
+                        if schema.items is not None
+                        else PythonLiteralType.ANY
+                    ),
+                )
 
             case DataType_v3_1_0.OBJECT | DataType_v3_0_3.OBJECT:
                 properties = schema.properties or OrderedDict()
                 if isinstance(properties, dict):
                     properties = OrderedDict(
                         [
-                            (name, get_data_type(name, property))
+                            (name, get_data_type(name, property, schemas))
                             for name, property in properties.items()
                             if not isinstance(property, list)
                         ]
                     )
 
                 return PythonDict(
-                    name=name,
+                    class_name=class_name(name),
                     properties=properties,
                 )
 
@@ -256,7 +291,7 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
         schemas.append(
             PythonDataSchema(
                 name=name,
-                type=get_data_type(name, schema),
+                type=get_data_type(name, schema, openapi.root.components.schemas),
             )
         )
 
