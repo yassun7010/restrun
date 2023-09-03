@@ -12,4 +12,4 @@ logger = getLogger(__name__)
 class IsortFormatter(Formatter):
     @override
     def format(self, target_dir: Path, *args: str) -> None:
-        isort([str(target_dir)])
+        isort([str(target_dir)] + list(args))
