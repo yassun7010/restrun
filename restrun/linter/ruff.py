@@ -21,7 +21,7 @@ class RuffLinter(Linter):
 
         ruff = find_ruff_bin()
         completed_process = subprocess.run(
-            [os.fsdecode(ruff), *args, target_dir], capture_output=True
+            [os.fsdecode(ruff), "check", *args, target_dir], capture_output=True
         )
 
         if len(completed_process.stderr) > 0:

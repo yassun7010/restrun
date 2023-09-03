@@ -18,6 +18,7 @@ class V1BlackConfig(ExtraForbidModel):
                     args.append(f"{key}={repr(value)}")
                 else:
                     args.append(key)
+
         if self.config_path is not None and "--config" not in (self.options or {}):
             args.append(f"--config={self.config_path}")
 

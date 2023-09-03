@@ -18,6 +18,7 @@ class V1IsortConfig(ExtraForbidModel):
                     args.append(f"{key}={repr(value)}")
                 else:
                     args.append(key)
+
         if (
             self.settings_path is not None
             and len(
