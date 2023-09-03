@@ -196,7 +196,7 @@ class PythonDataField:
 @dataclass
 class PythonDataSchema:
     name: str
-    type: PythonDataType | PythonDataTypeStr
+    type: PythonDataType | PythonCustomDataType | PythonDataTypeStr
     field: PythonDataField | None = None
 
 
