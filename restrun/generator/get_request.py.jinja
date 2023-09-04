@@ -14,6 +14,7 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 from typing import Self, TypedDict
+import pydantic
 
 from restrun.core.client import RestrunMockClient
 from restrun.core.resource import GetRequest
@@ -21,8 +22,16 @@ from restrun.core.model import ExtraForbidModel
 
 
 {% if resouce.has_query %}
+{% if config.schema_type == "typed_dict" %}
 class {{ query_class }}(TypedDict):
     pass
+{% elif config.schema_type == "pydantic" %}
+class {{ query_class }}(pydantic.BaseModel):
+    pass
+
+class _Query(TypedDict):
+    pass
+{% endif %}
 {% endif %}
 
 
