@@ -1,5 +1,57 @@
 {
     "$defs": {
+        "V1BlackConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "formatter": {
+                    "const": "black",
+                    "title": "Formatter"
+                },
+                "options": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Options"
+                },
+                "config_path": {
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Config Path"
+                }
+            },
+            "required": [
+                "formatter"
+            ],
+            "title": "V1BlackConfig",
+            "type": "object"
+        },
         "V1Config": {
             "additionalProperties": false,
             "properties": {
@@ -11,10 +63,10 @@
                     "title": "client name.",
                     "type": "string"
                 },
-                "output": {
+                "output_dir": {
                     "anyOf": [
                         {
-                            "format": "path",
+                            "format": "directory-path",
                             "type": "string"
                         },
                         {
@@ -36,24 +88,121 @@
                             "type": "array"
                         }
                     ],
-                    "title": "source files."
+                    "title": "source settings."
+                },
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/V1Schema"
+                        }
+                    ],
+                    "title": "schema settings."
                 },
                 "format": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "$ref": "#/$defs/V1IsortConfig"
+                        },
+                        {
+                            "$ref": "#/$defs/V1BlackConfig"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/$defs/V1IsortConfig"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/V1BlackConfig"
+                                    }
+                                ]
+                            },
+                            "type": "array"
+                        }
+                    ],
                     "default": true,
-                    "title": "format generated code. default formatter is 'black'",
-                    "type": "boolean"
+                    "title": "format generated code. default formatters are 'isort' and 'black'."
                 },
                 "lint": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "$ref": "#/$defs/V1RuffConfig"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/$defs/V1RuffConfig"
+                            },
+                            "type": "array"
+                        }
+                    ],
                     "default": true,
-                    "title": "lint generated code. default linter is 'ruffo'",
-                    "type": "boolean"
+                    "title": "lint generated code. default linter is 'ruffo'"
                 }
             },
             "required": [
                 "version",
-                "name"
+                "name",
+                "source"
             ],
             "title": "V1Config",
+            "type": "object"
+        },
+        "V1IsortConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "formatter": {
+                    "const": "isort",
+                    "title": "Formatter"
+                },
+                "options": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Options"
+                },
+                "settings_path": {
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Settings Path"
+                }
+            },
+            "required": [
+                "formatter"
+            ],
+            "title": "V1IsortConfig",
             "type": "object"
         },
         "V1OpenAPISource": {
@@ -64,9 +213,19 @@
                     "title": "Type"
                 },
                 "location": {
-                    "format": "path",
-                    "title": "openapi file location.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "format": "uri",
+                            "maxLength": 2083,
+                            "minLength": 1,
+                            "type": "string"
+                        }
+                    ],
+                    "title": "openapi file location."
                 }
             },
             "required": [
@@ -74,6 +233,75 @@
                 "location"
             ],
             "title": "V1OpenAPISource",
+            "type": "object"
+        },
+        "V1RuffConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "linter": {
+                    "const": "ruff",
+                    "title": "Linter"
+                },
+                "options": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Options"
+                },
+                "config_path": {
+                    "anyOf": [
+                        {
+                            "format": "path",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Config Path"
+                }
+            },
+            "required": [
+                "linter"
+            ],
+            "title": "V1RuffConfig",
+            "type": "object"
+        },
+        "V1Schema": {
+            "additionalProperties": false,
+            "properties": {
+                "schema_type": {
+                    "default": "pydantic",
+                    "description": "`pydantic` or `typed_dict`.",
+                    "enum": [
+                        "pydantic",
+                        "typed_dict"
+                    ],
+                    "title": "schema type.",
+                    "type": "string"
+                }
+            },
+            "title": "V1Schema",
             "type": "object"
         }
     },

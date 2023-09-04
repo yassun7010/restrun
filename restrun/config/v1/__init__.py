@@ -6,6 +6,7 @@ from restrun.config.v1.format import V1BlackConfig, V1FormatConfig
 from restrun.config.v1.format.isort_config import V1IsortConfig
 from restrun.config.v1.lint import V1LintConfig
 from restrun.config.v1.lint.ruff_config import V1RuffConfig
+from restrun.config.v1.schema import V1Schema
 from restrun.core.model import ExtraForbidModel
 
 from .source import V1Source
@@ -16,17 +17,29 @@ class V1Config(ExtraForbidModel):
 
     name: Annotated[str, Field(title="client name.")]
 
-    output_dir: Annotated[DirectoryPath | None, Field(title="output directory.")] = None
+    output_dir: Annotated[
+        DirectoryPath | None,
+        Field(title="output directory."),
+    ] = None
 
-    source: V1Source | list[V1Source] = Field(
-        title="source files.", default_factory=list
-    )
+    source: Annotated[
+        V1Source | list[V1Source],
+        Field(title="source settings."),
+    ] = []
 
     @property
     def sources(self) -> list[V1Source]:
         if isinstance(self.source, list):
             return self.source
         return [self.source]
+
+    schema_raw: Annotated[
+        V1Schema,
+        Field(
+            title="schema settings.",
+            alias="schema",
+        ),
+    ] = V1Schema()
 
     format: Annotated[
         bool | V1FormatConfig | list[V1FormatConfig],

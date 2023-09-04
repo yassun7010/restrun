@@ -11,3 +11,13 @@ class TestGetTargets:
                 "generate",
             ]
         )
+
+    def test_petstore_typed_dict_example(self) -> None:
+        App.run(
+            [
+                "--verbose",
+                "--config",
+                "examples/petstore_typed_dict/restrun.yml",
+                "generate",
+            ]
+        )
