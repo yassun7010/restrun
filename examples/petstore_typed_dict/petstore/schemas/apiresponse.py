@@ -11,14 +11,10 @@
 #
 import typing
 
-import pydantic
 
-from restrun.core.model import Model
+class ApiResponseDict(typing.TypedDict):
+    code: typing.NotRequired[int]
 
+    type: typing.NotRequired[str]
 
-class ApiResponse(Model):
-    code: typing.Annotated[int, pydantic.Field()]
-
-    type: typing.Annotated[str, pydantic.Field()]
-
-    message: typing.Annotated[str, pydantic.Field()]
+    message: typing.NotRequired[str]

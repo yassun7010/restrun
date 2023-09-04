@@ -11,16 +11,12 @@
 #
 import typing
 
-import pydantic
 
-from restrun.core.model import Model
+class AddressDict(typing.TypedDict):
+    street: typing.NotRequired[str]
 
+    city: typing.NotRequired[str]
 
-class Address(Model):
-    street: typing.Annotated[str, pydantic.Field()]
+    state: typing.NotRequired[str]
 
-    city: typing.Annotated[str, pydantic.Field()]
-
-    state: typing.Annotated[str, pydantic.Field()]
-
-    zip: typing.Annotated[str, pydantic.Field()]
+    zip: typing.NotRequired[str]

@@ -11,12 +11,8 @@
 #
 import typing
 
-import pydantic
 
-from restrun.core.model import Model
+class CategoryDict(typing.TypedDict):
+    id: typing.NotRequired[int]
 
-
-class Category(Model):
-    id: typing.Annotated[int, pydantic.Field()]
-
-    name: typing.Annotated[str, pydantic.Field()]
+    name: typing.NotRequired[str]

@@ -11,16 +11,12 @@
 #
 import typing
 
-import pydantic
-
-from restrun.core.model import Model
-
 from . import address
 
 
-class Customer(Model):
-    id: typing.Annotated[int, pydantic.Field()]
+class CustomerDict(typing.TypedDict):
+    id: typing.NotRequired[int]
 
-    username: typing.Annotated[str, pydantic.Field()]
+    username: typing.NotRequired[str]
 
-    address: typing.Annotated[list[address.Address], pydantic.Field()]
+    address: typing.NotRequired[list[address.AddressDict]]

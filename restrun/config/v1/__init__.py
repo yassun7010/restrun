@@ -41,6 +41,10 @@ class V1Config(ExtraForbidModel):
         ),
     ] = V1Schema()
 
+    @property
+    def schema(self) -> V1Schema:
+        return self.schema_raw
+
     format: Annotated[
         bool | V1FormatConfig | list[V1FormatConfig],
         Field(

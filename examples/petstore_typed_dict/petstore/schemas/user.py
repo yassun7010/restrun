@@ -11,31 +11,23 @@
 #
 import typing
 
-import pydantic
 
-from restrun.core.model import Model
+class UserDict(typing.TypedDict):
+    id: typing.NotRequired[int]
 
+    username: typing.NotRequired[str]
 
-class User(Model):
-    id: typing.Annotated[int, pydantic.Field()]
+    firstName: typing.NotRequired[str]
 
-    username: typing.Annotated[str, pydantic.Field()]
+    lastName: typing.NotRequired[str]
 
-    firstName: typing.Annotated[str, pydantic.Field()]
+    email: typing.NotRequired[str]
 
-    lastName: typing.Annotated[str, pydantic.Field()]
+    password: typing.NotRequired[str]
 
-    email: typing.Annotated[str, pydantic.Field()]
+    phone: typing.NotRequired[str]
 
-    password: typing.Annotated[str, pydantic.Field()]
-
-    phone: typing.Annotated[str, pydantic.Field()]
-
-    userStatus: typing.Annotated[
-        int,
-        pydantic.Field(
-            description="""
-                User Status
-                """,
-        ),
-    ]
+    userStatus: typing.NotRequired[int]
+    """
+    User Status
+    """
