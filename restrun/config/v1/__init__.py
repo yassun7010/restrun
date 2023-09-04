@@ -1,7 +1,6 @@
-from pathlib import Path
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import DirectoryPath, Field
 
 from restrun.config.v1.format import V1BlackConfig, V1FormatConfig
 from restrun.config.v1.format.isort_config import V1IsortConfig
@@ -17,7 +16,7 @@ class V1Config(ExtraForbidModel):
 
     name: Annotated[str, Field(title="client name.")]
 
-    output: Annotated[Path | None, Field(title="output directory.")] = None
+    output_dir: Annotated[DirectoryPath | None, Field(title="output directory.")] = None
 
     source: V1Source | list[V1Source] = Field(
         title="source files.", default_factory=list
