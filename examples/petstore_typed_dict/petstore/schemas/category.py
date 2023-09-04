@@ -12,7 +12,7 @@
 import typing
 
 
-class CategoryDict(typing.TypedDict):
+class Category(typing.TypedDict):
     id: typing.NotRequired[int]
 
     name: typing.NotRequired[str]

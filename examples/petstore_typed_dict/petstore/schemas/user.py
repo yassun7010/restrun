@@ -12,7 +12,7 @@
 import typing
 
 
-class UserDict(typing.TypedDict):
+class User(typing.TypedDict):
     id: typing.NotRequired[int]
 
     username: typing.NotRequired[str]

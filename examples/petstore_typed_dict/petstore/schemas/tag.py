@@ -12,7 +12,7 @@
 import typing
 
 
-class TagDict(typing.TypedDict):
+class Tag(typing.TypedDict):
     id: typing.NotRequired[int]
 
     name: typing.NotRequired[str]

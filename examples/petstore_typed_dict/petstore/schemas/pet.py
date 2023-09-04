@@ -14,16 +14,16 @@ import typing
 from . import category, tag
 
 
-class PetDict(typing.TypedDict):
+class Pet(typing.TypedDict):
     id: typing.NotRequired[int]
 
     name: str
 
-    category: typing.NotRequired[category.CategoryDict]
+    category: typing.NotRequired[category.Category]
 
     photoUrls: list[str]
 
-    tags: typing.NotRequired[list[tag.TagDict]]
+    tags: typing.NotRequired[list[tag.Tag]]
 
     status: typing.NotRequired[typing.Literal["available", "pending", "sold"]]
     """

@@ -14,9 +14,9 @@ import typing
 from . import address
 
 
-class CustomerDict(typing.TypedDict):
+class Customer(typing.TypedDict):
     id: typing.NotRequired[int]
 
     username: typing.NotRequired[str]
 
-    address: typing.NotRequired[list[address.AddressDict]]
+    address: typing.NotRequired[list[address.Address]]

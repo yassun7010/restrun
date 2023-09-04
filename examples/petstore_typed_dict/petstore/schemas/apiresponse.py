@@ -12,7 +12,7 @@
 import typing
 
 
-class ApiResponseDict(typing.TypedDict):
+class ApiResponse(typing.TypedDict):
     code: typing.NotRequired[int]
 
     type: typing.NotRequired[str]
