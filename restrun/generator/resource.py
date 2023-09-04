@@ -10,6 +10,7 @@ from restrun.exception import (
     JinjaTemplateRuntimeError,
     JinjaTemplateSyntaxError,
 )
+from restrun.generator import AUTO_GENERATED_DOC_COMMENT
 from restrun.strcase import add_strcase_filters
 
 if TYPE_CHECKING:
@@ -44,6 +45,7 @@ class ResourceGenerator:
                     )
                     .from_string(f.read())
                     .render(
+                        auto_generated_doc_comment=AUTO_GENERATED_DOC_COMMENT,
                         config=config,
                         restrun=restrun_context,
                         resource=resource_context,
