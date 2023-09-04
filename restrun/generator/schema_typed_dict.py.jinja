@@ -14,20 +14,21 @@
 {% endfor %}
 
 {% if schema.type == "object" %}
-{% set data_type = schema.data_type %}
-class {{ data_type.class_name }}(typing.TypedDict):
-{%- if data_type.description is not none %}
+{% set object = schema.data_type %}
+class {{ object.class_name }}(typing.TypedDict):
+{%- if object.title_and_description %}
     """
-    {{ data_type.description|indent(4) }}
+    {{ object.title_and_description|indent(4) }}
     """
 
 {% endif %}
-{% for name, property in data_type.properties.items() %}
+{% for name, property in object.properties.items() %}
     {{ name }}: {% if not property.required -%}typing.NotRequired[{% endif %}{{ property.data_type }}{% if not property.required %}]{% endif %}
-{%- if property.description is not none %}
+{%- if property.title_and_description %}
     """
-    {{ property.description|indent(4) }}
+    {{ property.title_and_description|indent(4) }}
     """
+
 {% endif %}
 {% endfor %}
 {% endif %}

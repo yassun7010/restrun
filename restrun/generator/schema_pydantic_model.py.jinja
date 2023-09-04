@@ -17,33 +17,21 @@ from restrun.core.model import ExtraForbidModel, Model
 {% endfor %}
 
 {% if schema.type == "object" %}
-{% set data_type = schema.data_type %}
-class {{ data_type.class_name }}(
-{%- if data_type.additional_properties %}
+{% set object = schema.data_type %}
+class {{ object.class_name }}(
+{%- if object.additional_properties %}
     Model
 {%- else %}
     ExtraForbidModel
 {%- endif %}
 ):
-{%- if data_type is not none and data_type.description is not none %}
+{%- if object.title_and_description is not none %}
     """
-    {{ data_type.title|indent(4) }}
-
-    {{ data_type.description|indent(4) }}
-    """
-
-{%- elif data_type.title is not none %}
-    """
-    {{ data_type.title|indent(4) }}
-    """
-
-{%- elif data_type.description is not none %}
-    """
-    {{ data_type.description|indent(4) }}
+    {{ object.title_and_description|indent(4) }}
     """
 
 {% endif %}
-{% for name, property in data_type.properties.items() %}
+{% for name, property in object.properties.items() %}
     {{ name }}: typing.Annotated[
         {{ property.data_type }},
         pydantic.Field(

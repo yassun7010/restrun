@@ -94,6 +94,17 @@ class PythonObjectProperty:
     description: str | None = None
     default: str | int | float | None = None
 
+    @cached_property
+    def title_and_description(self) -> str | None:
+        if self.title and self.description:
+            return f"{self.title}\n\n{self.description}"
+        elif self.title:
+            return self.title
+        elif self.description:
+            return self.description
+        else:
+            return None
+
 
 @dataclass(frozen=True)
 class PythonObject:
@@ -102,6 +113,17 @@ class PythonObject:
     additional_properties: bool = True
     title: str | None = None
     description: str | None = None
+
+    @cached_property
+    def title_and_description(self) -> str | None:
+        if self.title and self.description:
+            return f"{self.title}\n\n{self.description}"
+        elif self.title:
+            return self.title
+        elif self.description:
+            return self.description
+        else:
+            return None
 
     def __str__(self) -> str:
         return self.class_name
