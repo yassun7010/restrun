@@ -12,19 +12,27 @@
 import datetime
 import typing
 
+import pydantic
 
-class OrderDict(typing.TypedDict):
-    id: typing.NotRequired[int]
+from restrun.core.model import Model
 
-    petId: typing.NotRequired[int]
 
-    quantity: typing.NotRequired[int]
+class Order(Model):
+    id: typing.Annotated[int, pydantic.Field()]
 
-    shipDate: typing.NotRequired[datetime.datetime]
+    petId: typing.Annotated[int, pydantic.Field()]
 
-    status: typing.NotRequired[typing.Literal["placed", "approved", "delivered"]]
-    """
-    Order Status
-    """
+    quantity: typing.Annotated[int, pydantic.Field()]
 
-    complete: typing.NotRequired[bool]
+    shipDate: typing.Annotated[datetime.datetime, pydantic.Field()]
+
+    status: typing.Annotated[
+        typing.Literal["placed", "approved", "delivered"],
+        pydantic.Field(
+            description="""
+                Order Status
+                """,
+        ),
+    ]
+
+    complete: typing.Annotated[bool, pydantic.Field()]

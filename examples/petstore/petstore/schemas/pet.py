@@ -11,21 +11,29 @@
 #
 import typing
 
+import pydantic
+
+from restrun.core.model import Model
+
 from . import category, tag
 
 
-class PetDict(typing.TypedDict):
-    id: typing.NotRequired[int]
+class Pet(Model):
+    id: typing.Annotated[int, pydantic.Field()]
 
-    name: str
+    name: typing.Annotated[str, pydantic.Field()]
 
-    category: typing.NotRequired[category.CategoryDict]
+    category: typing.Annotated[category.Category, pydantic.Field()]
 
-    photoUrls: list[str]
+    photoUrls: typing.Annotated[list[str], pydantic.Field()]
 
-    tags: typing.NotRequired[list[tag.TagDict]]
+    tags: typing.Annotated[list[tag.Tag], pydantic.Field()]
 
-    status: typing.NotRequired[typing.Literal["available", "pending", "sold"]]
-    """
-    pet status in the store
-    """
+    status: typing.Annotated[
+        typing.Literal["available", "pending", "sold"],
+        pydantic.Field(
+            description="""
+                pet status in the store
+                """,
+        ),
+    ]

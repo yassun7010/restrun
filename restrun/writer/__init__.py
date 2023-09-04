@@ -1,8 +1,6 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
-
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator.context.restrun_context import RestrunContext
@@ -41,6 +39,7 @@ def write_schemas(
     schema_contexts: "list[SchemaContext]",
 ):
     from restrun.generator import is_auto_generated_or_empty
+    from restrun.generator.schema_pydantic_model import SchemaPydanticModelGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
     schema_dir_path = base_dir / "schemas"
@@ -62,7 +61,7 @@ def write_schemas(
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
 
-        code = SchemaTypedDictGenerator().generate(
+        code = SchemaPydanticModelGenerator().generate(
             config, restrun_context, schema_context
         )
         with open(filepath, "w") as file:

@@ -102,7 +102,9 @@ class PythonArray:
 class PythonObjectProperty:
     data_type: "PythonDataType"
     required: bool = False
+    title: str | None = None
     description: str | None = None
+    default: str | int | float | None = None
 
     def get_data_type(self, object_suffix: str | None = None) -> str:
         if isinstance(self.data_type, PythonReference) and isinstance(
@@ -122,6 +124,7 @@ class PythonObject:
     class_name: str
     properties: dict[str, PythonObjectProperty]
     additional_properties: bool = True
+    title: str | None = None
     description: str | None = None
 
     def __str__(self) -> str:
@@ -319,8 +322,18 @@ def get_data_type(
                                 PythonObjectProperty(
                                     data_type=get_data_type(name, property, schemas),
                                     required=name in required_properties,
+                                    title=(
+                                        property.title
+                                        if isinstance(property, Schema)
+                                        else None
+                                    ),
                                     description=(
                                         property.description
+                                        if isinstance(property, Schema)
+                                        else None
+                                    ),
+                                    default=(
+                                        property.default
                                         if isinstance(property, Schema)
                                         else None
                                     ),
@@ -335,6 +348,7 @@ def get_data_type(
                     class_name=class_name(name),
                     properties=properties,
                     additional_properties=schema.additionalProperties is not False,
+                    title=schema.title,
                     description=schema.description,
                 )
 

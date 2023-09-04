@@ -11,8 +11,12 @@
 #
 import typing
 
+import pydantic
 
-class TagDict(typing.TypedDict):
-    id: typing.NotRequired[int]
+from restrun.core.model import Model
 
-    name: typing.NotRequired[str]
+
+class Tag(Model):
+    id: typing.Annotated[int, pydantic.Field()]
+
+    name: typing.Annotated[str, pydantic.Field()]
