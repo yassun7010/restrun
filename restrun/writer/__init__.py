@@ -41,7 +41,7 @@ def write_schemas(
     schema_contexts: "list[SchemaContext]",
 ):
     from restrun.generator import is_auto_generated_or_empty
-    from restrun.generator.schema_pydantic_model import SchemaPydanticModelGenerator
+    from restrun.generator.schema_pydantic import SchemaPydanticGenerator
     from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
@@ -66,7 +66,7 @@ def write_schemas(
 
         match config.root.schema_raw.schema_type:
             case "pydantic":
-                code = SchemaPydanticModelGenerator().generate(
+                code = SchemaPydanticGenerator().generate(
                     config, restrun_context, schema_context
                 )
 

@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.schema_context import SchemaContext
 
 
-class SchemaPydanticModelGenerator(SchemaGenerator):
+class SchemaPydanticGenerator(SchemaGenerator):
     def generate(
         self,
         config: "Config",
@@ -19,6 +19,6 @@ class SchemaPydanticModelGenerator(SchemaGenerator):
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
-            template_path = Path(__file__).parent / "schema_pydantic_model.py.jinja"
+            template_path = Path(__file__).parent / "schema_pydantic.py.jinja"
 
         return super().generate(config, restrun_context, schema_context, template_path)
