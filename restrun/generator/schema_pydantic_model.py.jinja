@@ -11,14 +11,20 @@
 #
 import pydantic
 import typing
-from restrun.core.model import Model
+from restrun.core.model import ExtraForbidModel, Model
 {%- for import_module in schema.import_field_types %}
 {{ import_module }}
 {% endfor %}
 
 {% if schema.type == "object" %}
 {% set data_type = schema.data_type %}
-class {{ data_type.class_name }}(Model):
+class {{ data_type.class_name }}(
+{%- if data_type.additional_properties %}
+    Model
+{%- else %}
+    ExtraForbidModel
+{%- endif %}
+):
 {%- if data_type is not none and data_type.description is not none %}
     """
     {{ data_type.title|indent(4) }}
