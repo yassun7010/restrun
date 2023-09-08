@@ -3,39 +3,42 @@
 {%- set query_class = request_name + "QueryParameters" -%}
 {%- set response_class = request_name + "Response" -%}
 {{ auto_generated_doc_comment }}
-from typing import Self, TypedDict
+from typing import Self, TypedDict, NotRequired
 import pydantic
 
 from restrun.core.client import RestrunMockClient
 from restrun.core.resource import GetRequest
-from restrun.core.model import ExtraForbidModel
+from restrun.core.model import ExtraForbidModel, Model
 
-
-{% if resouce.has_query %}
-{% if config.schema_type == "typed_dict" %}
-class {{ query_class }}(TypedDict):
-    pass
-{% elif config.schema_type == "pydantic" %}
-class {{ query_class }}(pydantic.BaseModel):
-    pass
-
-class _Query(TypedDict):
-    pass
-{% endif %}
+{% if request.query_parameters %}
+class {{ request.class_name }}QueryParameters(TypedDict):
+{% for name, query in request.query_parameters %}
+    {{ name }}: {{ query.typed_dict_field }}
+{% endfor %}
 {% endif %}
 
-
-class {{ response_class }}(ExtraForbidModel):
+{% if request.request_json_body %}
+class {{ request.class_name }}RequestBody(TypedDict):
+{% if request.request_json_body.description %}
+    """
+    {{ request.request_json_body.description | indent(4) }}
+    """
     pass
 
+{% endif %}
 
-class {{ request_class }}(GetRequest):
+class Get{{ request.class_name }}(GetRequest):
     def get(
         self,
-{% if resouce.has_query %}
+{% if request.path_parameters %}
         query: {{ query_class }},
 {% endif %}
     ) -> {{ response_class }}:
+{% if request.summary_and_description %}
+        """
+        {{ request.summary_and_description | indent(8) }}
+        """
+{% endif %}
         return self._client.get(
             self._url,
             response_body_type={{ response_class }},

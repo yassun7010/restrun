@@ -432,3 +432,10 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
         )
 
     return schemas
+
+
+def as_typed_dict_field(data_type: PythonDataType, required: bool):
+    if required:
+        return str(data_type)
+    else:
+        return f"NotRequired[{data_type}]"
