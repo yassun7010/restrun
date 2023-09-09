@@ -45,4 +45,5 @@ class GetPetFindByTags(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetPetFindByTagsResponseBody,
+            query=typing.cast(dict, query) if query else None,
         )

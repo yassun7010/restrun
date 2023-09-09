@@ -66,4 +66,7 @@ class {{ operation.class_name }}(
         return self._client.get(
             self.path,
             response_body_type={{ operation.response_body.class_name }},
+{% if operation.query_parameters %}
+            query=typing.cast(dict, query) if query else None,
+{% endif %}
         )

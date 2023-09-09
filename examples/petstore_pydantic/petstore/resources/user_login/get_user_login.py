@@ -44,4 +44,5 @@ class GetUserLogin(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetUserLoginResponseBody,
+            query=typing.cast(dict, query) if query else None,
         )

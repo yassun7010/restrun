@@ -42,4 +42,5 @@ class PostPetPetIdUploadImage(PostOperation):
         return self._client.get(
             self.path,
             response_body_type=PostPetPetIdUploadImageResponseBody,
+            query=typing.cast(dict, query) if query else None,
         )

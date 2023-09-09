@@ -44,4 +44,5 @@ class GetPetFindByStatus(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetPetFindByStatusResponseBody,
+            query=typing.cast(dict, query) if query else None,
         )

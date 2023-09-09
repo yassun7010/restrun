@@ -44,4 +44,5 @@ class PostPetPetId(PostOperation):
         return self._client.get(
             self.path,
             response_body_type=PostPetPetIdResponseBody,
+            query=typing.cast(dict, query) if query else None,
         )
