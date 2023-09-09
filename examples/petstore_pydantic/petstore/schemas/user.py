@@ -9,6 +9,7 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
+import textwrap
 import typing
 
 import pydantic
@@ -34,8 +35,13 @@ class User(Model):
     userStatus: typing.Annotated[
         int,
         pydantic.Field(
-            description="""
+            description=textwrap.dedent(
+                """
                 User Status
-                """,
+                """
+            ).strip(),
         ),
     ]
+    """
+    User Status
+    """

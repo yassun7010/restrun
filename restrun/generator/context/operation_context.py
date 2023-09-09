@@ -1,4 +1,3 @@
-import textwrap
 from dataclasses import dataclass
 from functools import cached_property
 
@@ -51,22 +50,14 @@ class OperationContext:
 
     @cached_property
     def summary_and_description(self) -> str | None:
-        return self.summary_and_description_width(70)
+        if self.summary and self.description and self.summary != self.description:
+            return f"{self.summary}\n\n{self.description}"
 
-    def summary_and_description_width(self, width: int) -> str | None:
-        summary = textwrap.fill(self.summary, width=width) if self.summary else None
-        description = (
-            textwrap.fill(self.description, width=width) if self.description else None
-        )
+        elif self.summary:
+            return self.summary
 
-        if summary and description and summary != description:
-            return f"{summary}\n\n{description}"
-
-        elif summary:
-            return summary
-
-        elif description:
-            return description
+        elif self.description:
+            return self.description
 
         else:
             return None

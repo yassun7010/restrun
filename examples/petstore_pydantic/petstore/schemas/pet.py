@@ -9,6 +9,7 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
+import textwrap
 import typing
 
 import pydantic
@@ -32,8 +33,13 @@ class Pet(Model):
     status: typing.Annotated[
         typing.Literal["available", "pending", "sold"],
         pydantic.Field(
-            description="""
+            description=textwrap.dedent(
+                """
                 pet status in the store
-                """,
+                """
+            ).strip(),
         ),
     ]
+    """
+    pet status in the store
+    """

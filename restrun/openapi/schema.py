@@ -1,4 +1,3 @@
-import textwrap
 from collections import OrderedDict
 from enum import Enum
 from functools import cached_property
@@ -98,22 +97,14 @@ class PythonObjectProperty:
 
     @cached_property
     def title_and_description(self) -> str | None:
-        return self.title_and_description_width(70)
+        if self.title and self.description and self.title != self.description:
+            return f"{self.title}\n\n{self.description}"
 
-    def title_and_description_width(self, width: int) -> str | None:
-        title = textwrap.fill(self.title, width=width) if self.title else None
-        description = (
-            textwrap.fill(self.description, width=width) if self.description else None
-        )
+        elif self.title:
+            return self.title
 
-        if title and description and title != description:
-            return f"{title}\n\n{description}"
-
-        elif title:
-            return title
-
-        elif description:
-            return description
+        elif self.description:
+            return self.description
 
         else:
             return None
@@ -129,22 +120,14 @@ class PythonObject:
 
     @cached_property
     def title_and_description(self) -> str | None:
-        return self.title_and_description_width(70)
+        if self.title and self.description and self.title != self.description:
+            return f"{self.title}\n\n{self.description}"
 
-    def title_and_description_width(self, width: int) -> str | None:
-        title = textwrap.fill(self.title, width=width) if self.title else None
-        description = (
-            textwrap.fill(self.description, width=width) if self.description else None
-        )
+        elif self.title:
+            return self.title
 
-        if title and description and title != description:
-            return f"{title}\n\n{description}"
-
-        elif title:
-            return title
-
-        elif description:
-            return description
+        elif self.description:
+            return self.description
 
         else:
             return None

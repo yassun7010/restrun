@@ -38,8 +38,8 @@ class GetPetFindByTags(GetOperation):
         """
         Finds Pets by tags
 
-        Multiple tags can be provided with comma separated strings. Use tag1,
-        tag2, tag3 for testing.
+        Multiple tags can be provided with comma separated strings. Use tag1, tag2,
+        tag3 for testing.
         """
 
         return self._client.get(

@@ -8,7 +8,7 @@
 class {{ object.class_name }}(typing.TypedDict):
 {%- if object.title_and_description %}
     """
-    {{ object.title_and_description|indent(4) }}
+    {{ object.title_and_description | wordwrap | indent(4) }}
     """
 
 {% endif %}
@@ -16,7 +16,7 @@ class {{ object.class_name }}(typing.TypedDict):
     {{ name }}: {% if not property.required -%}typing.NotRequired[{% endif %}{{ property.data_type }}{% if not property.required %}]{% endif %}
 {%- if property.title_and_description %}
     """
-    {{ property.title_and_description|indent(4) }}
+    {{ property.title_and_description | wordwrap | indent(4) }}
     """
 
 {% endif %}

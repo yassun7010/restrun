@@ -60,7 +60,7 @@ class {{ operation.class_name }}(
     ) -> "{{ operation.response_body.class_name }}":
 {% if operation.summary_and_description %}
         """
-        {{ operation.summary_and_description | indent(8) }}
+        {{ operation.summary_and_description | wordwrap | indent(8) }}
         """
 {% endif %}
         return self._client.get(

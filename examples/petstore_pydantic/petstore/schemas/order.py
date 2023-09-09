@@ -10,6 +10,7 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 import datetime
+import textwrap
 import typing
 
 import pydantic
@@ -29,10 +30,15 @@ class Order(Model):
     status: typing.Annotated[
         typing.Literal["placed", "approved", "delivered"],
         pydantic.Field(
-            description="""
+            description=textwrap.dedent(
+                """
                 Order Status
-                """,
+                """
+            ).strip(),
         ),
     ]
+    """
+    Order Status
+    """
 
     complete: typing.Annotated[bool, pydantic.Field()]

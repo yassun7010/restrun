@@ -1,5 +1,6 @@
 {{ auto_generated_doc_comment }}
 import pydantic
+import textwrap
 import typing
 from restrun.core.model import ExtraForbidModel, Model
 {%- for import_module in schema.import_field_types %}
@@ -17,7 +18,7 @@ class {{ object.class_name }}(
 ):
 {%- if object.title_and_description is not none %}
     """
-    {{ object.title_and_description|indent(4) }}
+    {{ object.title_and_description | wordwrap | indent(4) }}
     """
 
 {% endif %}
@@ -27,18 +28,25 @@ class {{ object.class_name }}(
         pydantic.Field(
 {%- if property.title is not none %}
             title="""
-                {{ property.title|indent(16) }}
+                {{ property.title | wordwrap | indent(16) }}
                 """,
 {%- endif %}
 {%- if property.description is not none %}
-            description="""
-                {{ property.description|indent(16) }}
-                """,
+            description=textwrap.dedent(
+                """
+                {{ property.description | wordwrap | indent(16) }}
+                """
+            ).strip(),
 {%- endif %}
 {%- if property.default is not none %}
             default={{ property.default }},
 {%- endif %}
         )
     ]
+{%- if property.description is not none %}
+    """
+    {{ property.description | wordwrap | indent(4) }}
+    """
+{%- endif %}
 {% endfor %}
 {% endif %}
