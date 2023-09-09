@@ -4,14 +4,20 @@ from humps import pascalize
 
 def module_name(name: str) -> str:
     """Convert string to python module name."""
-    return _convert_unavailable_chars_to_underbar(name.strip("/")).lower()
+    return _sanitize(name).lower()
 
 
 def class_name(name: str) -> str:
     """Convert string to python class name."""
-    return "".join(
-        [pascalize(s) for s in _convert_unavailable_chars_to_underbar(name).split("_")]
-    )
+    return "".join([pascalize(s) for s in _sanitize(name).split("_")])
+
+
+def _sanitize(name: str) -> str:
+    return _convert_unavailable_chars_to_underbar(_remove_bracket(name.strip("/")))
+
+
+def _remove_bracket(name: str) -> str:
+    return name.replace("{", "").replace("}", "")
 
 
 def _convert_unavailable_chars_to_underbar(name: str) -> str:
