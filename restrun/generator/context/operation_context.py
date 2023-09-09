@@ -15,6 +15,7 @@ from restrun.openapi.operation import (
     PythonCookieParameters,
     PythonHeaderParameters,
     PythonPathParameters,
+    PythonQueryParameter,
     PythonQueryParameters,
     PythonRequestBody,
     PythonRequestJsonBody,
@@ -170,6 +171,17 @@ def make_operation_context(
     if operation is None:
         return None
 
+    query_parameters = {}
+    for parameter in operation.parameters or []:
+        if isinstance(parameter, (Reference_v3_1_0, Reference_v3_0_3)):
+            continue
+
+        if parameter.param_in == "query" and (schema := parameter.param_schema):
+            query_parameters[parameter.name] = PythonQueryParameter(
+                data_type=get_data_type(parameter.name, schema, schemas),
+                description=parameter.description,
+            )
+
     response_json_body = None
     if operation.responses is not None:
         for status_code, response in operation.responses.items():
@@ -202,5 +214,13 @@ def make_operation_context(
         urls=urls,
         summary=operation.summary,
         description=operation.description,
+        query_parameters=(
+            PythonQueryParameters(
+                class_name=class_name(path_name) + "QueryParameters",
+                fields=query_parameters,
+            )
+            if len(query_parameters) != 0
+            else None
+        ),
         response_json_body=response_json_body,
     )

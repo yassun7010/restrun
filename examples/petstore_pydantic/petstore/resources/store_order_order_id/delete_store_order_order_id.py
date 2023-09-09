@@ -9,7 +9,7 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-from typing import Literal
+import typing
 
 
 from restrun.core import http
@@ -17,7 +17,7 @@ from restrun.core.operation import (
     DeleteOperation,
 )
 
-DeleteStoreOrderOrderIdResponseBody = Literal[None]
+DeleteStoreOrderOrderIdResponseBody = typing.Literal[None]
 
 
 class DeleteStoreOrderOrderId(DeleteOperation):

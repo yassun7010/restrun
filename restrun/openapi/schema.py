@@ -25,7 +25,7 @@ from .openapi import (
 
 
 class PythonLiteralType(str, Enum):
-    NONE = "Literal[None]"
+    NONE = "typing.Literal[None]"
     INT = "int"
     FLOAT = "float"
     BOOL = "bool"

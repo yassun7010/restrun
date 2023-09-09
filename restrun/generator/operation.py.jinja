@@ -1,5 +1,5 @@
 {{ auto_generated_doc_comment }}
-from typing import Self, TypedDict, NotRequired, Literal
+import typing
 
 import pydantic
 
@@ -9,14 +9,14 @@ from restrun.core.model import ExtraForbidModel, Model
 from restrun.core import http
 
 {% if operation.query_parameters %}
-class {{ operation.query_parameters.class_name }}(TypedDict):
-{% for name, query in operation.query_parameters.fields %}
-    {{ name }}: {{ query.typed_dict_field }}
+class {{ operation.query_parameters.class_name }}(typing.TypedDict):
+{% for name, query in operation.query_parameters.fields.items() %}
+    {{ name }}: "{{ query.data_type }}"
 {% endfor %}
 {% endif %}
 
 {% if operation.request_json_body %}
-class {{ operation.request_json_body }}(TypedDict):
+class {{ operation.request_json_body }}(typing.TypedDict):
 {% if operation.request_json_body.description %}
     """
     {{ operation.request_json_body.description | indent(4) }}
@@ -42,9 +42,6 @@ class {{ operation.class_name }}(
 
     def {{operation.method | lower}}(
         self,
-{% if operation.path_parameters %}
-        query: {{ query_class }},
-{% endif %}
 {% if operation.request_body %}
         request_body: {{ operation.request_body }}
         {%- if operation.request_body.allow_empty -%}

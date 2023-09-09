@@ -9,7 +9,7 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-from typing import Literal
+import typing
 
 
 from restrun.core import http
@@ -17,7 +17,12 @@ from restrun.core.operation import (
     GetOperation,
 )
 
-GetPetFindByStatusResponseBody = Literal[None]
+
+class PetFindByStatusQueryParameters(typing.TypedDict):
+    status: "typing.Literal['available','pending','sold']"
+
+
+GetPetFindByStatusResponseBody = typing.Literal[None]
 
 
 class GetPetFindByStatus(GetOperation):

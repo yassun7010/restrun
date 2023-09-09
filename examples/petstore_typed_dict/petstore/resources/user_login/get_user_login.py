@@ -9,7 +9,7 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-from typing import Literal
+import typing
 
 
 from restrun.core import http
@@ -17,7 +17,14 @@ from restrun.core.operation import (
     GetOperation,
 )
 
-GetUserLoginResponseBody = Literal[None]
+
+class UserLoginQueryParameters(typing.TypedDict):
+    username: "str"
+
+    password: "str"
+
+
+GetUserLoginResponseBody = typing.Literal[None]
 
 
 class GetUserLogin(GetOperation):
