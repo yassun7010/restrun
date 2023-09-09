@@ -4,7 +4,7 @@ from restrun.core.resource import Resource
 from . import {{operation.module_name}}
 {% endfor %}
 
-class {{ resource.module_name|class_name }}Resource(
+class {{ resource.class_name }}(
 {% for operation in resource.operations %}
     {{ operation.module_name }}.{{ operation.class_name }},
 {% endfor %}

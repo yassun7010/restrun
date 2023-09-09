@@ -1,6 +1,6 @@
-{%- set client_class = restrun.client_prefix|capitalize + "Client" -%}
-{%- set real_client_class = restrun.client_prefix|capitalize + "RealClient" -%}
-{%- set mock_client_class = restrun.client_prefix|capitalize + "MockClient" -%}
+{%- set client_class = restrun.client_prefix | capitalize + "Client" -%}
+{%- set real_client_class = restrun.client_prefix | capitalize + "RealClient" -%}
+{%- set mock_client_class = restrun.client_prefix | capitalize + "MockClient" -%}
 {{ auto_generated_doc_comment }}
 
 from .client import {{ client_class }}

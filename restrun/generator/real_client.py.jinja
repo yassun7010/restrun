@@ -1,12 +1,12 @@
-{%- set client_class = restrun.client_prefix|capitalize + "Client" -%}
-{%- set real_client_class = restrun.client_prefix|capitalize + "RealClient" -%}
+{%- set client_class = restrun.client_prefix | capitalize + "Client" -%}
+{%- set real_client_class = restrun.client_prefix | capitalize + "RealClient" -%}
 {{ auto_generated_doc_comment }}
 from typing import Self
 
 from restrun.core.client import RestrunRealClient, RequestRealClient
 
 from .client import {{ client_class }}
-{%- if restrun.real_client_mixins|length != 0 %}
+{%- if restrun.real_client_mixins | length != 0 %}
 from .mixins import (
 {%- for mixin in restrun.real_client_mixins %}
     {{ mixin.module_name }},

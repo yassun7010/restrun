@@ -1,4 +1,4 @@
-{%- set client_class = restrun.client_prefix|capitalize + "Client" -%}
+{%- set client_class = restrun.client_prefix | capitalize + "Client" -%}
 {{ auto_generated_doc_comment }}
 from typing import Literal
 
@@ -10,7 +10,7 @@ from restrun.exception import URLNotSupportedError
 {% for resource in restrun.resources %}
 from ..resources import {{ resource.module_name }}
 {% endfor %}
-{% if restrun.client_mixins|length != 0 %}
+{% if restrun.client_mixins | length != 0 %}
 from .mixins import (
 {% for mixin in restrun.client_mixins %}
     {{ mixin.module_name }},
@@ -20,15 +20,15 @@ from .mixins import (
 
 
 class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"])|join(", ") }}):
-{% if restrun.resources|length == 0 %}
+{% if restrun.resources | length == 0 %}
     pass
-{% elif restrun.resources|length == 1 %}
+{% elif restrun.resources | length == 1 %}
 {% set resource = restrun.resources[0] %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @override
-    def request(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.module_name|class_name }}Resource":
+    def request(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.class_name }}":
         if url in {{ urls }}:
-            return {{resource.module_name}}.{{ resource.module_name|class_name }}Resource(self._client)
+            return {{resource.module_name}}.{{ resource.class_name }}(self._client)
 
         else:
           raise URLNotSupportedError(url)
@@ -36,7 +36,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
 {% for resource in restrun.resources %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @overload
-    def request(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.module_name|class_name }}Resource":
+    def request(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.class_name }}":
         ...
 {% endfor %}
 
@@ -44,7 +44,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
 {% for resource in restrun.resources %}
 {% set urls = restrun.get_resource_urls(resource) %}
         if url in {{ urls }}:
-            return {{resource.module_name}}.{{ resource.module_name|class_name }}Resource(self._client)
+            return {{resource.module_name}}.{{ resource.class_name }}(self._client)
 
 {% endfor %}
 

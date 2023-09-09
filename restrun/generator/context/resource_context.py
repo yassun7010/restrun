@@ -14,6 +14,7 @@ from restrun.core.operation import (
 )
 from restrun.exception import DuplicateOperationTypeError, OperationURLInvalidError
 from restrun.generator import ClassInfo, find_classes_from_code
+from restrun.strcase import class_name
 
 logger = getLogger(__name__)
 
@@ -31,6 +32,10 @@ class ResourceContext:
     module_name: str
     path: str
     operation_map: OperationMethodMap
+
+    @property
+    def class_name(self) -> str:
+        return class_name(self.module_name) + "Resource"
 
     @property
     def operations(self) -> list[ClassInfo[Operation]]:
@@ -132,7 +137,9 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
             operation_class_infos[operation_type].extend(requests_map[operation_type])
 
     resource_context = ResourceContext(
-        module_name=resource_dir.name, path="", operation_map={}
+        module_name=resource_dir.name,
+        path="",
+        operation_map={},
     )
     for operation_type, class_infos in operation_class_infos.items():
         match len(class_infos):
