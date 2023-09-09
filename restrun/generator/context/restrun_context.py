@@ -61,7 +61,7 @@ class RestrunContext:
         )
 
     @property
-    def operation_infos_map(self) -> dict[http.Method, tuple[ClassInfo[Operation]]]:
+    def operation_infos_map(self) -> dict[http.Method, list[ClassInfo[Operation]]]:
         results: dict[http.Method, list[ClassInfo[Operation]]] = {
             "GET": [],
             "POST": [],
@@ -76,10 +76,7 @@ class RestrunContext:
                     cast(ClassInfo[Operation], operation_info)
                 )
 
-        return {
-            method: tuple(operation_infos)
-            for method, operation_infos in results.items()
-        }
+        return results
 
     def get_operation_urls(
         self, resource_info: "ClassInfo[Operation]"
