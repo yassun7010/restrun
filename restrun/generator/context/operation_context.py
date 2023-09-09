@@ -51,9 +51,9 @@ class OperationContext:
 
     @cached_property
     def summary_and_description(self) -> str | None:
-        return self.summary_and_description_width()
+        return self.summary_and_description_width(70)
 
-    def summary_and_description_width(self, width: int = 70) -> str | None:
+    def summary_and_description_width(self, width: int) -> str | None:
         summary = textwrap.fill(self.summary, width=width) if self.summary else None
         description = (
             textwrap.fill(self.description, width=width) if self.description else None
