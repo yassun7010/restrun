@@ -28,34 +28,34 @@ class OperationMethodMap(TypedDict):
 class ResourceContext:
     module_name: str
     url: http.URL
-    method_map: OperationMethodMap
+    operation_map: OperationMethodMap
 
     @property
-    def methods(self) -> list[ClassInfo[Operation]]:
+    def operations(self) -> list[ClassInfo[Operation]]:
         return [
             cast(ClassInfo[Operation], operation_info)
-            for operation_info in self.method_map.values()
+            for operation_info in self.operation_map.values()
         ]
 
     @property
     def get_request(self) -> ClassInfo[GetOperation] | None:
-        return self.method_map.get("GET")
+        return self.operation_map.get("GET")
 
     @property
     def post_request(self) -> ClassInfo[PostOperation] | None:
-        return self.method_map.get("POST")
+        return self.operation_map.get("POST")
 
     @property
     def put_request(self) -> ClassInfo[PutOperation] | None:
-        return self.method_map.get("PUT")
+        return self.operation_map.get("PUT")
 
     @property
     def patch_request(self) -> ClassInfo[PatchOperation] | None:
-        return self.method_map.get("PATCH")
+        return self.operation_map.get("PATCH")
 
     @property
     def delete_request(self) -> ClassInfo[DeleteOperation] | None:
-        return self.method_map.get("DELETE")
+        return self.operation_map.get("DELETE")
 
     @property
     def has_get_method(self) -> bool:
@@ -121,7 +121,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
         for request_type in [GetOperation, PostOperation, PutOperation, PatchOperation]:
             request_class_infos[request_type].extend(requests_map[request_type])
     resource_context = ResourceContext(
-        module_name=resource_dir.name, url="", method_map={}
+        module_name=resource_dir.name, url="", operation_map={}
     )
     for request_type, class_infos in request_class_infos.items():
         match len(class_infos):
@@ -129,7 +129,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
                 continue
             case 1:
                 method = get_method(request_type)
-                resource_context.method_map[method] = class_infos[0]  # type: ignore
+                resource_context.operation_map[method] = class_infos[0]  # type: ignore
             case _:
                 raise DuplicateOperationTypeError(
                     get_method(request_type),
@@ -138,7 +138,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
                 )
     urls = set(
         cast(ClassInfo[Operation], request).class_type.url()
-        for request in resource_context.method_map.values()
+        for request in resource_context.operation_map.values()
     )
 
     match len(urls):
@@ -148,7 +148,7 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
             return ResourceContext(
                 module_name=resource_context.module_name,
                 url=next(iter(urls)),
-                method_map=resource_context.method_map,
+                operation_map=resource_context.operation_map,
             )
         case _:
-            raise OperationURLInvalidError(resource_context.methods)
+            raise OperationURLInvalidError(resource_context.operations)

@@ -9,7 +9,7 @@ from restrun.core.client import RestrunMockClient
 from restrun.exception import RestrunError
 
 {% for resource in restrun.resources %}
-{% for operation_info in resource.methods -%}
+{% for operation_info in resource.operations -%}
 from ..resources.{{ resource.module_name }} import {{ operation_info.module_name }}
 {% endfor %}
 {% endfor %}

@@ -3,8 +3,7 @@
 {{ auto_generated_doc_comment }}
 from typing import Self
 
-from restrun.core.client import RestrunRealClient
-from restrun.core.request import RequestRealClient
+from restrun.core.client import RestrunRealClient, RequestRealClient
 
 from .client import {{ client_class }}
 {%- if restrun.real_client_mixins|length != 0 %}

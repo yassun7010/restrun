@@ -12,7 +12,7 @@ def test_find_classes_from_code_when_single_class_search() -> None:
             file.write(
                 dedent(
                     """
-                    from restrun.core.request import GetOperation
+                    from restrun.core.operation import GetOperation
 
                     class A(GetOperation):
                         pass
@@ -30,7 +30,7 @@ def test_find_classes_from_code_when_multi_classes_search() -> None:
             file.write(
                 dedent(
                     """
-                    from restrun.core.request import GetOperation, PostOperation
+                    from restrun.core.operation import GetOperation, PostOperation
 
                     class A(GetOperation):
                         pass

@@ -1,12 +1,12 @@
 {{ auto_generated_doc_comment }}
 from restrun.core.resource import Resource
-{% for method in resource.methods %}
-from . import {{method.module_name}}
+{% for operation in resource.operations %}
+from . import {{operation.module_name}}
 {% endfor %}
 
 class {{ resource.module_name|class_name }}Resource(
-{% for method in resource.methods %}
-    {{ method.module_name }}.{{ method.class_name }},
+{% for operation in resource.operations %}
+    {{ operation.module_name }}.{{ operation.class_name }},
 {% endfor %}
     Resource
 ):
