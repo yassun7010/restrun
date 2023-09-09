@@ -20,7 +20,7 @@ from restrun.openapi.operation import (
     PythonResponseJsonBody,
     PythonResponseTextBody,
 )
-from restrun.openapi.schema import PythonObject, get_data_type
+from restrun.openapi.schema import PythonLiteralType, PythonObject, get_data_type
 from restrun.strcase import class_name, module_name
 
 
@@ -94,7 +94,11 @@ class OperationContext:
             classes.append(self.response_text_body.class_name)
 
         if len(classes) == 0:
-            raise ValueError("request_body must be specified.")
+            return PythonRequestBody(
+                class_name=class_name,
+                origin_type=PythonLiteralType.NONE,
+                allow_empty=allow_empty,
+            )
         elif len(classes) == 1:
             return PythonRequestBody(
                 class_name=class_name,
@@ -126,12 +130,21 @@ def make_operation_contexts(
 
     contexts: list[OperationContext] = []
     for path_name, path_item in paths.items():
-        if get_operation := make_operation_context(
-            "GET", urls, path_name, path_item.get, schemas
-        ):
-            contexts.append(get_operation)
+        operations: dict[Method, Operation | None] = {
+            "GET": path_item.get,
+            "POST": path_item.post,
+            "PUT": path_item.put,
+            "PATCH": path_item.patch,
+            "DELETE": path_item.delete,
+        }
 
-    return []
+        for method, operation in operations.items():
+            if context := make_operation_context(
+                method, urls, path_name, operation, schemas
+            ):
+                contexts.append(context)
+
+    return contexts
 
 
 def make_operation_context(

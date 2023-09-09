@@ -99,6 +99,10 @@ def write_operations(
             / module_name(operation_context.path_name)
             / f"{module_name(operation_context.class_name)}.py"
         )
+
+        if not filepath.parent.exists():
+            filepath.parent.mkdir()
+
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
 

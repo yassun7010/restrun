@@ -15,7 +15,7 @@ ResponseBody: TypeAlias = str
 ResponseJsonBody: TypeAlias = dict
 ResponseModelBody = TypeVar("ResponseModelBody", bound=Model)
 
-Method = Literal[
+Method: TypeAlias = Literal[
     "DELETE",
     "GET",
     "PATCH",

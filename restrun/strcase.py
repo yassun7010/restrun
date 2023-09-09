@@ -4,7 +4,7 @@ from humps import pascalize
 
 def module_name(name: str) -> str:
     """Convert string to python module name."""
-    return _convert_unavailable_chars_to_underbar(name).lower()
+    return _convert_unavailable_chars_to_underbar(name.strip("/")).lower()
 
 
 def class_name(name: str) -> str:
