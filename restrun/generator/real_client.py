@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from .restrun import RestrunGenerator
+from restrun.generator import render_template
 
 if TYPE_CHECKING:
     from restrun.config import Config
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class RealClientGenerator(RestrunGenerator):
+class RealClientGenerator:
     def generate(
         self,
         config: "Config",
@@ -19,4 +19,8 @@ class RealClientGenerator(RestrunGenerator):
         if template_path is None:
             template_path = Path(__file__).parent / "real_client.py.jinja"
 
-        return super().generate(config, context, template_path)
+        return render_template(
+            template_path,
+            config=config,
+            restrun=context,
+        )

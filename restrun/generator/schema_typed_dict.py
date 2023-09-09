@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator.schema import SchemaGenerator
+from restrun.generator import render_template
 
 if TYPE_CHECKING:
     from restrun.config import Config
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.schema_context import SchemaContext
 
 
-class SchemaTypedDictGenerator(SchemaGenerator):
+class SchemaTypedDictGenerator:
     def generate(
         self,
         config: "Config",
@@ -21,4 +21,9 @@ class SchemaTypedDictGenerator(SchemaGenerator):
         if template_path is None:
             template_path = Path(__file__).parent / "schema_typed_dict.py.jinja"
 
-        return super().generate(config, restrun_context, schema_context, template_path)
+        return render_template(
+            template_path,
+            config=config,
+            restrun=restrun_context,
+            schema=schema_context,
+        )

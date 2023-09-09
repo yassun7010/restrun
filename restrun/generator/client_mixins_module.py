@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator.restrun import RestrunGenerator
+from restrun.generator import render_template
 
 if TYPE_CHECKING:
     from restrun.config import Config
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class ClientMixinsModuleGenerator(RestrunGenerator):
+class ClientMixinsModuleGenerator:
     def generate(
         self,
         config: "Config",
@@ -19,6 +19,10 @@ class ClientMixinsModuleGenerator(RestrunGenerator):
         if template_path is None:
             template_path = Path(__file__).parent / "client_mixins_module.py.jinja"
 
-        string = super().generate(config, context, template_path)
+        string = render_template(
+            template_path,
+            config=config,
+            restrun=context,
+        )
 
         return string

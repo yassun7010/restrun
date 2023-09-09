@@ -3,8 +3,16 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Generic, Type, TypeAlias, TypeVar
 
+import jinja2
+
 import restrun
-from restrun.exception import PythonFileExecutionError
+from restrun.exception import (
+    JinjaRenderError,
+    JinjaTemplateRuntimeError,
+    JinjaTemplateSyntaxError,
+    PythonFileExecutionError,
+)
+from restrun.strcase import add_strcase_filters
 
 PythonCode: TypeAlias = str
 GeneratedPythonCode: TypeAlias = str
@@ -86,3 +94,36 @@ def find_classes_from_code(
                 pass
 
     return result
+
+
+def render_template(template_path: Path, **kwargs) -> "GeneratedPythonCode":
+    if template_path is None:
+        raise ValueError("template_path must be specified.")
+
+    elif not template_path.exists():
+        raise FileNotFoundError(template_path)
+
+    with open(template_path, "r") as f:
+        try:
+            return (
+                add_strcase_filters(
+                    jinja2.Environment(
+                        loader=jinja2.BaseLoader(),
+                        undefined=jinja2.StrictUndefined,
+                    )
+                )
+                .from_string(f.read())
+                .render(
+                    auto_generated_doc_comment=AUTO_GENERATED_DOC_COMMENT,
+                    **kwargs,
+                )
+            ).strip() + "\n"
+
+        except jinja2.TemplateSyntaxError as error:
+            raise JinjaTemplateSyntaxError(template_path, error)
+
+        except jinja2.TemplateRuntimeError as error:
+            raise JinjaTemplateRuntimeError(template_path, error)
+
+        except Exception as error:
+            raise JinjaRenderError(template_path, error)

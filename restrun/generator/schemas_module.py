@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator.restrun import RestrunGenerator
+from restrun.generator import render_template
 
 if TYPE_CHECKING:
     from restrun.config import Config
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class SchemasModuleGenerator(RestrunGenerator):
+class SchemasModuleGenerator:
     def generate(
         self,
         config: "Config",
@@ -19,6 +19,8 @@ class SchemasModuleGenerator(RestrunGenerator):
         if template_path is None:
             template_path = Path(__file__).parent / "schemas_module.py.jinja"
 
-        string = super().generate(config, context, template_path)
-
-        return string
+        return render_template(
+            template_path,
+            config=config,
+            restrun=context,
+        )
