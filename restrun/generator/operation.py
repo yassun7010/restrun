@@ -48,7 +48,7 @@ class OperationGenerator:
                         auto_generated_doc_comment=AUTO_GENERATED_DOC_COMMENT,
                         config=config,
                         restrun=restrun_context,
-                        request=operation_context,
+                        operation=operation_context,
                     )
                 ).strip() + "\n"
 

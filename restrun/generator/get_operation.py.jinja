@@ -1,7 +1,3 @@
-{%- set operation_name = method|capitalize + client_prefix|capitalize -%}
-{%- set operation_class = operation_name + "Request" -%}
-{%- set query_class = operation_name + "QueryParameters" -%}
-{%- set response_class = operation_name + "Response" -%}
 {{ auto_generated_doc_comment }}
 from typing import Self, TypedDict, NotRequired
 import pydantic
@@ -26,12 +22,13 @@ class {{ operation.request_json_body }}(TypedDict):
     pass
 
 {% endif %}
+{% endif %}
 
 {% if operation.request_body %}
 {{ operation.request_body.class_name }} = {{ operation.request_body.origin_type }}
 {% endif %}
 
-class {{ operation.method | capitalize }}{{ operation.class_name }}(
+class {{ operation.class_name }}(
     {{ operation.method | capitalize }}Request
 ):
     def {{operation.method | lower}}(
@@ -45,7 +42,7 @@ class {{ operation.method | capitalize }}{{ operation.class_name }}(
             = None
         {% endif %},
 {% endif %}
-    ) -> {{ response_body_class }}:
+    ) -> {{ operation.response_body.class_name }}:
 {% if operation.summary_and_description %}
         """
         {{ operation.summary_and_description | indent(8) }}
@@ -53,5 +50,5 @@ class {{ operation.method | capitalize }}{{ operation.class_name }}(
 {% endif %}
         return self._client.get(
             self._url,
-            response_body_type={{ response_body_class }},
+            response_body_type={{ operation.response_body.class_name }},
         )

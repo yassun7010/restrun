@@ -19,7 +19,7 @@ class GetOperationGenerator(OperationGenerator):
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
-            template_path = Path(__file__).parent / "get_request.py.jinja"
+            template_path = Path(__file__).parent / "get_operation.py.jinja"
 
         return super().generate(
             config, restrun_context, operation_context, template_path
