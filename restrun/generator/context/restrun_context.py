@@ -85,7 +85,7 @@ class RestrunContext:
         self, resource_info: "ClassInfo[Operation]"
     ) -> list[http.URL]:
         return [
-            f'{url.strip("/")}/{resource_info.class_type.path}'
+            f'{url.rstrip("/")}/{resource_info.class_type.path.lstrip("/")}'
             for url in self.server_urls
         ]
 

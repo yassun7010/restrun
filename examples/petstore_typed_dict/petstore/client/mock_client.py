@@ -40,7 +40,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/store_inventory"],
+        url: Literal["https://petstore3.com/store/inventory"],
         response_body: get_store_inventory.GetStoreInventoryResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -48,7 +48,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/pet_find_by_tags"],
+        url: Literal["https://petstore3.com/pet/findByTags"],
         response_body: get_pet_find_by_tags.GetPetFindByTagsResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -56,7 +56,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/user_username"],
+        url: Literal["https://petstore3.com/user/{username}"],
         response_body: get_user_username.GetUserUsernameResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -64,7 +64,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/store_order_order_id"],
+        url: Literal["https://petstore3.com/store/order/{orderId}"],
         response_body: get_store_order_order_id.GetStoreOrderOrderIdResponseBody
         | RestrunError,
     ) -> "Self":
@@ -73,7 +73,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/pet_pet_id"],
+        url: Literal["https://petstore3.com/pet/{petId}"],
         response_body: get_pet_pet_id.GetPetPetIdResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -81,7 +81,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/user_login"],
+        url: Literal["https://petstore3.com/user/login"],
         response_body: get_user_login.GetUserLoginResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -89,7 +89,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com//v1/pets"],
+        url: Literal["https://petstore3.com/v1/pets"],
         response_body: get_v1_pets.GetV1PetsResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -97,7 +97,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/pet_find_by_status"],
+        url: Literal["https://petstore3.com/pet/findByStatus"],
         response_body: get_pet_find_by_status.GetPetFindByStatusResponseBody
         | RestrunError,
     ) -> "Self":
@@ -106,7 +106,7 @@ class PetstoreMockClient(
     @overload
     def inject_get_response_body(
         self,
-        url: Literal["https://petstore3.com/user_logout"],
+        url: Literal["https://petstore3.com/user/logout"],
         response_body: get_user_logout.GetUserLogoutResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -120,7 +120,7 @@ class PetstoreMockClient(
     @overload
     def inject_post_response_body(
         self,
-        url: Literal["https://petstore3.com/pet_pet_id_upload_image"],
+        url: Literal["https://petstore3.com/pet/{petId}/uploadImage"],
         response_body: post_pet_pet_id_upload_image.PostPetPetIdUploadImageResponseBody
         | RestrunError,
     ) -> "Self":
@@ -137,7 +137,7 @@ class PetstoreMockClient(
     @overload
     def inject_post_response_body(
         self,
-        url: Literal["https://petstore3.com/pet_pet_id"],
+        url: Literal["https://petstore3.com/pet/{petId}"],
         response_body: post_pet_pet_id.PostPetPetIdResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -153,7 +153,7 @@ class PetstoreMockClient(
     @overload
     def inject_post_response_body(
         self,
-        url: Literal["https://petstore3.com/store_order"],
+        url: Literal["https://petstore3.com/store/order"],
         response_body: post_store_order.PostStoreOrderResponseBody | RestrunError,
     ) -> "Self":
         ...
@@ -161,7 +161,7 @@ class PetstoreMockClient(
     @overload
     def inject_post_response_body(
         self,
-        url: Literal["https://petstore3.com/user_create_with_list"],
+        url: Literal["https://petstore3.com/user/createWithList"],
         response_body: post_user_create_with_list.PostUserCreateWithListResponseBody
         | RestrunError,
     ) -> "Self":
@@ -176,7 +176,7 @@ class PetstoreMockClient(
     @overload
     def inject_put_response_body(
         self,
-        url: Literal["https://petstore3.com/user_username"],
+        url: Literal["https://petstore3.com/user/{username}"],
         response_body: put_user_username.PutUserUsernameResponseBody | RestrunError,
     ) -> "Self":
         ...
