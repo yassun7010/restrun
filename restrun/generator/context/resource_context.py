@@ -145,15 +145,18 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
         match len(class_infos):
             case 0:
                 continue
+
             case 1:
                 method = get_method(operation_type)
                 resource_context.operation_map[method] = class_infos[0]  # type: ignore
+
             case _:
                 raise DuplicateOperationTypeError(
                     get_method(operation_type),
                     operation_type.path,
                     class_infos,
                 )
+
     paths = set(
         cast(ClassInfo[Operation], request).class_type.path
         for request in resource_context.operation_map.values()
@@ -162,11 +165,13 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
     match len(paths):
         case 0:
             return None
+
         case 1:
             return ResourceContext(
                 module_name=resource_context.module_name,
                 path=next(iter(paths)),
                 operation_map=resource_context.operation_map,
             )
+
         case _:
             raise OperationURLInvalidError(resource_context.operations)
