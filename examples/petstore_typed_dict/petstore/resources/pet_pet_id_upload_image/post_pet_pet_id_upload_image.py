@@ -33,6 +33,7 @@ class PostPetPetIdUploadImage(PostOperation):
 
     def post(
         self,
+        query: "PetPetIdUploadImageQueryParameters| None" = None,
     ) -> "PostPetPetIdUploadImageResponseBody":
         """
         uploads an image

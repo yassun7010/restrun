@@ -42,10 +42,19 @@ class {{ operation.class_name }}(
 
     def {{operation.method | lower}}(
         self,
+{% if operation.query_parameters %}
+        query: "{{ operation.query_parameters.class_name }}
+        {%- if operation.query_parameters.allow_empty -%}
+            | None
+        {%- endif %}"
+        {%- if operation.query_parameters.allow_empty -%}
+            = None
+        {%- endif %},
+{% endif %}
 {% if operation.request_body %}
         request_body: {{ operation.request_body }}
         {%- if operation.request_body.allow_empty -%}
-            = None
+            | None = None
         {% endif %},
 {% endif %}
     ) -> "{{ operation.response_body.class_name }}":

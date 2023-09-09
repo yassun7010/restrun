@@ -35,6 +35,7 @@ class GetUserLogin(GetOperation):
 
     def get(
         self,
+        query: "UserLoginQueryParameters| None" = None,
     ) -> "GetUserLoginResponseBody":
         """
         Logs user into the system

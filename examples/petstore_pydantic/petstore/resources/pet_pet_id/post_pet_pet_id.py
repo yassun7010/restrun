@@ -35,6 +35,7 @@ class PostPetPetId(PostOperation):
 
     def post(
         self,
+        query: "PetPetIdQueryParameters| None" = None,
     ) -> "PostPetPetIdResponseBody":
         """
         Updates a pet in the store with form data

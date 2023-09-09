@@ -33,6 +33,7 @@ class GetPetFindByStatus(GetOperation):
 
     def get(
         self,
+        query: "PetFindByStatusQueryParameters| None" = None,
     ) -> "GetPetFindByStatusResponseBody":
         """
         Finds Pets by status

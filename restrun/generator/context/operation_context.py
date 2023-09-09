@@ -14,6 +14,7 @@ from restrun.openapi.openapi import (
 from restrun.openapi.operation import (
     PythonCookieParameters,
     PythonHeaderParameters,
+    PythonPathParameter,
     PythonPathParameters,
     PythonQueryParameter,
     PythonQueryParameters,
@@ -171,7 +172,18 @@ def make_operation_context(
     if operation is None:
         return None
 
-    query_parameters = {}
+    path_parameters: dict[str, PythonPathParameter] = {}
+    for parameter in operation.parameters or []:
+        if isinstance(parameter, (Reference_v3_1_0, Reference_v3_0_3)):
+            continue
+
+        if parameter.param_in == "path" and (schema := parameter.param_schema):
+            path_parameters[parameter.name] = PythonPathParameter(
+                data_type=get_data_type(parameter.name, schema, schemas),
+                description=parameter.description,
+            )
+
+    query_parameters: dict[str, PythonQueryParameter] = {}
     for parameter in operation.parameters or []:
         if isinstance(parameter, (Reference_v3_1_0, Reference_v3_0_3)):
             continue
@@ -214,6 +226,14 @@ def make_operation_context(
         urls=urls,
         summary=operation.summary,
         description=operation.description,
+        path_parameters=(
+            PythonPathParameters(
+                class_name=class_name(path_name) + "PathParameters",
+                parameters=path_parameters,
+            )
+            if len(path_parameters) != 0
+            else None
+        ),
         query_parameters=(
             PythonQueryParameters(
                 class_name=class_name(path_name) + "QueryParameters",

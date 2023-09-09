@@ -9,7 +9,6 @@ class PythonPathParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = False
-    allow_empty_value: bool = False
 
     @property
     def typed_dict_field(self) -> str:
@@ -30,7 +29,6 @@ class PythonHeaderParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = False
-    allow_empty_value: bool = False
 
 
 @dataclass(frozen=True)
@@ -47,13 +45,16 @@ class PythonQueryParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = False
-    allow_empty_value: bool = False
 
 
 @dataclass(frozen=True)
 class PythonQueryParameters:
     class_name: str
     parameters: dict[str, PythonQueryParameter]
+
+    @property
+    def allow_empty(self) -> bool:
+        return not any(parameter.required for parameter in self.parameters.values())
 
     def items(self) -> ItemsView[str, PythonQueryParameter]:
         return self.parameters.items()
@@ -64,7 +65,6 @@ class PythonCookieParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = False
-    allow_empty_value: bool = False
 
 
 @dataclass(frozen=True)
