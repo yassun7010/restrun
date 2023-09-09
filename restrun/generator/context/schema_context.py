@@ -57,7 +57,7 @@ def make_schema_contexts(source: V1OpenAPISource) -> list[SchemaContext]:
         SchemaContext(
             type_name=class_name(schema.name),
             file_name=module_name(schema.name),
-            data_type=schema.type,
+            data_type=schema.data_type,
         )
         for schema in get_schemas(OpenAPI.from_url(source.location))
     ]

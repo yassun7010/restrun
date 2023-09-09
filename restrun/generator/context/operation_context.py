@@ -1,7 +1,27 @@
 from dataclasses import dataclass
 
+from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.core.http import URL, Method
-from restrun.openapi.schema import PythonDataType, PythonObject, as_typed_dict_field
+from restrun.openapi.openapi import (
+    OpenAPI,
+    Operation,
+    Reference_v3_0_3,
+    Reference_v3_1_0,
+    Schemas,
+)
+from restrun.openapi.operation import (
+    PythonCookieParameters,
+    PythonHeaderParameters,
+    PythonPathParameters,
+    PythonQueryParameters,
+    PythonRequestBody,
+    PythonRequestJsonBody,
+    PythonRequestTextBody,
+    PythonResponseJsonBody,
+    PythonResponseTextBody,
+)
+from restrun.openapi.schema import PythonObject, get_data_type
+from restrun.strcase import class_name, module_name
 
 
 @dataclass(frozen=True)
@@ -11,18 +31,19 @@ class OperationContext:
     """
 
     class_name: str
+    path_name: str
     method: Method
-    url: URL
+    urls: list[URL]
     summary: str | None = None
     description: str | None = None
-    path_parameters: "PythonPathParameters | None" = None
-    header_parameters: "PythonHeaderParameters | None" = None
-    query_parameters: "PythonQueryParameters | None" = None
-    cookie_parameters: "PythonCookieParameters | None" = None
-    request_json_body: "PythonRequestJsonBody | None" = None
-    request_text_body: "PythonRequestTextBody | None" = None
-    response_json_body: "PythonResponseJsonBody | None" = None
-    response_text_body: "PythonResponseTextBody | None" = None
+    path_parameters: PythonPathParameters | None = None
+    header_parameters: PythonHeaderParameters | None = None
+    query_parameters: PythonQueryParameters | None = None
+    cookie_parameters: PythonCookieParameters | None = None
+    request_json_body: PythonRequestJsonBody | None = None
+    request_text_body: PythonRequestTextBody | None = None
+    response_json_body: PythonResponseJsonBody | None = None
+    response_text_body: PythonResponseTextBody | None = None
 
     @property
     def summary_and_description(self) -> str | None:
@@ -88,105 +109,72 @@ class OperationContext:
             )
 
 
-@dataclass(frozen=True)
-class PythonPathParameter:
-    data_type: PythonDataType
-    description: str | None = None
-    required: bool = False
-    allow_empty_value: bool = False
+def make_operation_contexts(
+    urls: list[URL] | None, source: V1OpenAPISource
+) -> list[OperationContext]:
+    openapi = OpenAPI.from_url(source.location)
+    paths = openapi.root.paths
 
-    @property
-    def typed_dict_field(self) -> str:
-        return as_typed_dict_field(self.data_type, self.required)
+    if paths is None:
+        return []
 
+    urls = openapi.get_urls(urls)
 
-@dataclass(frozen=True)
-class PythonPathParameters:
-    class_name: str
-    fields: dict[str, PythonPathParameter]
+    schemas = {}
+    if openapi.root.components is not None:
+        schemas = openapi.root.components.schemas or {}
 
+    contexts: list[OperationContext] = []
+    for path_name, path_item in paths.items():
+        if get_operation := make_operation_context(
+            "GET", urls, path_name, path_item.get, schemas
+        ):
+            contexts.append(get_operation)
 
-@dataclass(frozen=True)
-class PythonHeaderParameter:
-    data_type: PythonDataType
-    description: str | None = None
-    required: bool = False
-    allow_empty_value: bool = False
-
-
-@dataclass(frozen=True)
-class PythonHeaderParameters:
-    class_name: str
-    fields: dict[str, PythonHeaderParameter]
+    return []
 
 
-@dataclass(frozen=True)
-class PythonQueryParameter:
-    data_type: PythonDataType
-    description: str | None = None
-    required: bool = False
-    allow_empty_value: bool = False
+def make_operation_context(
+    method: Method,
+    urls: list[URL],
+    path_name: str,
+    operation: Operation | None,
+    schemas: Schemas,
+) -> OperationContext | None:
+    if operation is None:
+        return None
 
+    response_json_body = None
+    if operation.responses is not None:
+        for status_code, response in operation.responses.items():
+            if status_code == 200:
+                if isinstance(response, (Reference_v3_1_0, Reference_v3_0_3)):
+                    continue
 
-@dataclass(frozen=True)
-class PythonQueryParameters:
-    class_name: str
-    fields: dict[str, PythonQueryParameter]
+                if response.content is None:
+                    continue
 
+                if "application/json" in response.content:
+                    name = class_name(path_name) + "JsonResponse"
+                    schema = response.content["application/json"].media_type_schema
+                    if schema is None:
+                        continue
 
-@dataclass(frozen=True)
-class PythonCookieParameter:
-    data_type: PythonDataType
-    description: str | None = None
-    required: bool = False
-    allow_empty_value: bool = False
+                    data_type = get_data_type(name, schema, schemas)
 
+                    if isinstance(data_type, PythonObject):
+                        response_json_body = PythonResponseJsonBody(
+                            class_name=name,
+                            data_type=data_type,
+                            allow_empty=False,
+                        )
 
-@dataclass(frozen=True)
-class PythonCookieParameters:
-    class_name: str
-    fields: dict[str, PythonCookieParameter]
-
-
-@dataclass(frozen=True)
-class PythonRequestJsonBody:
-    class_name: str
-    data_type: PythonObject
-    description: str | None = None
-    allow_empty: bool = False
-
-
-@dataclass(frozen=True)
-class PythonRequestTextBody:
-    class_name: str
-    data_type: PythonDataType
-    description: str | None = None
-
-
-@dataclass(frozen=True)
-class PythonRequestBody:
-    class_name: str
-    origin_type: str
-    allow_empty: bool = False
-
-
-@dataclass(frozen=True)
-class PythonResponseJsonBody:
-    class_name: str
-    data_type: PythonObject
-    description: str | None = None
-    allow_empty: bool = False
-
-
-@dataclass(frozen=True)
-class PythonResponseTextBody:
-    class_name: str
-    data_type: PythonDataType
-    description: str | None = None
-
-
-@dataclass(frozen=True)
-class PythonResponseBody:
-    class_name: str
-    origin_type: str
-    allow_empty: bool = False
+    return OperationContext(
+        class_name=method.capitalize(),
+        path_name=module_name(path_name),
+        method=method,
+        urls=urls,
+        summary=operation.summary,
+        description=operation.description,
+        response_json_body=response_json_body,
+    )

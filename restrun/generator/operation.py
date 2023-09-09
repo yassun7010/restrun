@@ -29,7 +29,7 @@ class OperationGenerator:
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
-            raise ValueError("template_path must be specified.")
+            template_path = Path(__file__).parent / "operation.py.jinja"
 
         elif not template_path.exists():
             raise FileNotFoundError(template_path)

@@ -19,6 +19,7 @@ from .openapi import (
     Schema_v3_0_3,
     Schema_v3_1_0,
     SchemaName,
+    Schemas,
 )
 
 
@@ -187,7 +188,7 @@ class PythonDataField:
 @dataclass
 class PythonDataSchema:
     name: str
-    type: PythonDataType
+    data_type: PythonDataType
 
 
 def get_data_type(
@@ -435,16 +436,24 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
 
     for name, schema in openapi.root.components.schemas.items():
         schemas.append(
-            PythonDataSchema(
-                name=name,
-                type=get_data_type(name, schema, openapi.root.components.schemas),
-            )
+            make_python_data_schema(name, schema, openapi.root.components.schemas),
         )
 
     return schemas
 
 
-def as_typed_dict_field(data_type: PythonDataType, required: bool):
+def make_python_data_schema(
+    name: str,
+    schema: Schema | Reference,
+    schemas: Schemas,
+) -> PythonDataSchema:
+    return PythonDataSchema(
+        name=name,
+        data_type=get_data_type(name, schema, schemas),
+    )
+
+
+def as_typed_dict_field(data_type: PythonDataType, required: bool) -> str:
     if required:
         return str(data_type)
     else:

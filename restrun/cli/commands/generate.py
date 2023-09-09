@@ -2,8 +2,9 @@ from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParse
 from logging import getLogger
 from pathlib import Path
 
+from restrun.generator.context.operation_context import make_operation_contexts
 from restrun.generator.context.schema_context import make_schema_contexts
-from restrun.writer import write_schemas
+from restrun.writer import write_operations, write_schemas
 
 logger = getLogger(__name__)
 
@@ -56,6 +57,13 @@ def generate_command(space: "Namespace") -> None:
 
             write_schemas(
                 base_dir, config, restrun_context, make_schema_contexts(source)
+            )
+
+            write_operations(
+                base_dir,
+                config,
+                restrun_context,
+                make_operation_contexts(source.server_urls, source),
             )
 
     write_resources(base_dir, config, restrun_context)

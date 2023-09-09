@@ -2,9 +2,13 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from restrun.exception import NeverReachError
+from restrun.generator import is_auto_generated_or_empty
+from restrun.generator.operation import OperationGenerator
+from restrun.strcase import module_name
 
 if TYPE_CHECKING:
     from restrun.config import Config
+    from restrun.generator.context.operation_context import OperationContext
     from restrun.generator.context.restrun_context import RestrunContext
     from restrun.generator.context.schema_context import SchemaContext
 
@@ -78,6 +82,27 @@ def write_schemas(
             case _:
                 raise NeverReachError(config.root.schema_raw.schema_type)
 
+        with open(filepath, "w") as file:
+            file.write(code)
+
+
+def write_operations(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    operation_contexts: "list[OperationContext]",
+) -> None:
+    for operation_context in operation_contexts:
+        filepath = (
+            base_dir
+            / "resources"
+            / module_name(operation_context.path_name)
+            / f"{module_name(operation_context.class_name)}.py"
+        )
+        if filepath.exists() and not is_auto_generated_or_empty(filepath):
+            continue
+
+        code = OperationGenerator().generate(config, restrun_context, operation_context)
         with open(filepath, "w") as file:
             file.write(code)
 

@@ -5,7 +5,7 @@ from restrun.generator.context.operation_context import (
     PythonResponseJsonBody,
 )
 from restrun.generator.context.restrun_context import RestrunContext
-from restrun.generator.get_operation import GetOperationGenerator
+from restrun.generator.operation import OperationGenerator
 from restrun.openapi.schema import PythonObject
 
 
@@ -14,13 +14,14 @@ class TestOperationGenerator:
         self, config: Config, restrun_context: RestrunContext
     ) -> None:
         assert is_auto_generated_or_empty(
-            GetOperationGenerator().generate(
+            OperationGenerator().generate(
                 config,
                 restrun_context,
                 OperationContext(
                     class_name="GetPets",
+                    path_name="pets",
                     method="GET",
-                    url="h/pets",
+                    urls=["https://examples.com/pets"],
                     response_json_body=PythonResponseJsonBody(
                         class_name="GetPetsResponse",
                         data_type=PythonObject(
