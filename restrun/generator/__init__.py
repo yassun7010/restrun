@@ -12,7 +12,7 @@ from restrun.exception import (
     JinjaTemplateSyntaxError,
     PythonFileExecutionError,
 )
-from restrun.strcase import add_strcase_filters
+from restrun.strcase import class_name, module_name
 
 PythonCode: TypeAlias = str
 GeneratedPythonCode: TypeAlias = str
@@ -96,6 +96,10 @@ def find_classes_from_code(
     return result
 
 
+def literal(values: list[str] | list[int] | list[float]) -> str:
+    return f"Literal{values}"
+
+
 def render_template(template_path: Path, **kwargs) -> "GeneratedPythonCode":
     if template_path is None:
         raise ValueError("template_path must be specified.")
@@ -105,15 +109,16 @@ def render_template(template_path: Path, **kwargs) -> "GeneratedPythonCode":
 
     with open(template_path, "r") as f:
         try:
+            environment = jinja2.Environment(
+                loader=jinja2.BaseLoader(),
+                undefined=jinja2.StrictUndefined,
+            )
+            environment.filters["module_name"] = module_name
+            environment.filters["class_name"] = class_name
+            environment.filters["literal"] = literal
+
             return (
-                add_strcase_filters(
-                    jinja2.Environment(
-                        loader=jinja2.BaseLoader(),
-                        undefined=jinja2.StrictUndefined,
-                    )
-                )
-                .from_string(f.read())
-                .render(
+                environment.from_string(f.read()).render(
                     auto_generated_doc_comment=AUTO_GENERATED_DOC_COMMENT,
                     **kwargs,
                 )
