@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from restrun.core import http
 
 if TYPE_CHECKING:
-    from restrun.core.request import RequestClient
+    from restrun.core.client import RequestClient
 
 
 class Resource(ABC):

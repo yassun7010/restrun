@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
     from restrun.core import http
     from restrun.core.model import Model
-    from restrun.core.request import Request
+    from restrun.core.operation import Operation
     from restrun.generator import ClassInfo
 
 
@@ -132,21 +132,21 @@ class JinjaRenderError(RestrunError):
         return f'"{self.template_path}" jinja render error: {self.error}'
 
 
-class UnknownRequestTypeError(RestrunError, TypeError):
-    def __init__(self, request_type: "Type[Request]") -> None:
-        self.request_type = request_type
+class UnknownOperationTypeError(RestrunError, TypeError):
+    def __init__(self, operation_type: "Type[Operation]") -> None:
+        self.operation_type = operation_type
 
     @property
     def message(self) -> str:
-        return f'Unknown request type "{self.request_type}".'
+        return f'Unknown operation type "{self.operation_type}".'
 
 
-class DuplicateRequestTypeError(RestrunError, TypeError):
+class DuplicateOperationTypeError(RestrunError, TypeError):
     def __init__(
         self,
         method: "http.Method",
         url: "http.URL",
-        class_infos: "list[ClassInfo[Request]]",
+        class_infos: "list[ClassInfo[Operation]]",
     ):
         self.method = method
         self.url = url
@@ -159,25 +159,25 @@ class DuplicateRequestTypeError(RestrunError, TypeError):
         ]
 
         return (
-            f'Duplicate request type for {self.method} "{self.url}".'
-            f" Request types: {request_types}"
+            f'Duplicate operation type for {self.method} "{self.url}".'
+            f" Operation types: {request_types}"
         )
 
 
-class RequestURLInvalidError(RestrunError, ValueError):
-    def __init__(self, requests: "list[ClassInfo[Request]]") -> None:
-        self.requests = requests
+class OperationURLInvalidError(RestrunError, ValueError):
+    def __init__(self, operations: "list[ClassInfo[Operation]]") -> None:
+        self.operations = operations
 
     @property
     def message(self) -> str:
         method_map = "\n".join(
-            f"{request.class_name}.url: {request.class_type.url}"
-            for request in self.requests
+            f"{operation.class_name}.url: {operation.class_type.url}"
+            for operation in self.operations
         )
         return (
-            f"Request URL is invalid."
-            f" Please set unique URL on Request class in same resource folder."
-            f" Request method map:\n{method_map}"
+            f"Operation URL is invalid."
+            f" Please set unique URL on Operation class in same resource folder."
+            f" Operation method map:\n{method_map}"
         )
 
 

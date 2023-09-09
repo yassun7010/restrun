@@ -1,7 +1,7 @@
 from pathlib import Path
 from textwrap import dedent
 
-from restrun.core.request import GetRequest, PatchRequest, PostRequest
+from restrun.core.operation import GetOperation, PatchOperation, PostOperation
 from restrun.generator import find_classes_from_code
 from tests.conftest import tempfilepath
 
@@ -12,16 +12,16 @@ def test_find_classes_from_code_when_single_class_search() -> None:
             file.write(
                 dedent(
                     """
-                    from restrun.core.request import GetRequest
+                    from restrun.core.request import GetOperation
 
-                    class A(GetRequest):
+                    class A(GetOperation):
                         pass
                     """
                 )
             )
 
-        reuqst_class_map = find_classes_from_code(source, GetRequest)
-        assert len(reuqst_class_map[GetRequest]) == 1
+        reuqst_class_map = find_classes_from_code(source, GetOperation)
+        assert len(reuqst_class_map[GetOperation]) == 1
 
 
 def test_find_classes_from_code_when_multi_classes_search() -> None:
@@ -30,20 +30,20 @@ def test_find_classes_from_code_when_multi_classes_search() -> None:
             file.write(
                 dedent(
                     """
-                    from restrun.core.request import GetRequest, PostRequest
+                    from restrun.core.request import GetOperation, PostOperation
 
-                    class A(GetRequest):
+                    class A(GetOperation):
                         pass
 
-                    class B(PostRequest):
+                    class B(PostOperation):
                         pass
                     """
                 )
             )
 
         reuqst_class_map = find_classes_from_code(
-            source, GetRequest, PostRequest, PatchRequest
+            source, GetOperation, PostOperation, PatchOperation
         )
-        assert len(reuqst_class_map[GetRequest]) == 1
-        assert len(reuqst_class_map[PostRequest]) == 1
-        assert len(reuqst_class_map[PatchRequest]) == 0
+        assert len(reuqst_class_map[GetOperation]) == 1
+        assert len(reuqst_class_map[PostOperation]) == 1
+        assert len(reuqst_class_map[PatchOperation]) == 0

@@ -6,7 +6,7 @@ from typing import cast
 import restrun
 from restrun.config import Config
 from restrun.core import http
-from restrun.core.request import Request
+from restrun.core.operation import Operation
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.generator.context.resource_context import (
     ResourceContext,
@@ -51,13 +51,16 @@ class RestrunContext:
     @property
     def has_request(self) -> bool:
         return (
-            sum(len(request_infos) for request_infos in self.request_infos_map.values())
+            sum(
+                len(operation_infos)
+                for operation_infos in self.operation_infos_map.values()
+            )
             != 0
         )
 
     @property
-    def request_infos_map(self) -> dict[http.Method, tuple[ClassInfo[Request]]]:
-        results: dict[http.Method, list[ClassInfo[Request]]] = {
+    def operation_infos_map(self) -> dict[http.Method, tuple[ClassInfo[Operation]]]:
+        results: dict[http.Method, list[ClassInfo[Operation]]] = {
             "GET": [],
             "POST": [],
             "PUT": [],
@@ -66,13 +69,14 @@ class RestrunContext:
         }
 
         for resource in self.resources:
-            for method, request_info in resource.method_map.items():
+            for method, operation_info in resource.method_map.items():
                 results[cast(http.Method, method)].append(
-                    cast(ClassInfo[Request], request_info)
+                    cast(ClassInfo[Operation], operation_info)
                 )
 
         return {
-            method: tuple(request_infos) for method, request_infos in results.items()
+            method: tuple(operation_infos)
+            for method, operation_infos in results.items()
         }
 
 

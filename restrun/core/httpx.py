@@ -11,6 +11,7 @@ import httpx
 import pydantic
 from typing_extensions import override
 
+from restrun.core.client import RequestRealClient
 from restrun.core.http import (
     URL,
     Headers,
@@ -19,7 +20,6 @@ from restrun.core.http import (
     RequestJsonBody,
     ResponseModelBody,
 )
-from restrun.core.request import RequestRealClient
 from restrun.exception import (
     ResponseJsonBodyParseError,
     ResponseJsonBodyValidationError,
