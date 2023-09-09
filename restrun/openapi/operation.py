@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import ItemsView
 
 from restrun.openapi.schema import PythonDataType, PythonObject, as_typed_dict_field
 
@@ -20,6 +21,9 @@ class PythonPathParameters:
     class_name: str
     parameters: dict[str, PythonPathParameter]
 
+    def items(self) -> ItemsView[str, PythonPathParameter]:
+        return self.parameters.items()
+
 
 @dataclass(frozen=True)
 class PythonHeaderParameter:
@@ -33,6 +37,9 @@ class PythonHeaderParameter:
 class PythonHeaderParameters:
     class_name: str
     parameters: dict[str, PythonHeaderParameter]
+
+    def items(self) -> ItemsView[str, PythonHeaderParameter]:
+        return self.parameters.items()
 
 
 @dataclass(frozen=True)
@@ -48,6 +55,9 @@ class PythonQueryParameters:
     class_name: str
     parameters: dict[str, PythonQueryParameter]
 
+    def items(self) -> ItemsView[str, PythonQueryParameter]:
+        return self.parameters.items()
+
 
 @dataclass(frozen=True)
 class PythonCookieParameter:
@@ -61,6 +71,9 @@ class PythonCookieParameter:
 class PythonCookieParameters:
     class_name: str
     parameters: dict[str, PythonCookieParameter]
+
+    def items(self) -> ItemsView[str, PythonCookieParameter]:
+        return self.parameters.items()
 
 
 @dataclass(frozen=True)

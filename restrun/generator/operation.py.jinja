@@ -10,7 +10,7 @@ from restrun.core import http
 
 {% if operation.query_parameters %}
 class {{ operation.query_parameters.class_name }}(typing.TypedDict):
-{% for name, query in operation.query_parameters.parameters.items() %}
+{% for name, query in operation.query_parameters.items() %}
     {{ name }}: "{{ query.data_type }}"
 {% endfor %}
 {% endif %}
