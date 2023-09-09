@@ -217,7 +217,7 @@ def make_operation_context(
         query_parameters=(
             PythonQueryParameters(
                 class_name=class_name(path_name) + "QueryParameters",
-                fields=query_parameters,
+                parameters=query_parameters,
             )
             if len(query_parameters) != 0
             else None

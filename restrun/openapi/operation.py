@@ -18,7 +18,7 @@ class PythonPathParameter:
 @dataclass(frozen=True)
 class PythonPathParameters:
     class_name: str
-    fields: dict[str, PythonPathParameter]
+    parameters: dict[str, PythonPathParameter]
 
 
 @dataclass(frozen=True)
@@ -32,7 +32,7 @@ class PythonHeaderParameter:
 @dataclass(frozen=True)
 class PythonHeaderParameters:
     class_name: str
-    fields: dict[str, PythonHeaderParameter]
+    parameters: dict[str, PythonHeaderParameter]
 
 
 @dataclass(frozen=True)
@@ -46,7 +46,7 @@ class PythonQueryParameter:
 @dataclass(frozen=True)
 class PythonQueryParameters:
     class_name: str
-    fields: dict[str, PythonQueryParameter]
+    parameters: dict[str, PythonQueryParameter]
 
 
 @dataclass(frozen=True)
@@ -60,7 +60,7 @@ class PythonCookieParameter:
 @dataclass(frozen=True)
 class PythonCookieParameters:
     class_name: str
-    fields: dict[str, PythonCookieParameter]
+    parameters: dict[str, PythonCookieParameter]
 
 
 @dataclass(frozen=True)
