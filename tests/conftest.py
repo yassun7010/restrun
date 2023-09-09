@@ -48,6 +48,6 @@ def restrun_context(config: Config) -> RestrunContext:
 def resource_context() -> ResourceContext:
     return ResourceContext(
         module_name="v1_pets",
-        method_map={},
+        operation_map={},
         url="https://example.com/v1/pets",
     )
