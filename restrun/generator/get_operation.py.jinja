@@ -1,0 +1,57 @@
+{%- set operation_name = method|capitalize + client_prefix|capitalize -%}
+{%- set operation_class = operation_name + "Request" -%}
+{%- set query_class = operation_name + "QueryParameters" -%}
+{%- set response_class = operation_name + "Response" -%}
+{{ auto_generated_doc_comment }}
+from typing import Self, TypedDict, NotRequired
+import pydantic
+
+from restrun.core.client import RestrunMockClient
+from restrun.core.resource import GetRequest, PatchRequest, PostRequest, PutRequest, DeleteRequest
+from restrun.core.model import ExtraForbidModel, Model
+
+{% if operation.query_parameters %}
+class {{ operation.query_parameters.class_name }}(TypedDict):
+{% for name, query in operation.query_parameters.fields %}
+    {{ name }}: {{ query.typed_dict_field }}
+{% endfor %}
+{% endif %}
+
+{% if operation.request_json_body %}
+class {{ operation.request_json_body }}(TypedDict):
+{% if operation.request_json_body.description %}
+    """
+    {{ operation.request_json_body.description | indent(4) }}
+    """
+    pass
+
+{% endif %}
+
+{% if operation.request_body %}
+{{ operation.request_body.class_name }} = {{ operation.request_body.origin_type }}
+{% endif %}
+
+class {{ operation.method | capitalize }}{{ operation.class_name }}(
+    {{ operation.method | capitalize }}Request
+):
+    def {{operation.method | lower}}(
+        self,
+{% if operation.path_parameters %}
+        query: {{ query_class }},
+{% endif %}
+{% if operation.request_body %}
+        request_body: {{ operation.request_body }}
+        {%- if operation.request_body.allow_empty -%}
+            = None
+        {% endif %},
+{% endif %}
+    ) -> {{ response_body_class }}:
+{% if operation.summary_and_description %}
+        """
+        {{ operation.summary_and_description | indent(8) }}
+        """
+{% endif %}
+        return self._client.get(
+            self._url,
+            response_body_type={{ response_body_class }},
+        )

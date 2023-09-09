@@ -16,16 +16,16 @@ from restrun.strcase import add_strcase_filters
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context.request_context import RequestContext
+    from restrun.generator.context.operation_context import OperationContext
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class RequestGenerator:
+class OperationGenerator:
     def generate(
         self,
         config: "Config",
         restrun_context: "RestrunContext",
-        request_context: "RequestContext",
+        operation_context: "OperationContext",
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
@@ -48,7 +48,7 @@ class RequestGenerator:
                         auto_generated_doc_comment=AUTO_GENERATED_DOC_COMMENT,
                         config=config,
                         restrun=restrun_context,
-                        request=request_context,
+                        request=operation_context,
                     )
                 ).strip() + "\n"
 

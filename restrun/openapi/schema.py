@@ -125,6 +125,16 @@ class PythonObject:
         else:
             return None
 
+    @cached_property
+    def allow_empty(self) -> bool:
+        return all(
+            [
+                not property.required
+                for property in self.properties.values()
+                if not property.data_type == PythonLiteralType.NONE
+            ]
+        )
+
     def __str__(self) -> str:
         return self.class_name
 
