@@ -88,6 +88,7 @@
                             "type": "array"
                         }
                     ],
+                    "default": [],
                     "title": "source settings."
                 },
                 "schema": {
@@ -96,6 +97,9 @@
                             "$ref": "#/$defs/V1Schema"
                         }
                     ],
+                    "default": {
+                        "schema_type": "pydantic"
+                    },
                     "title": "schema settings."
                 },
                 "format": {
@@ -147,10 +151,26 @@
             },
             "required": [
                 "version",
-                "name",
-                "source"
+                "name"
             ],
             "title": "V1Config",
+            "type": "object"
+        },
+        "V1IOpenAPI": {
+            "additionalProperties": false,
+            "properties": {
+                "servers": {
+                    "items": {
+                        "$ref": "#/$defs/V1OpenAPIServer"
+                    },
+                    "title": "Servers",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "servers"
+            ],
+            "title": "V1IOpenAPI",
             "type": "object"
         },
         "V1IsortConfig": {
@@ -205,6 +225,20 @@
             "title": "V1IsortConfig",
             "type": "object"
         },
+        "V1OpenAPIServer": {
+            "additionalProperties": false,
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url"
+            ],
+            "title": "V1OpenAPIServer",
+            "type": "object"
+        },
         "V1OpenAPISource": {
             "additionalProperties": false,
             "properties": {
@@ -226,6 +260,18 @@
                         }
                     ],
                     "title": "openapi file location."
+                },
+                "openapi": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/V1IOpenAPI"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "server urls"
                 }
             },
             "required": [

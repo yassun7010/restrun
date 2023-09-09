@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Never, Type
+from typing import TYPE_CHECKING, Literal, Never, Type
 
 import jinja2
 
@@ -68,7 +68,7 @@ class MockResponseTypeError(RestrunError, KeyError):
         self,
         method: "http.Method",
         url: "http.URL",
-        response_body: "Model",
+        response_body: "Model | Literal[None]",
         expected_type: "Type[Model]",
     ) -> None:
         self.method = method
@@ -145,11 +145,11 @@ class DuplicateOperationTypeError(RestrunError, TypeError):
     def __init__(
         self,
         method: "http.Method",
-        url: "http.URL",
+        path: str,
         class_infos: "list[ClassInfo[Operation]]",
     ):
         self.method = method
-        self.url = url
+        self.path = path
         self.class_infos = class_infos
 
     @property
@@ -159,7 +159,7 @@ class DuplicateOperationTypeError(RestrunError, TypeError):
         ]
 
         return (
-            f'Duplicate operation type for {self.method} "{self.url}".'
+            f'Duplicate operation type for {self.method} "{self.path}".'
             f" Operation types: {request_types}"
         )
 
@@ -171,7 +171,7 @@ class OperationURLInvalidError(RestrunError, ValueError):
     @property
     def message(self) -> str:
         method_map = "\n".join(
-            f"{operation.class_name}.url: {operation.class_type.url}"
+            f"{operation.class_name}.path: {operation.class_type.path}"
             for operation in self.operations
         )
         return (

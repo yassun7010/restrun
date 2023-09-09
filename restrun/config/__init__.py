@@ -11,6 +11,7 @@ from pydantic import RootModel
 
 from restrun.config.v1.format import V1FormatConfig
 from restrun.config.v1.lint import V1LintConfig
+from restrun.core import http
 from restrun.exception import FileExtensionError
 
 from .v1 import V1Config
@@ -29,6 +30,15 @@ class Config(RootModel):
     @property
     def name(self) -> str:
         return self.root.name
+
+    @property
+    def server_urls(self) -> list[http.URL]:
+        urls: list[http.URL] = []
+        for source in self.root.sources:
+            if server_urls := source.server_urls:
+                urls.extend(server_urls)
+
+        return urls
 
     @property
     def schema_type(self) -> str:

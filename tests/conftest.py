@@ -37,6 +37,7 @@ def config() -> Config:
 def restrun_context(config: Config) -> RestrunContext:
     return RestrunContext(
         resources=[],
+        server_urls=["https://example.com"],
         client_prefix=config.root.name,
         client_mixins=[],
         real_client_mixins=[],
@@ -49,5 +50,5 @@ def resource_context() -> ResourceContext:
     return ResourceContext(
         module_name="v1_pets",
         operation_map={},
-        url="https://example.com/v1/pets",
+        path="/v1/pets",
     )

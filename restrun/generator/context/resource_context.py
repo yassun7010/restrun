@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from logging import getLogger
 from pathlib import Path
 from typing import NotRequired, Type, TypedDict, cast
 
-from restrun.core import http
 from restrun.core.operation import (
     DeleteOperation,
     GetOperation,
@@ -14,6 +14,8 @@ from restrun.core.operation import (
 )
 from restrun.exception import DuplicateOperationTypeError, OperationURLInvalidError
 from restrun.generator import ClassInfo, find_classes_from_code
+
+logger = getLogger(__name__)
 
 
 class OperationMethodMap(TypedDict):
@@ -27,7 +29,7 @@ class OperationMethodMap(TypedDict):
 @dataclass(frozen=True)
 class ResourceContext:
     module_name: str
-    url: http.URL
+    path: str
     operation_map: OperationMethodMap
 
     @property
@@ -85,15 +87,14 @@ def make_resource_contexts(base_dir: Path) -> list[ResourceContext]:
         if not resource_dir.is_dir():
             continue
 
-        resource_context = make_resource_context(resource_dir)
-        if (resource_context) is not None:
+        if resource_context := make_resource_context(resource_dir):
             resource_contexts.append(resource_context)
 
     return resource_contexts
 
 
 def make_resource_context(resource_dir: Path) -> ResourceContext | None:
-    request_class_infos: dict[Type[Operation], list[ClassInfo[Operation]]] = {
+    operation_class_infos: dict[Type[Operation], list[ClassInfo[Operation]]] = {
         GetOperation: [],
         PostOperation: [],
         PutOperation: [],
@@ -101,53 +102,63 @@ def make_resource_context(resource_dir: Path) -> ResourceContext | None:
         DeleteOperation: [],
     }
 
-    for request_file in resource_dir.iterdir():
+    for operation_filepath in resource_dir.iterdir():
         if (
-            not request_file.is_file()
-            or request_file.suffix != ".py"
-            or request_file.name == "__init__.py"
+            not operation_filepath.is_file()
+            or operation_filepath.suffix != ".py"
+            or operation_filepath.name == "__init__.py"
         ):
             continue
 
-        requests_map = find_classes_from_code(
-            request_file,
+        try:
+            requests_map = find_classes_from_code(
+                operation_filepath,
+                GetOperation,
+                PostOperation,
+                PutOperation,
+                PatchOperation,
+                DeleteOperation,
+            )
+        except Exception as error:
+            logger.warning(error)
+            continue
+
+        for operation_type in [
             GetOperation,
             PostOperation,
             PutOperation,
             PatchOperation,
-            DeleteOperation,
-        )
+        ]:
+            operation_class_infos[operation_type].extend(requests_map[operation_type])
 
-        for request_type in [GetOperation, PostOperation, PutOperation, PatchOperation]:
-            request_class_infos[request_type].extend(requests_map[request_type])
     resource_context = ResourceContext(
-        module_name=resource_dir.name, url="", operation_map={}
+        module_name=resource_dir.name, path="", operation_map={}
     )
-    for request_type, class_infos in request_class_infos.items():
+    for operation_type, class_infos in operation_class_infos.items():
         match len(class_infos):
             case 0:
                 continue
             case 1:
-                method = get_method(request_type)
+                method = get_method(operation_type)
                 resource_context.operation_map[method] = class_infos[0]  # type: ignore
             case _:
                 raise DuplicateOperationTypeError(
-                    get_method(request_type),
-                    request_type.url(),
+                    get_method(operation_type),
+                    operation_type.path,
                     class_infos,
                 )
-    urls = set(
-        cast(ClassInfo[Operation], request).class_type.url()
+    paths = set(
+        cast(ClassInfo[Operation], request).class_type.path
         for request in resource_context.operation_map.values()
     )
 
-    match len(urls):
+    match len(paths):
         case 0:
             return None
         case 1:
             return ResourceContext(
                 module_name=resource_context.module_name,
-                url=next(iter(urls)),
+                path=next(iter(paths)),
                 operation_map=resource_context.operation_map,
             )
         case _:

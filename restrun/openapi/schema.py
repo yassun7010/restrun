@@ -1,3 +1,4 @@
+import textwrap
 from collections import OrderedDict
 from enum import Enum
 from functools import cached_property
@@ -24,7 +25,7 @@ from .openapi import (
 
 
 class PythonLiteralType(str, Enum):
-    NONE = "None"
+    NONE = "Literal[None]"
     INT = "int"
     FLOAT = "float"
     BOOL = "bool"
@@ -96,13 +97,21 @@ class PythonObjectProperty:
     default: str | int | float | None = None
 
     @cached_property
-    def title_and_description(self) -> str | None:
-        if self.title and self.description:
-            return f"{self.title}\n\n{self.description}"
-        elif self.title:
-            return self.title
-        elif self.description:
-            return self.description
+    def title_and_description(self, width: int = 70) -> str | None:
+        title = textwrap.fill(self.title, width=width) if self.title else None
+        description = (
+            textwrap.fill(self.description, width=width) if self.description else None
+        )
+
+        if title and description:
+            return f"{title}\n\n{description}"
+
+        elif title:
+            return title
+
+        elif description:
+            return description
+
         else:
             return None
 
@@ -116,13 +125,21 @@ class PythonObject:
     description: str | None = None
 
     @cached_property
-    def title_and_description(self) -> str | None:
-        if self.title and self.description:
-            return f"{self.title}\n\n{self.description}"
-        elif self.title:
-            return self.title
-        elif self.description:
-            return self.description
+    def title_and_description(self, width: int = 70) -> str | None:
+        title = textwrap.fill(self.title, width=width) if self.title else None
+        description = (
+            textwrap.fill(self.description, width=width) if self.description else None
+        )
+
+        if title and description:
+            return f"{title}\n\n{description}"
+
+        elif title:
+            return title
+
+        elif description:
+            return description
+
         else:
             return None
 

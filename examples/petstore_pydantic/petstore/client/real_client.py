@@ -10,8 +10,7 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 
-from restrun.core.client import RestrunRealClient
-from restrun.core.request import RequestRealClient
+from restrun.core.client import RequestRealClient, RestrunRealClient
 
 from .client import PetstoreClient
 from .mixins import bearer_token_login_mixin

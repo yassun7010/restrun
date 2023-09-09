@@ -20,7 +20,9 @@ class RestrunContext:
 
     client_prefix: str
 
-    version: str = field(default=restrun.__version__)
+    server_urls: list[http.URL]
+
+    version: str = restrun.__version__
 
     client_mixins: list[ClassInfo] = field(default_factory=list)
 
@@ -49,7 +51,7 @@ class RestrunContext:
         ]
 
     @property
-    def has_request(self) -> bool:
+    def has_operation(self) -> bool:
         return (
             sum(
                 len(operation_infos)
@@ -69,7 +71,7 @@ class RestrunContext:
         }
 
         for resource in self.resources:
-            for method, operation_info in resource.method_map.items():
+            for method, operation_info in resource.operation_map.items():
                 results[cast(http.Method, method)].append(
                     cast(ClassInfo[Operation], operation_info)
                 )
@@ -78,6 +80,21 @@ class RestrunContext:
             method: tuple(operation_infos)
             for method, operation_infos in results.items()
         }
+
+    def get_operation_urls(
+        self, resource_info: "ClassInfo[Operation]"
+    ) -> list[http.URL]:
+        return [
+            f'{url.strip("/")}/{resource_info.class_type.path}'
+            for url in self.server_urls
+        ]
+
+    def get_resource_urls(self, resource: "ResourceContext") -> list[http.URL]:
+        urls: set[http.URL] = set()
+        for operation in resource.operations:
+            urls.update(self.get_operation_urls(operation))
+
+        return list(sorted(urls))
 
 
 def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
@@ -109,6 +126,7 @@ def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
 
     return RestrunContext(
         client_prefix=config.name,
+        server_urls=config.server_urls,
         client_mixins=client_mixins,
         real_client_mixins=real_client_mixins,
         mock_client_mixins=mock_client_mixins,

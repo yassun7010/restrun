@@ -1,18 +1,19 @@
 from restrun.core import http
 from restrun.core.model import ExtraForbidModel
-from restrun.core.request import GetRequest
+from restrun.core.operation import GetOperation
 
 
 class GetV1PetsRequestResponseBody(ExtraForbidModel):
     name: str
 
 
-class GetV1PetsRequest(GetRequest):
+class GetV1PetsRequest(GetOperation):
     @classmethod
-    def url(cls) -> "http.URL":
-        return "https://petstore3.swagger.io/api/v1/pets"
+    @property
+    def path(cls) -> "http.URL":
+        return "/v1/pets"
 
     def get(self) -> "GetV1PetsRequestResponseBody":
         return self._client.get(
-            self.url(), response_body_type=GetV1PetsRequestResponseBody
+            self.path, response_body_type=GetV1PetsRequestResponseBody
         )

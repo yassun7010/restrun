@@ -1,6 +1,5 @@
 from typing import (
     Literal,
-    TypeVar,
 )
 
 from typing_extensions import TypeAlias
@@ -13,7 +12,7 @@ QuryParameters: TypeAlias = dict
 RequestJsonBody: TypeAlias = dict
 ResponseBody: TypeAlias = str
 ResponseJsonBody: TypeAlias = dict
-ResponseModelBody = TypeVar("ResponseModelBody", bound=Model)
+ResponseModelBody: TypeAlias = Model
 
 Method: TypeAlias = Literal[
     "DELETE",

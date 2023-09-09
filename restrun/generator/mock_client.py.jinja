@@ -24,7 +24,7 @@ from .mixins import (
 
 
 class {{ mock_client_class }}({{ (restrun.mock_client_mixin_path_names + ["RestrunMockClient", client_class])|join(", ") }}):
-{% if not restrun.has_request %}
+{% if not restrun.has_operation %}
     pass
 {% endif %}
 {% for method, operation_infos in restrun.operation_infos_map.items() %}
@@ -32,19 +32,19 @@ class {{ mock_client_class }}({{ (restrun.mock_client_mixin_path_names + ["Restr
 {% elif operation_infos|length == 1 %}
 {% set operation_info = operation_infos[0] %}
     @override
-    def inject_{{ method|lower }}_response_body(self, url: Literal["{{ operation_info.class_type.url() }}"], response_body: {{ operation_info.module_name }}.{{ operation_info.class_name }}ResponseBody | RestrunError) -> "Self":
+    def inject_{{ method|lower }}_response_body(self, url: Literal{{ restrun.get_operation_urls(operation_info) }}, response_body: {{ operation_info.module_name }}.{{ operation_info.class_name }}ResponseBody | RestrunError) -> "Self":
         self._client.inject_{{ method|lower }}_response_body(url, response_body)
 
         return self
 {% else %}
 {% for operation_info in operation_infos %}
     @overload
-    def inject_{{ method|lower }}_response_body(self, url: Literal["{{ operation_info.class_type.url() }}"], response_body: {{ operation_info.module_name }}.{{ operation_info.class_name }}ResponseBody | RestrunError) -> "Self":
+    def inject_{{ method|lower }}_response_body(self, url: Literal{{restrun.get_operation_urls(operation_info)}}, response_body: {{ operation_info.module_name }}.{{ operation_info.class_name }}ResponseBody | RestrunError) -> "Self":
         ...
 {% endfor %}
 
     @override
-    def inject_{{ method|lower }}_response_body(self, url, response_body):
+    def inject_{{ method|lower }}_response_body(self, url, response_body) -> "Self":
         self._client.inject_{{ method|lower }}_response_body(url, response_body)
 
         return self

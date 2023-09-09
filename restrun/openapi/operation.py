@@ -104,4 +104,3 @@ class PythonResponseTextBody:
 class PythonResponseBody:
     class_name: str
     origin_type: str
-    allow_empty: bool = False

@@ -12,6 +12,7 @@ class Resource(ABC):
         self._client = client
 
     @classmethod
+    @property
     @abstractmethod
-    def url(cls) -> http.URL:
+    def path(cls) -> http.URL:
         ...

@@ -1,3 +1,4 @@
+import textwrap
 from dataclasses import dataclass
 
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
@@ -21,7 +22,7 @@ from restrun.openapi.operation import (
     PythonResponseTextBody,
 )
 from restrun.openapi.schema import PythonLiteralType, PythonObject, get_data_type
-from restrun.strcase import class_name, module_name
+from restrun.strcase import class_name
 
 
 @dataclass(frozen=True)
@@ -46,13 +47,21 @@ class OperationContext:
     response_text_body: PythonResponseTextBody | None = None
 
     @property
-    def summary_and_description(self) -> str | None:
-        if self.summary and self.description:
-            return f"{self.summary}\n\n{self.description}"
-        elif self.summary:
-            return self.summary
-        elif self.description:
-            return self.description
+    def summary_and_description(self, width: int = 70) -> str | None:
+        summary = textwrap.fill(self.summary, width=width) if self.summary else None
+        description = (
+            textwrap.fill(self.description, width=width) if self.description else None
+        )
+
+        if summary and description:
+            return f"{summary}\n\n{description}"
+
+        elif summary:
+            return summary
+
+        elif description:
+            return description
+
         else:
             return None
 
@@ -86,7 +95,7 @@ class OperationContext:
     def response_body(self) -> "PythonRequestBody":
         allow_empty = False
         classes: list[str] = []
-        class_name = self.class_name + "RequestBody"
+        class_name = self.class_name + "ResponseBody"
         if self.response_json_body is not None:
             classes.append(self.response_json_body.class_name)
             allow_empty = self.response_json_body.allow_empty
@@ -183,8 +192,8 @@ def make_operation_context(
                         )
 
     return OperationContext(
-        class_name=method.capitalize(),
-        path_name=module_name(path_name),
+        class_name=method.capitalize() + class_name(path_name),
+        path_name=path_name,
         method=method,
         urls=urls,
         summary=operation.summary,

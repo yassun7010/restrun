@@ -24,8 +24,6 @@ Schema: TypeAlias = Schema_v3_1_0 | Schema_v3_0_3
 Schemas = dict[str, Schema_v3_1_0] | dict[str, Schema_v3_0_3 | Reference_v3_0_3]
 Reference: TypeAlias = Reference_v3_1_0 | Reference_v3_0_3
 Operation: TypeAlias = Operation_v3_1_0 | Operation_v3_0_3
-
-
 SchemaName: TypeAlias = str
 
 

@@ -1,10 +1,12 @@
 {{ auto_generated_doc_comment }}
-from typing import Self, TypedDict, NotRequired
+from typing import Self, TypedDict, NotRequired, Literal
+
 import pydantic
 
 from restrun.core.client import RestrunMockClient
-from restrun.core.resource import GetRequest, PatchRequest, PostRequest, PutRequest, DeleteRequest
+from restrun.core.operation import GetOperation, PatchOperation, PostOperation, PutOperation, DeleteOperation
 from restrun.core.model import ExtraForbidModel, Model
+from restrun.core import http
 
 {% if operation.query_parameters %}
 class {{ operation.query_parameters.class_name }}(TypedDict):
@@ -28,9 +30,16 @@ class {{ operation.request_json_body }}(TypedDict):
 {{ operation.request_body.class_name }} = {{ operation.request_body.origin_type }}
 {% endif %}
 
+{{ operation.response_body.class_name }} = {{ operation.response_body.origin_type }}
+
 class {{ operation.class_name }}(
-    {{ operation.method | capitalize }}Request
+    {{ operation.method | capitalize }}Operation
 ):
+    @classmethod
+    @property
+    def path(cls) -> "http.URL":
+        return "{{ operation.path_name }}"
+
     def {{operation.method | lower}}(
         self,
 {% if operation.path_parameters %}
@@ -42,13 +51,13 @@ class {{ operation.class_name }}(
             = None
         {% endif %},
 {% endif %}
-    ) -> {{ operation.response_body.class_name }}:
+    ) -> "{{ operation.response_body.class_name }}":
 {% if operation.summary_and_description %}
         """
         {{ operation.summary_and_description | indent(8) }}
         """
 {% endif %}
         return self._client.get(
-            self._url,
+            self.path,
             response_body_type={{ operation.response_body.class_name }},
         )

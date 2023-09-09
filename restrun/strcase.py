@@ -1,10 +1,10 @@
 import jinja2
-from humps import pascalize
+from humps import depascalize, pascalize
 
 
 def module_name(name: str) -> str:
     """Convert string to python module name."""
-    return _sanitize(name).lower()
+    return depascalize(_sanitize(name))
 
 
 def class_name(name: str) -> str:

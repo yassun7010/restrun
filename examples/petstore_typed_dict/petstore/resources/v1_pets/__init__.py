@@ -14,5 +14,5 @@ from restrun.core.resource import Resource
 from . import get_v1_pets
 
 
-class V1PetsResource(get_v1_pets.GetV1PetsRequest, Resource):
+class V1PetsResource(get_v1_pets.GetV1Pets, Resource):
     pass

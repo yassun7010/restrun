@@ -5,3 +5,6 @@ source:
   - type: "openapi"
     location: "petstore.openapi_v3_0_2.json"
     # location: "https://petstore3.swagger.io/api/v3/openapi.json"
+    openapi:
+      servers:
+        - url: https://petstore3.com/

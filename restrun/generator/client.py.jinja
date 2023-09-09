@@ -2,7 +2,7 @@
 {{ auto_generated_doc_comment }}
 from typing import Literal
 
-from typing_extensions import override
+from typing_extensions import override, overload
 
 from restrun.core.client import RestrunClient
 from restrun.exception import URLNotSupportedError
@@ -24,12 +24,29 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
     pass
 {% elif restrun.resources|length == 1 %}
 {% set resource = restrun.resources[0] %}
+{% set urls = restrun.get_resource_urls(resource) %}
     @override
-    def request(self, url: Literal["{{ resource.url }}"]) -> "{{resource.module_name}}.{{ resource.module_name|class_name }}Resource":
-        if url is "{{ resource.url }}":
+    def request(self, url: Literal{{ urls }},) -> "{{resource.module_name}}.{{ resource.module_name|class_name }}Resource":
+        if url in {{ urls }}:
             return {{resource.module_name}}.{{ resource.module_name|class_name }}Resource(self._client)
 
         else:
           raise URLNotSupportedError(url)
 {% else %}
+{% for resource in restrun.resources %}
+{% set urls = restrun.get_resource_urls(resource) %}
+    @overload
+    def request(self, url: Literal{{ urls }},) -> "{{resource.module_name}}.{{ resource.module_name|class_name }}Resource":
+        ...
+{% endfor %}
+
+    def request(self, url):
+{% for resource in restrun.resources %}
+{% set urls = restrun.get_resource_urls(resource) %}
+        if url in {{ urls }}:
+            return {{resource.module_name}}.{{ resource.module_name|class_name }}Resource(self._client)
+
+{% endfor %}
+
+        raise URLNotSupportedError(url)
 {% endif %}

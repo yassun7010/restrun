@@ -11,22 +11,170 @@
 #
 from typing import Literal
 
-from typing_extensions import override
+from typing_extensions import overload
 
 from restrun.core.client import RestrunClient
 from restrun.exception import URLNotSupportedError
 
-from ..resources import v1_pets
+from ..resources import (
+    pet,
+    pet_find_by_status,
+    pet_find_by_tags,
+    pet_pet_id,
+    pet_pet_id_upload_image,
+    store_inventory,
+    store_order,
+    store_order_order_id,
+    user,
+    user_create_with_list,
+    user_login,
+    user_logout,
+    user_username,
+    v1_pets,
+)
 from .mixins import bearer_token_login_mixin
 
 
 class PetstoreClient(bearer_token_login_mixin.BearerTokenLoginMixin, RestrunClient):
-    @override
+    @overload
     def request(
-        self, url: Literal["https://petstore3.swagger.io/api/v1/pets"]
+        self,
+        url: Literal["https://petstore3.com/store_inventory"],
+    ) -> "store_inventory.StoreInventoryResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/pet_pet_id_upload_image"],
+    ) -> "pet_pet_id_upload_image.PetPetIdUploadImageResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/pet_find_by_tags"],
+    ) -> "pet_find_by_tags.PetFindByTagsResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/user_username"],
+    ) -> "user_username.UserUsernameResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/user"],
+    ) -> "user.UserResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/store_order_order_id"],
+    ) -> "store_order_order_id.StoreOrderOrderIdResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/pet_pet_id"],
+    ) -> "pet_pet_id.PetPetIdResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/user_login"],
+    ) -> "user_login.UserLoginResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com//v1/pets"],
     ) -> "v1_pets.V1PetsResource":
-        if url == "https://petstore3.swagger.io/api/v1/pets":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/pet"],
+    ) -> "pet.PetResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/store_order"],
+    ) -> "store_order.StoreOrderResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/user_create_with_list"],
+    ) -> "user_create_with_list.UserCreateWithListResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/pet_find_by_status"],
+    ) -> "pet_find_by_status.PetFindByStatusResource":
+        ...
+
+    @overload
+    def request(
+        self,
+        url: Literal["https://petstore3.com/user_logout"],
+    ) -> "user_logout.UserLogoutResource":
+        ...
+
+    def request(self, url):
+        if url in ["https://petstore3.com/store_inventory"]:
+            return store_inventory.StoreInventoryResource(self._client)
+
+        if url in ["https://petstore3.com/pet_pet_id_upload_image"]:
+            return pet_pet_id_upload_image.PetPetIdUploadImageResource(self._client)
+
+        if url in ["https://petstore3.com/pet_find_by_tags"]:
+            return pet_find_by_tags.PetFindByTagsResource(self._client)
+
+        if url in ["https://petstore3.com/user_username"]:
+            return user_username.UserUsernameResource(self._client)
+
+        if url in ["https://petstore3.com/user"]:
+            return user.UserResource(self._client)
+
+        if url in ["https://petstore3.com/store_order_order_id"]:
+            return store_order_order_id.StoreOrderOrderIdResource(self._client)
+
+        if url in ["https://petstore3.com/pet_pet_id"]:
+            return pet_pet_id.PetPetIdResource(self._client)
+
+        if url in ["https://petstore3.com/user_login"]:
+            return user_login.UserLoginResource(self._client)
+
+        if url in ["https://petstore3.com//v1/pets"]:
             return v1_pets.V1PetsResource(self._client)
 
-        else:
-            raise URLNotSupportedError(url)
+        if url in ["https://petstore3.com/pet"]:
+            return pet.PetResource(self._client)
+
+        if url in ["https://petstore3.com/store_order"]:
+            return store_order.StoreOrderResource(self._client)
+
+        if url in ["https://petstore3.com/user_create_with_list"]:
+            return user_create_with_list.UserCreateWithListResource(self._client)
+
+        if url in ["https://petstore3.com/pet_find_by_status"]:
+            return pet_find_by_status.PetFindByStatusResource(self._client)
+
+        if url in ["https://petstore3.com/user_logout"]:
+            return user_logout.UserLogoutResource(self._client)
+
+        raise URLNotSupportedError(url)
