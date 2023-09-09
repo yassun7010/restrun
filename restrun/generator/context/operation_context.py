@@ -53,7 +53,7 @@ class OperationContext:
             textwrap.fill(self.description, width=width) if self.description else None
         )
 
-        if summary and description:
+        if summary and description and summary != description:
             return f"{summary}\n\n{description}"
 
         elif summary:

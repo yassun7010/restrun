@@ -103,7 +103,7 @@ class PythonObjectProperty:
             textwrap.fill(self.description, width=width) if self.description else None
         )
 
-        if title and description:
+        if title and description and title != description:
             return f"{title}\n\n{description}"
 
         elif title:
@@ -131,7 +131,7 @@ class PythonObject:
             textwrap.fill(self.description, width=width) if self.description else None
         )
 
-        if title and description:
+        if title and description and title != description:
             return f"{title}\n\n{description}"
 
         elif title:

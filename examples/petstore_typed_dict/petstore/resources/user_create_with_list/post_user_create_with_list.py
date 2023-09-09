@@ -31,8 +31,6 @@ class PostUserCreateWithList(PostOperation):
     ) -> "PostUserCreateWithListResponseBody":
         """
         Creates list of users with given input array
-
-        Creates list of users with given input array
         """
 
         return self._client.get(

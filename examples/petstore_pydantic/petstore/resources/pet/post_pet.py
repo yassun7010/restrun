@@ -31,8 +31,6 @@ class PostPet(PostOperation):
     ) -> "PostPetResponseBody":
         """
         Add a new pet to the store
-
-        Add a new pet to the store
         """
 
         return self._client.get(
