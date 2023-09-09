@@ -97,7 +97,10 @@ class PythonObjectProperty:
     default: str | int | float | None = None
 
     @cached_property
-    def title_and_description(self, width: int = 70) -> str | None:
+    def title_and_description(self) -> str | None:
+        return self.title_and_description_width()
+
+    def title_and_description_width(self, width: int = 70) -> str | None:
         title = textwrap.fill(self.title, width=width) if self.title else None
         description = (
             textwrap.fill(self.description, width=width) if self.description else None
@@ -125,7 +128,10 @@ class PythonObject:
     description: str | None = None
 
     @cached_property
-    def title_and_description(self, width: int = 70) -> str | None:
+    def title_and_description(self) -> str | None:
+        return self.title_and_description_width()
+
+    def title_and_description_width(self, width: int = 70) -> str | None:
         title = textwrap.fill(self.title, width=width) if self.title else None
         description = (
             textwrap.fill(self.description, width=width) if self.description else None

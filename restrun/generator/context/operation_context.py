@@ -1,5 +1,6 @@
 import textwrap
 from dataclasses import dataclass
+from functools import cached_property
 
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.core.http import URL, Method
@@ -46,8 +47,11 @@ class OperationContext:
     response_json_body: PythonResponseJsonBody | None = None
     response_text_body: PythonResponseTextBody | None = None
 
-    @property
-    def summary_and_description(self, width: int = 70) -> str | None:
+    @cached_property
+    def summary_and_description(self) -> str | None:
+        return self.summary_and_description_width()
+
+    def summary_and_description_width(self, width: int = 70) -> str | None:
         summary = textwrap.fill(self.summary, width=width) if self.summary else None
         description = (
             textwrap.fill(self.description, width=width) if self.description else None
