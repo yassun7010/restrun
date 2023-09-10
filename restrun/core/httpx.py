@@ -254,7 +254,7 @@ def parse_json_response(
         raise ResponseJsonBodyValidationError(method, url, data, error)
 
 
-def remove_none_field(data: dict | None) -> dict | None:
+def remove_none_field(data: Mapping | None) -> Mapping | None:
     if data is None:
         return None
 

@@ -136,7 +136,7 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_body_type,
+        response_body_type: Type[ResponseModelBody] | Type[None],
         headers=None,
         query=None,
     ) -> ResponseModelBody | None:
