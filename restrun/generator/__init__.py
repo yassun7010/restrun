@@ -65,7 +65,12 @@ def load_python_code(source: Path) -> dict:
         code = file.read()
 
     try:
-        exec(code, None, locals)
+        exec(
+            code,
+            # Allow to use relative import in the source file.
+            {"__package__": ".".join(str(source.parent).split("/"))},
+            locals,
+        )
     except Exception as error:
         raise PythonFileExecutionError(source, error=error)
 

@@ -17,7 +17,14 @@ from restrun.core.operation import (
     PostOperation,
 )
 
-PostUserCreateWithListResponseBody = typing.Literal[None]
+from ...schemas import user
+
+
+class UserCreateWithListJsonResponse(typing.TypedDict):
+    pass
+
+
+PostUserCreateWithListResponseBody = user.User
 
 
 class PostUserCreateWithList(PostOperation):

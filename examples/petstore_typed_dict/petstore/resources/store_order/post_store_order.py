@@ -17,7 +17,14 @@ from restrun.core.operation import (
     PostOperation,
 )
 
-PostStoreOrderResponseBody = typing.Literal[None]
+from ...schemas import order
+
+
+class StoreOrderJsonResponse(typing.TypedDict):
+    pass
+
+
+PostStoreOrderResponseBody = order.Order
 
 
 class PostStoreOrder(PostOperation):

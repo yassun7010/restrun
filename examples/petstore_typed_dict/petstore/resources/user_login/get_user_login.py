@@ -24,7 +24,11 @@ class UserLoginQueryParameters(typing.TypedDict):
     password: "str"
 
 
-GetUserLoginResponseBody = typing.Literal[None]
+class UserLoginJsonResponse(typing.TypedDict):
+    pass
+
+
+GetUserLoginResponseBody = str
 
 
 class GetUserLogin(GetOperation):
@@ -44,5 +48,5 @@ class GetUserLogin(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetUserLoginResponseBody,
-            query=typing.cast(dict, query) if query else None,
+            query=query,
         )

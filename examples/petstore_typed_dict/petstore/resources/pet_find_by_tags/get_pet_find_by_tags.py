@@ -17,12 +17,18 @@ from restrun.core.operation import (
     GetOperation,
 )
 
+from ...schemas import pet
+
 
 class PetFindByTagsQueryParameters(typing.TypedDict):
     tags: "list[str]"
 
 
-GetPetFindByTagsResponseBody = typing.Literal[None]
+class PetFindByTagsJsonResponse(typing.TypedDict):
+    pass
+
+
+GetPetFindByTagsResponseBody = list[pet.Pet]
 
 
 class GetPetFindByTags(GetOperation):
@@ -45,5 +51,5 @@ class GetPetFindByTags(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetPetFindByTagsResponseBody,
-            query=typing.cast(dict, query) if query else None,
+            query=query,
         )

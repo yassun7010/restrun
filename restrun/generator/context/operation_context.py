@@ -23,7 +23,13 @@ from restrun.openapi.operation import (
     PythonResponseJsonBody,
     PythonResponseTextBody,
 )
-from restrun.openapi.schema import PythonLiteralType, PythonObject, get_data_type
+from restrun.openapi.schema import (
+    PythonArray,
+    PythonDataType,
+    PythonLiteralType,
+    PythonReference,
+    get_data_type,
+)
 from restrun.strcase import class_name
 
 
@@ -91,32 +97,69 @@ class OperationContext:
     @property
     def response_body(self) -> "PythonRequestBody":
         allow_empty = False
-        classes: list[str] = []
+        bodies: list[PythonResponseJsonBody | PythonResponseTextBody] = []
         class_name = self.class_name + "ResponseBody"
-        if self.response_json_body is not None:
-            classes.append(self.response_json_body.class_name)
-            allow_empty = self.response_json_body.allow_empty
-        if self.response_text_body is not None:
-            classes.append(self.response_text_body.class_name)
 
-        if len(classes) == 0:
+        if self.response_json_body is not None:
+            bodies.append(self.response_json_body)
+            allow_empty = self.response_json_body.allow_empty
+
+        if self.response_text_body is not None:
+            bodies.append(self.response_text_body)
+
+        if len(bodies) == 0:
             return PythonRequestBody(
                 class_name=class_name,
                 origin_type=PythonLiteralType.NONE,
                 allow_empty=allow_empty,
             )
-        elif len(classes) == 1:
+
+        elif len(bodies) == 1:
+            body = bodies[0]
+            data_type = body.data_type
+            match data_type:
+                case PythonReference():
+                    origin_type = data_type.module_name + "." + data_type.class_name
+
+                case PythonArray():
+                    origin_type = data_type
+
+                case _:
+                    origin_type = data_type
+
             return PythonRequestBody(
                 class_name=class_name,
-                origin_type=classes[0],
+                origin_type=str(origin_type),
                 allow_empty=allow_empty,
             )
+
         else:
             return PythonRequestBody(
                 class_name=class_name,
-                origin_type="|".join(classes),
+                origin_type="|".join([body.class_name for body in bodies]),
                 allow_empty=allow_empty,
             )
+
+    @property
+    def schema_module_names(self) -> list[str]:
+        module_names: set[str] = set()
+        if self.response_json_body:
+            module_names.update(
+                get_schema_module_names(self.response_json_body.data_type)
+            )
+
+        return list(sorted(module_names))
+
+
+def get_schema_module_names(data_type: PythonDataType) -> set[str]:
+    module_names: set[str] = set()
+    match data_type:
+        case PythonReference():
+            module_names.add(data_type.module_name)
+        case PythonArray():
+            module_names.update(get_schema_module_names(data_type.items))
+
+    return module_names
 
 
 def make_operation_contexts(
@@ -188,7 +231,7 @@ def make_operation_context(
     response_json_body = None
     if operation.responses is not None:
         for status_code, response in operation.responses.items():
-            if status_code == 200:
+            if status_code == "200":
                 if isinstance(response, (Reference_v3_1_0, Reference_v3_0_3)):
                     continue
 
@@ -203,12 +246,11 @@ def make_operation_context(
 
                     data_type = get_data_type(name, schema, schemas)
 
-                    if isinstance(data_type, PythonObject):
-                        response_json_body = PythonResponseJsonBody(
-                            class_name=name,
-                            data_type=data_type,
-                            allow_empty=False,
-                        )
+                    response_json_body = PythonResponseJsonBody(
+                        class_name=name,
+                        data_type=data_type,
+                        allow_empty=False,
+                    )
 
     return OperationContext(
         class_name=method.capitalize() + class_name(path_name),

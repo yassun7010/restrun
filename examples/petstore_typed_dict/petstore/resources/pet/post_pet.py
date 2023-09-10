@@ -17,7 +17,14 @@ from restrun.core.operation import (
     PostOperation,
 )
 
-PostPetResponseBody = typing.Literal[None]
+from ...schemas import pet
+
+
+class PetJsonResponse(typing.TypedDict):
+    pass
+
+
+PostPetResponseBody = pet.Pet
 
 
 class PostPet(PostOperation):

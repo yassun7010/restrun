@@ -8,6 +8,10 @@ from restrun.core.operation import GetOperation, PatchOperation, PostOperation, 
 from restrun.core.model import ExtraForbidModel, Model
 from restrun.core import http
 
+{% for module_name in operation.schema_module_names %}
+from ...schemas import {{ module_name }}
+{% endfor %}
+
 {% if operation.query_parameters %}
 class {{ operation.query_parameters.class_name }}(typing.TypedDict):
 {% for name, query in operation.query_parameters.items() %}
@@ -16,14 +20,25 @@ class {{ operation.query_parameters.class_name }}(typing.TypedDict):
 {% endif %}
 
 {% if operation.request_json_body %}
-class {{ operation.request_json_body }}(typing.TypedDict):
+class {{ operation.request_json_body.class_name }}(typing.TypedDict):
 {% if operation.request_json_body.description %}
     """
     {{ operation.request_json_body.description | indent(4) }}
     """
+
+{% endif %}
     pass
 
 {% endif %}
+
+{% if operation.response_json_body %}
+class {{ operation.response_json_body.class_name }}(typing.TypedDict):
+{% if operation.response_json_body.description %}
+    """
+    {{ operation.response_json_body.description | indent(4) }}
+    """
+{% endif %}
+    pass
 {% endif %}
 
 {% if operation.request_body %}
@@ -67,6 +82,6 @@ class {{ operation.class_name }}(
             self.path,
             response_body_type={{ operation.response_body.class_name }},
 {% if operation.query_parameters %}
-            query=typing.cast(dict, query) if query else None,
+            query=query,
 {% endif %}
         )

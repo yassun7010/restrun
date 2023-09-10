@@ -1,7 +1,12 @@
 from dataclasses import dataclass
-from typing import ItemsView
+from typing import ItemsView, Literal
 
-from restrun.openapi.schema import PythonDataType, PythonObject, as_typed_dict_field
+from restrun.openapi.schema import (
+    PythonDataType,
+    PythonLiteralType,
+    PythonObject,
+    as_typed_dict_field,
+)
 
 
 @dataclass(frozen=True)
@@ -101,7 +106,7 @@ class PythonRequestBody:
 @dataclass(frozen=True)
 class PythonResponseJsonBody:
     class_name: str
-    data_type: PythonObject
+    data_type: PythonDataType
     description: str | None = None
     allow_empty: bool = False
 
@@ -109,7 +114,7 @@ class PythonResponseJsonBody:
 @dataclass(frozen=True)
 class PythonResponseTextBody:
     class_name: str
-    data_type: PythonDataType
+    data_type: Literal[PythonLiteralType.STR]
     description: str | None = None
 
 

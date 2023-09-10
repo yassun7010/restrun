@@ -17,12 +17,18 @@ from restrun.core.operation import (
     PostOperation,
 )
 
+from ...schemas import api_response
+
 
 class PetPetIdUploadImageQueryParameters(typing.TypedDict):
     additionalMetadata: "str"
 
 
-PostPetPetIdUploadImageResponseBody = typing.Literal[None]
+class PetPetIdUploadImageJsonResponse(typing.TypedDict):
+    pass
+
+
+PostPetPetIdUploadImageResponseBody = api_response.ApiResponse
 
 
 class PostPetPetIdUploadImage(PostOperation):
@@ -42,5 +48,5 @@ class PostPetPetIdUploadImage(PostOperation):
         return self._client.get(
             self.path,
             response_body_type=PostPetPetIdUploadImageResponseBody,
-            query=typing.cast(dict, query) if query else None,
+            query=query,
         )

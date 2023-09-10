@@ -1,3 +1,4 @@
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -11,6 +12,9 @@ if TYPE_CHECKING:
     from restrun.generator.context.operation_context import OperationContext
     from restrun.generator.context.restrun_context import RestrunContext
     from restrun.generator.context.schema_context import SchemaContext
+
+
+logger = getLogger(__name__)
 
 
 def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
@@ -32,6 +36,8 @@ def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -
 
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
+
+        logger.debug(f'"{filepath}" generating...')
 
         code = generator.generate(config, context)
         with open(filepath, "w") as file:
@@ -67,6 +73,8 @@ def write_schemas(
 
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
+
+        logger.debug(f'"{filepath}" generating...')
 
         match config.root.schema_raw.schema_type:
             case "pydantic":
@@ -106,6 +114,8 @@ def write_operations(
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
 
+        logger.debug(f'"{filepath}" generating...')
+
         code = OperationGenerator().generate(config, restrun_context, operation_context)
         with open(filepath, "w") as file:
             file.write(code)
@@ -123,6 +133,8 @@ def write_resources(
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
 
+        logger.debug(f'"{filepath}" generating...')
+
         code = ResourceModuleGenerator().generate(config, context, resource_context)
         with open(
             base_dir / "resources" / resource_context.module_name / "__init__.py", "w"
@@ -132,6 +144,8 @@ def write_resources(
     filepath = base_dir / "resources" / "__init__.py"
     if filepath.exists() and not is_auto_generated_or_empty(filepath):
         return
+
+    logger.debug(f'"{filepath}" generating...')
 
     code = ResourcesModuleGenerator().generate(config, context)
     with open(filepath, "w") as file:
