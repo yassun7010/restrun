@@ -17,7 +17,12 @@ from restrun.core.operation import (
     GetOperation,
 )
 
-GetStoreInventoryResponseBody = typing.Literal[None]
+
+class StoreInventoryJsonResponse(typing.TypedDict):
+    pass
+
+
+GetStoreInventoryResponseBody = StoreInventoryJsonResponse
 
 
 class GetStoreInventory(GetOperation):

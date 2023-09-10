@@ -17,7 +17,14 @@ from restrun.core.operation import (
     GetOperation,
 )
 
-GetUserUsernameResponseBody = typing.Literal[None]
+from ...schemas import user
+
+
+class UserUsernameJsonResponse(typing.TypedDict):
+    pass
+
+
+GetUserUsernameResponseBody = user.User
 
 
 class GetUserUsername(GetOperation):

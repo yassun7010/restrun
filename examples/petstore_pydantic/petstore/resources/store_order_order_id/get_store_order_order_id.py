@@ -17,7 +17,14 @@ from restrun.core.operation import (
     GetOperation,
 )
 
-GetStoreOrderOrderIdResponseBody = typing.Literal[None]
+from ...schemas import order
+
+
+class StoreOrderOrderIdJsonResponse(typing.TypedDict):
+    pass
+
+
+GetStoreOrderOrderIdResponseBody = order.Order
 
 
 class GetStoreOrderOrderId(GetOperation):

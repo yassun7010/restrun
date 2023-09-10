@@ -17,12 +17,18 @@ from restrun.core.operation import (
     GetOperation,
 )
 
+from ...schemas import pet
+
 
 class PetFindByStatusQueryParameters(typing.TypedDict):
     status: "typing.Literal['available','pending','sold']"
 
 
-GetPetFindByStatusResponseBody = typing.Literal[None]
+class PetFindByStatusJsonResponse(typing.TypedDict):
+    pass
+
+
+GetPetFindByStatusResponseBody = list[pet.Pet]
 
 
 class GetPetFindByStatus(GetOperation):
@@ -44,5 +50,5 @@ class GetPetFindByStatus(GetOperation):
         return self._client.get(
             self.path,
             response_body_type=GetPetFindByStatusResponseBody,
-            query=typing.cast(dict, query) if query else None,
+            query=query,
         )
