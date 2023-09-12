@@ -12,7 +12,7 @@ from restrun.core.operation import (
     PutOperation,
     get_method,
 )
-from restrun.exception import DuplicateOperationTypeError, OperationURLInvalidError
+from restrun.exceptions import DuplicateOperationTypeError, OperationURLInvalidError
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.strcase import class_name
 

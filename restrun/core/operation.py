@@ -4,7 +4,7 @@ from restrun.core.http import (
     Method,
 )
 from restrun.core.resource import Resource
-from restrun.exception import (
+from restrun.exceptions import (
     UnknownOperationTypeError,
 )
 

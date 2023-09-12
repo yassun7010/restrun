@@ -5,7 +5,7 @@ from typing import Literal
 from typing_extensions import override, overload
 
 from restrun.core.client import RestrunClient
-from restrun.exception import URLNotSupportedError
+from restrun.exceptions import URLNotSupportedError
 
 {% for resource in restrun.resources %}
 from ..resources import {{ resource.module_name }}

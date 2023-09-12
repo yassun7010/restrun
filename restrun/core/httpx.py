@@ -20,7 +20,7 @@ from restrun.core.http import (
     RequestJsonBody,
     ResponseModelBody,
 )
-from restrun.exception import (
+from restrun.exceptions import (
     ResponseJsonBodyParseError,
     ResponseJsonBodyValidationError,
     ResponseStatusCodeError,

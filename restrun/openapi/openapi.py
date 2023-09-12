@@ -17,7 +17,7 @@ from openapi_pydantic.v3.v3_1_0 import Schema as Schema_v3_1_0
 from pydantic import HttpUrl, RootModel
 
 from restrun.core.http import URL
-from restrun.exception import OpenAPIRequestError
+from restrun.exceptions import OpenAPIRequestError
 
 DataType: TypeAlias = DataType_v3_1_0 | DataType_v3_0_3
 Schema: TypeAlias = Schema_v3_1_0 | Schema_v3_0_3

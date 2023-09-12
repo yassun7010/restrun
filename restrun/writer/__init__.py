@@ -2,7 +2,7 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.exception import NeverReachError
+from restrun.exceptions import NeverReachError
 from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.operation import OperationGenerator
 from restrun.strcase import module_name

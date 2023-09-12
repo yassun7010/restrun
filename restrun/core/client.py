@@ -13,7 +13,7 @@ from restrun.core.http import (
     ResponseModelBody,
 )
 from restrun.core.model import Model
-from restrun.exception import (
+from restrun.exceptions import (
     MockRequestError,
     MockResponseBodyRemainsError,
     MockResponseNotFoundError,

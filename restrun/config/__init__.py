@@ -12,7 +12,7 @@ from pydantic import RootModel
 from restrun.config.v1.format import V1FormatConfig
 from restrun.config.v1.lint import V1LintConfig
 from restrun.core import http
-from restrun.exception import FileExtensionError
+from restrun.exceptions import FileExtensionError
 
 from .v1 import V1Config
 

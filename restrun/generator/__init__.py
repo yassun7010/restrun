@@ -6,7 +6,7 @@ from typing import Generic, Type, TypeAlias, TypeVar
 import jinja2
 
 import restrun
-from restrun.exception import (
+from restrun.exceptions import (
     JinjaRenderError,
     JinjaTemplateRuntimeError,
     JinjaTemplateSyntaxError,

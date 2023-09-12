@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
-from restrun.exception import NeverReachError
+from restrun.exceptions import NeverReachError
 from restrun.openapi.openapi import OpenAPI
 from restrun.openapi.schema import (
     PythonArray,
