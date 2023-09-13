@@ -11,12 +11,11 @@ from restrun.openapi.openapi import (
     Schemas,
 )
 from restrun.openapi.operation import (
-    PythonCookieParameters,
-    PythonHeaderParameters,
+    PythonCookieParameter,
+    PythonHeaderParameter,
+    PythonParameters,
     PythonPathParameter,
-    PythonPathParameters,
     PythonQueryParameter,
-    PythonQueryParameters,
     PythonRequestBody,
     PythonRequestJsonBody,
     PythonRequestTextBody,
@@ -45,10 +44,10 @@ class OperationContext:
     urls: list[URL]
     summary: str | None = None
     description: str | None = None
-    path_parameters: PythonPathParameters | None = None
-    header_parameters: PythonHeaderParameters | None = None
-    query_parameters: PythonQueryParameters | None = None
-    cookie_parameters: PythonCookieParameters | None = None
+    path_parameters: PythonParameters[PythonPathParameter] | None = None
+    header_parameters: PythonParameters[PythonHeaderParameter] | None = None
+    query_parameters: PythonParameters[PythonQueryParameter] | None = None
+    cookie_parameters: PythonParameters[PythonCookieParameter] | None = None
     request_json_body: PythonRequestJsonBody | None = None
     request_text_body: PythonRequestTextBody | None = None
     response_json_body: PythonResponseJsonBody | None = None
@@ -207,52 +206,51 @@ def make_operation_context(
         return None
 
     path_parameters: dict[str, PythonPathParameter] = {}
-    for parameter in operation.parameters or []:
-        if isinstance(parameter, (Reference_v3_1_0, Reference_v3_0_3)):
-            continue
-
-        if parameter.param_in == "path" and (schema := parameter.param_schema):
-            path_parameters[parameter.name] = PythonPathParameter(
-                data_type=get_data_type(parameter.name, schema, schemas),
-                description=parameter.description,
-                required=parameter.required,
-            )
-
     query_parameters: dict[str, PythonQueryParameter] = {}
     for parameter in operation.parameters or []:
         if isinstance(parameter, (Reference_v3_1_0, Reference_v3_0_3)):
             continue
 
-        if parameter.param_in == "query" and (schema := parameter.param_schema):
-            query_parameters[parameter.name] = PythonQueryParameter(
-                data_type=get_data_type(parameter.name, schema, schemas),
-                description=parameter.description,
-                required=parameter.required,
-            )
+        if (schema := parameter.param_schema) is None:
+            continue
+
+        match parameter.param_in:
+            case "path":
+                path_parameters[parameter.name] = PythonPathParameter(
+                    data_type=get_data_type(parameter.name, schema, schemas),
+                    description=parameter.description,
+                    required=parameter.required,
+                )
+
+            case "query":
+                query_parameters[parameter.name] = PythonQueryParameter(
+                    data_type=get_data_type(parameter.name, schema, schemas),
+                    description=parameter.description,
+                    required=parameter.required,
+                )
 
     response_json_body = None
-    if operation.responses is not None:
-        for status_code, response in operation.responses.items():
-            if status_code == "200":
-                if isinstance(response, (Reference_v3_1_0, Reference_v3_0_3)):
+    for status_code, response in (operation.responses or {}).items():
+        if status_code == "200":
+            if isinstance(response, (Reference_v3_1_0, Reference_v3_0_3)):
+                continue
+
+            if response.content is None:
+                continue
+
+            if "application/json" in response.content:
+                name = class_name(path_name) + "JsonResponse"
+                schema = response.content["application/json"].media_type_schema
+                if schema is None:
                     continue
 
-                if response.content is None:
-                    continue
+                data_type = get_data_type(name, schema, schemas)
 
-                if "application/json" in response.content:
-                    name = class_name(path_name) + "JsonResponse"
-                    schema = response.content["application/json"].media_type_schema
-                    if schema is None:
-                        continue
-
-                    data_type = get_data_type(name, schema, schemas)
-
-                    response_json_body = PythonResponseJsonBody(
-                        class_name=name,
-                        data_type=data_type,
-                        allow_empty=False,
-                    )
+                response_json_body = PythonResponseJsonBody(
+                    class_name=name,
+                    data_type=data_type,
+                    allow_empty=False,
+                )
 
     return OperationContext(
         class_name=method.capitalize() + class_name(path_name),
@@ -262,7 +260,7 @@ def make_operation_context(
         summary=operation.summary,
         description=operation.description,
         path_parameters=(
-            PythonPathParameters(
+            PythonParameters(
                 class_name=class_name(path_name) + "PathParameters",
                 parameters=path_parameters,
             )
@@ -270,7 +268,7 @@ def make_operation_context(
             else None
         ),
         query_parameters=(
-            PythonQueryParameters(
+            PythonParameters(
                 class_name=class_name(path_name) + "QueryParameters",
                 parameters=query_parameters,
             )

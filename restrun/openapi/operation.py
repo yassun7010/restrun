@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import ItemsView, Literal
+from typing import Generic, ItemsView, Literal, TypeVar
 
 from restrun.openapi.schema import (
     PythonDataType,
@@ -21,28 +21,10 @@ class PythonPathParameter:
 
 
 @dataclass(frozen=True)
-class PythonPathParameters:
-    class_name: str
-    parameters: dict[str, PythonPathParameter]
-
-    def items(self) -> ItemsView[str, PythonPathParameter]:
-        return self.parameters.items()
-
-
-@dataclass(frozen=True)
 class PythonHeaderParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = True
-
-
-@dataclass(frozen=True)
-class PythonHeaderParameters:
-    class_name: str
-    parameters: dict[str, PythonHeaderParameter]
-
-    def items(self) -> ItemsView[str, PythonHeaderParameter]:
-        return self.parameters.items()
 
 
 @dataclass(frozen=True)
@@ -53,31 +35,31 @@ class PythonQueryParameter:
 
 
 @dataclass(frozen=True)
-class PythonQueryParameters:
-    class_name: str
-    parameters: dict[str, PythonQueryParameter]
-
-    @property
-    def allow_empty(self) -> bool:
-        return not any(parameter.required for parameter in self.parameters.values())
-
-    def items(self) -> ItemsView[str, PythonQueryParameter]:
-        return self.parameters.items()
-
-
-@dataclass(frozen=True)
 class PythonCookieParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = True
 
 
-@dataclass(frozen=True)
-class PythonCookieParameters:
-    class_name: str
-    parameters: dict[str, PythonCookieParameter]
+PythonParameter = TypeVar(
+    "PythonParameter",
+    PythonPathParameter,
+    PythonHeaderParameter,
+    PythonQueryParameter,
+    PythonCookieParameter,
+)
 
-    def items(self) -> ItemsView[str, PythonCookieParameter]:
+
+@dataclass(frozen=True)
+class PythonParameters(Generic[PythonParameter]):
+    class_name: str
+    parameters: dict[str, PythonParameter]
+
+    @property
+    def allow_empty(self) -> bool:
+        return not any(parameter.required for parameter in self.parameters.values())
+
+    def items(self) -> ItemsView[str, PythonParameter]:
         return self.parameters.items()
 
 
