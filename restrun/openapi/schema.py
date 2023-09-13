@@ -464,3 +464,10 @@ def as_typed_dict_field(data_type: PythonDataType, required: bool) -> str:
         return str(data_type)
     else:
         return f"NotRequired[{data_type}]"
+
+
+def is_object(data_type: PythonDataType) -> bool:
+    if isinstance(data_type, PythonReference):
+        return is_object(data_type.target)
+    else:
+        return isinstance(data_type, PythonObject)

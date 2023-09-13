@@ -19,6 +19,7 @@ from restrun.openapi.operation import (
     PythonRequestBody,
     PythonRequestJsonBody,
     PythonRequestTextBody,
+    PythonResponseBody,
     PythonResponseJsonBody,
     PythonResponseTextBody,
 )
@@ -28,6 +29,7 @@ from restrun.openapi.schema import (
     PythonLiteralType,
     PythonReference,
     get_data_type,
+    is_object,
 )
 from restrun.strcase import class_name
 
@@ -94,7 +96,7 @@ class OperationContext:
             )
 
     @property
-    def response_body(self) -> "PythonRequestBody":
+    def response_body(self) -> "PythonResponseBody":
         allow_empty = False
         bodies: list[PythonResponseJsonBody | PythonResponseTextBody] = []
         class_name = self.class_name + "ResponseBody"
@@ -107,7 +109,7 @@ class OperationContext:
             bodies.append(self.response_text_body)
 
         if len(bodies) == 0:
-            return PythonRequestBody(
+            return PythonResponseBody(
                 class_name=class_name,
                 origin_type=PythonLiteralType.NONE,
                 allow_empty=allow_empty,
@@ -120,20 +122,18 @@ class OperationContext:
                 case PythonReference():
                     origin_type = data_type.module_name + "." + data_type.class_name
 
-                case PythonArray():
-                    origin_type = data_type
-
                 case _:
                     origin_type = data_type
 
-            return PythonRequestBody(
+            return PythonResponseBody(
                 class_name=class_name,
                 origin_type=str(origin_type),
                 allow_empty=allow_empty,
+                is_object=is_object(data_type),
             )
 
         else:
-            return PythonRequestBody(
+            return PythonResponseBody(
                 class_name=class_name,
                 origin_type="|".join([body.class_name for body in bodies]),
                 allow_empty=allow_empty,

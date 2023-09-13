@@ -45,7 +45,12 @@ class {{ operation.response_json_body.class_name }}(typing.TypedDict):
 {{ operation.request_body.class_name }} = {{ operation.request_body.origin_type }}
 {% endif %}
 
+{% if operation.response_body.is_object %}
+class {{ operation.response_body.class_name }}({{ operation.response_body.origin_type }}):
+    pass
+{% else %}
 {{ operation.response_body.class_name }} = {{ operation.response_body.origin_type }}
+{% endif %}
 
 class {{ operation.class_name }}(
     {{ operation.method | capitalize }}Operation

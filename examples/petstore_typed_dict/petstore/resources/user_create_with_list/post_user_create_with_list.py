@@ -24,7 +24,8 @@ class UserCreateWithListJsonResponse(typing.TypedDict):
     pass
 
 
-PostUserCreateWithListResponseBody = user.User
+class PostUserCreateWithListResponseBody(user.User):
+    pass
 
 
 class PostUserCreateWithList(PostOperation):

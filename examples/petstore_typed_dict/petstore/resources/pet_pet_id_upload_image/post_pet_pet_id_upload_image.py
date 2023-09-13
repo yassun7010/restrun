@@ -28,7 +28,8 @@ class PetPetIdUploadImageJsonResponse(typing.TypedDict):
     pass
 
 
-PostPetPetIdUploadImageResponseBody = api_response.ApiResponse
+class PostPetPetIdUploadImageResponseBody(api_response.ApiResponse):
+    pass
 
 
 class PostPetPetIdUploadImage(PostOperation):

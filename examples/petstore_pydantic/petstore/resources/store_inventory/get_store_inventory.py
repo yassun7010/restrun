@@ -22,7 +22,8 @@ class StoreInventoryJsonResponse(typing.TypedDict):
     pass
 
 
-GetStoreInventoryResponseBody = StoreInventoryJsonResponse
+class GetStoreInventoryResponseBody(StoreInventoryJsonResponse):
+    pass
 
 
 class GetStoreInventory(GetOperation):

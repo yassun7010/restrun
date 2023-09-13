@@ -24,7 +24,8 @@ class StoreOrderOrderIdJsonResponse(typing.TypedDict):
     pass
 
 
-GetStoreOrderOrderIdResponseBody = order.Order
+class GetStoreOrderOrderIdResponseBody(order.Order):
+    pass
 
 
 class GetStoreOrderOrderId(GetOperation):

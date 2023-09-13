@@ -24,7 +24,8 @@ class PetPetIdJsonResponse(typing.TypedDict):
     pass
 
 
-GetPetPetIdResponseBody = pet.Pet
+class GetPetPetIdResponseBody(pet.Pet):
+    pass
 
 
 class GetPetPetId(GetOperation):

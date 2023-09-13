@@ -24,7 +24,8 @@ class PetJsonResponse(typing.TypedDict):
     pass
 
 
-PutPetResponseBody = pet.Pet
+class PutPetResponseBody(pet.Pet):
+    pass
 
 
 class PutPet(PutOperation):

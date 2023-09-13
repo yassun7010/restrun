@@ -24,7 +24,8 @@ class StoreOrderJsonResponse(typing.TypedDict):
     pass
 
 
-PostStoreOrderResponseBody = order.Order
+class PostStoreOrderResponseBody(order.Order):
+    pass
 
 
 class PostStoreOrder(PostOperation):

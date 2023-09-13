@@ -104,3 +104,10 @@ class PythonResponseTextBody:
 class PythonResponseBody:
     class_name: str
     origin_type: str
+    description: str | None = None
+    allow_empty: bool = False
+    is_object: bool = False
+
+    @property
+    def class_name_or_origin_type(self) -> str:
+        return self.class_name if self.class_name else self.origin_type

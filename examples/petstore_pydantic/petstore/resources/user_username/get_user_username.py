@@ -24,7 +24,8 @@ class UserUsernameJsonResponse(typing.TypedDict):
     pass
 
 
-GetUserUsernameResponseBody = user.User
+class GetUserUsernameResponseBody(user.User):
+    pass
 
 
 class GetUserUsername(GetOperation):
