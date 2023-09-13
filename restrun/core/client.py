@@ -66,39 +66,59 @@ class RestrunMockClient(RestrunClient):
     def _client(self) -> "RequestMockClient":
         return self._mock_client
 
-    def inject_get_response_body(
-        self, url: http.URL, response_body: Model | Literal[None] | RestrunError
+    @abstractmethod
+    def inject_get_response(
+        self,
+        url: http.URL,
+        *,
+        response: Model | Literal[None] | RestrunError,
     ) -> Self:
         raise NotImplementedError(
-            "RestrunMockClient.inject_get_response_body is not implemented."
+            "RestrunMockClient.inject_get_response is not implemented."
         )
 
-    def inject_post_response_body(
-        self, url: http.URL, response_body: Model | Literal[None] | RestrunError
+    @abstractmethod
+    def inject_post_response(
+        self,
+        url: http.URL,
+        *,
+        response: Model | Literal[None] | RestrunError,
     ) -> Self:
         raise NotImplementedError(
-            "RestrunMockClient.inject_post_response_body is not implemented."
+            "RestrunMockClient.inject_post_response is not implemented."
         )
 
-    def inject_put_response_body(
-        self, url: http.URL, response_body: Model | Literal[None] | RestrunError
+    @abstractmethod
+    def inject_put_response(
+        self,
+        url: http.URL,
+        *,
+        response: Model | Literal[None] | RestrunError,
     ) -> Self:
         raise NotImplementedError(
-            "RestrunMockClient.inject_put_response_body is not implemented."
+            "RestrunMockClient.inject_put_response is not implemented."
         )
 
-    def inject_patch_response_body(
-        self, url: http.URL, response_body: Model | Literal[None] | RestrunError
+    @abstractmethod
+    def inject_patch_response(
+        self,
+        url: http.URL,
+        *,
+        response: Model | Literal[None] | RestrunError,
     ) -> Self:
         raise NotImplementedError(
-            "RestrunMockClient.inject_patch_response_body is not implemented."
+            "RestrunMockClient.inject_patch_response is not implemented."
         )
 
-    def inject_delete_response_body(
-        self, url: http.URL, response_body: Model | Literal[None] | RestrunError
+    @abstractmethod
+    def inject_delete_response(
+        self,
+        url: http.URL,
+        *,
+        response: Model | Literal[None] | RestrunError,
     ) -> Self:
         raise NotImplementedError(
-            "RestrunMockClient.inject_delete_response_body is not implemented."
+            "RestrunMockClient.inject_delete_response is not implemented."
         )
 
 
@@ -113,7 +133,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> ResponseModelBody:
@@ -125,7 +145,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[None],
+        response_type: Type[None],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> None:
@@ -136,7 +156,7 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_body_type: Type[ResponseModelBody] | Type[None],
+        response_type: Type[ResponseModelBody] | Type[None],
         headers=None,
         query=None,
     ) -> ResponseModelBody | None:
@@ -147,7 +167,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -159,7 +179,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -171,7 +191,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -183,7 +203,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -213,74 +233,74 @@ class RequestMockClient(RequestClient):
             tuple[tuple[Method, URL], Model | Literal[None] | RestrunError]
         ] = []
 
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: URL,
-        response_body: Model | Literal[None] | RestrunError,
+        response: Model | Literal[None] | RestrunError,
     ):
-        self._store.append((("GET", url), response_body))
+        self._store.append((("GET", url), response))
 
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: URL,
-        response_body: Model | Literal[None] | RestrunError,
+        response: Model | Literal[None] | RestrunError,
     ):
-        self._store.append((("POST", url), response_body))
+        self._store.append((("POST", url), response))
 
-    def inject_put_response_body(
+    def inject_put_response(
         self,
         url: URL,
-        response_body: Model | Literal[None] | RestrunError,
+        response: Model | Literal[None] | RestrunError,
     ):
-        self._store.append((("PUT", url), response_body))
+        self._store.append((("PUT", url), response))
 
-    def inject_patch_response_body(
+    def inject_patch_response(
         self,
         url: URL,
-        response_body: Model | Literal[None] | RestrunError,
+        response: Model | Literal[None] | RestrunError,
     ):
-        self._store.append((("PATCH", url), response_body))
+        self._store.append((("PATCH", url), response))
 
-    def inject_delete_response_body(
+    def inject_delete_response(
         self,
         url: URL,
-        response_body: Model | Literal[None] | RestrunError,
+        response: Model | Literal[None] | RestrunError,
     ):
-        self._store.append((("DELETE", url), response_body))
+        self._store.append((("DELETE", url), response))
 
-    def _extract_response_body(
-        self, method: Method, url: URL, *, response_body_type: Type[ResponseModelBody]
+    def _extract_response(
+        self, method: Method, url: URL, *, response_type: Type[ResponseModelBody]
     ) -> ResponseModelBody:
         if len(self._store) == 0:
             raise MockResponseNotFoundError()
 
-        method_url, response_body = self._store.pop(0)
+        method_url, response = self._store.pop(0)
         expected_method, expected_url = method_url
 
         if method != expected_method or url != expected_url:
             raise MockRequestError(method, url, expected_method, expected_url)
 
-        if isinstance(response_body, RestrunError):
-            raise response_body
+        if isinstance(response, RestrunError):
+            raise response
 
-        if not isinstance(response_body, response_body_type):
-            raise MockResponseTypeError(method, url, response_body, response_body_type)
+        if not isinstance(response, response_type):
+            raise MockResponseTypeError(method, url, response, response_type)
 
-        return response_body
+        return response
 
     @override
     def get(
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> ResponseModelBody:
-        return self._extract_response_body(
+        return self._extract_response(
             "GET",
             url,
-            response_body_type=response_body_type,
+            response_type=response_type,
         )
 
     @override
@@ -288,15 +308,15 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
-        return self._extract_response_body(
+        return self._extract_response(
             "POST",
             url,
-            response_body_type=response_body_type,
+            response_type=response_type,
         )
 
     @override
@@ -304,15 +324,15 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
-        return self._extract_response_body(
+        return self._extract_response(
             "PUT",
             url,
-            response_body_type=response_body_type,
+            response_type=response_type,
         )
 
     @override
@@ -320,15 +340,15 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
-        return self._extract_response_body(
+        return self._extract_response(
             "PATCH",
             url,
-            response_body_type=response_body_type,
+            response_type=response_type,
         )
 
     @override
@@ -336,15 +356,15 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
-        return self._extract_response_body(
+        return self._extract_response(
             "DELETE",
             url,
-            response_body_type=response_body_type,
+            response_type=response_type,
         )
 
     def close(self) -> None:

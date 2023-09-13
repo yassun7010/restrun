@@ -38,159 +38,175 @@ class PetstoreMockClient(
     bearer_token_login_mixin.MockBearTokenLoginMixin, RestrunMockClient, PetstoreClient
 ):
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/store/inventory"],
-        response_body: get_store_inventory.GetStoreInventoryResponseBody | RestrunError,
+        *,
+        response: get_store_inventory.GetStoreInventoryResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/pet/findByTags"],
-        response_body: get_pet_find_by_tags.GetPetFindByTagsResponseBody | RestrunError,
+        *,
+        response: get_pet_find_by_tags.GetPetFindByTagsResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/user/{username}"],
-        response_body: get_user_username.GetUserUsernameResponseBody | RestrunError,
+        *,
+        response: get_user_username.GetUserUsernameResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/store/order/{orderId}"],
-        response_body: get_store_order_order_id.GetStoreOrderOrderIdResponseBody
+        *,
+        response: get_store_order_order_id.GetStoreOrderOrderIdResponseBody
         | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/pet/{petId}"],
-        response_body: get_pet_pet_id.GetPetPetIdResponseBody | RestrunError,
+        *,
+        response: get_pet_pet_id.GetPetPetIdResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/user/login"],
-        response_body: get_user_login.GetUserLoginResponseBody | RestrunError,
+        *,
+        response: get_user_login.GetUserLoginResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/v1/pets"],
-        response_body: get_v1_pets.GetV1PetsResponseBody | RestrunError,
+        *,
+        response: get_v1_pets.GetV1PetsResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/pet/findByStatus"],
-        response_body: get_pet_find_by_status.GetPetFindByStatusResponseBody
-        | RestrunError,
+        *,
+        response: get_pet_find_by_status.GetPetFindByStatusResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_get_response_body(
+    def inject_get_response(
         self,
         url: Literal["https://petstore3.com/user/logout"],
-        response_body: get_user_logout.GetUserLogoutResponseBody | RestrunError,
+        *,
+        response: get_user_logout.GetUserLogoutResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @override
-    def inject_get_response_body(self, url, response_body) -> "Self":
-        self._client.inject_get_response_body(url, response_body)
+    def inject_get_response(self, url, *, response) -> "Self":
+        self._client.inject_get_response(url, response)
 
         return self
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/pet/{petId}/uploadImage"],
-        response_body: post_pet_pet_id_upload_image.PostPetPetIdUploadImageResponseBody
+        *,
+        response: post_pet_pet_id_upload_image.PostPetPetIdUploadImageResponseBody
         | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/user"],
-        response_body: post_user.PostUserResponseBody | RestrunError,
+        *,
+        response: post_user.PostUserResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/pet/{petId}"],
-        response_body: post_pet_pet_id.PostPetPetIdResponseBody | RestrunError,
+        *,
+        response: post_pet_pet_id.PostPetPetIdResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/pet"],
-        response_body: post_pet.PostPetResponseBody | RestrunError,
+        *,
+        response: post_pet.PostPetResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/store/order"],
-        response_body: post_store_order.PostStoreOrderResponseBody | RestrunError,
+        *,
+        response: post_store_order.PostStoreOrderResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_post_response_body(
+    def inject_post_response(
         self,
         url: Literal["https://petstore3.com/user/createWithList"],
-        response_body: post_user_create_with_list.PostUserCreateWithListResponseBody
+        *,
+        response: post_user_create_with_list.PostUserCreateWithListResponseBody
         | RestrunError,
     ) -> "Self":
         ...
 
     @override
-    def inject_post_response_body(self, url, response_body) -> "Self":
-        self._client.inject_post_response_body(url, response_body)
+    def inject_post_response(self, url, *, response) -> "Self":
+        self._client.inject_post_response(url, response)
 
         return self
 
     @overload
-    def inject_put_response_body(
+    def inject_put_response(
         self,
         url: Literal["https://petstore3.com/user/{username}"],
-        response_body: put_user_username.PutUserUsernameResponseBody | RestrunError,
+        *,
+        response: put_user_username.PutUserUsernameResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @overload
-    def inject_put_response_body(
+    def inject_put_response(
         self,
         url: Literal["https://petstore3.com/pet"],
-        response_body: put_pet.PutPetResponseBody | RestrunError,
+        *,
+        response: put_pet.PutPetResponseBody | RestrunError,
     ) -> "Self":
         ...
 
     @override
-    def inject_put_response_body(self, url, response_body) -> "Self":
-        self._client.inject_put_response_body(url, response_body)
+    def inject_put_response(self, url, *, response) -> "Self":
+        self._client.inject_put_response(url, response)
 
         return self
