@@ -13,7 +13,7 @@ from restrun.openapi.schema import (
 class PythonPathParameter:
     data_type: PythonDataType
     description: str | None = None
-    required: bool = False
+    required: bool = True
 
     @property
     def typed_dict_field(self) -> str:
@@ -33,7 +33,7 @@ class PythonPathParameters:
 class PythonHeaderParameter:
     data_type: PythonDataType
     description: str | None = None
-    required: bool = False
+    required: bool = True
 
 
 @dataclass(frozen=True)
@@ -49,7 +49,7 @@ class PythonHeaderParameters:
 class PythonQueryParameter:
     data_type: PythonDataType
     description: str | None = None
-    required: bool = False
+    required: bool = True
 
 
 @dataclass(frozen=True)
@@ -69,7 +69,7 @@ class PythonQueryParameters:
 class PythonCookieParameter:
     data_type: PythonDataType
     description: str | None = None
-    required: bool = False
+    required: bool = True
 
 
 @dataclass(frozen=True)

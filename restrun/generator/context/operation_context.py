@@ -215,6 +215,7 @@ def make_operation_context(
             path_parameters[parameter.name] = PythonPathParameter(
                 data_type=get_data_type(parameter.name, schema, schemas),
                 description=parameter.description,
+                required=parameter.required,
             )
 
     query_parameters: dict[str, PythonQueryParameter] = {}
@@ -226,6 +227,7 @@ def make_operation_context(
             query_parameters[parameter.name] = PythonQueryParameter(
                 data_type=get_data_type(parameter.name, schema, schemas),
                 description=parameter.description,
+                required=parameter.required,
             )
 
     response_json_body = None
