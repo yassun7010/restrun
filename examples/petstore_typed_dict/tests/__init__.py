@@ -1,15 +1,18 @@
 from petstore.client.mock_client import PetstoreMockClient
-from petstore.resources.pet_pet_id_upload_image.post_pet_pet_id_upload_image import (
-    PostPetPetIdUploadImageResponseBody,
-)
+from petstore.resources.pet_pet_id.get_pet_pet_id import GetPetPetIdResponseBody
 
 
 def test_client():
     (
         PetstoreMockClient.from_bearer_token(token="")
-        .inject_post_response(
-            "https://petstore3.com/pet/{petId}/uploadImage",
-            response=PostPetPetIdUploadImageResponseBody(code=123),
+        .inject_get_response(
+            "https://petstore3.com/pet/{petId}",
+            response=GetPetPetIdResponseBody(
+                id=12,
+                name="aaa",
+                status="available",
+                photoUrls=[],
+            ),
         )
         .request("https://petstore3.com/pet/findByTags")
         .get({"tags": []})
