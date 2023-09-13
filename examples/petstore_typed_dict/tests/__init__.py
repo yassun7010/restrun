@@ -5,7 +5,12 @@ from petstore.resources.pet_pet_id_upload_image.post_pet_pet_id_upload_image imp
 
 
 def test_client():
-    PetstoreMockClient.from_bearer_token(token="").inject_post_response(
-        "https://petstore3.com/pet/{petId}/uploadImage",
-        response=PostPetPetIdUploadImageResponseBody(code=123),
-    ).request("https://petstore3.com/pet/findByTags").get({"tags": []})
+    (
+        PetstoreMockClient.from_bearer_token(token="")
+        .inject_post_response(
+            "https://petstore3.com/pet/{petId}/uploadImage",
+            response=PostPetPetIdUploadImageResponseBody(code=123),
+        )
+        .request("https://petstore3.com/pet/findByTags")
+        .get({"tags": []})
+    )
