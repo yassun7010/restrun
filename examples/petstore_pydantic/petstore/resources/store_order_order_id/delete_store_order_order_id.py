@@ -38,5 +38,5 @@ class DeleteStoreOrderOrderId(DeleteOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=DeleteStoreOrderOrderIdResponseBody,
+            response_type=DeleteStoreOrderOrderIdResponseBody,
         )

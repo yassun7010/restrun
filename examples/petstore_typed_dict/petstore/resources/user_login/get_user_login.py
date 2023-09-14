@@ -47,6 +47,6 @@ class GetUserLogin(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetUserLoginResponseBody,
+            response_type=GetUserLoginResponseBody,
             query=query,
         )

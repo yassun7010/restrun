@@ -65,7 +65,7 @@ class RequestHttpxClient(RequestRealClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> ResponseModelBody:
@@ -88,7 +88,7 @@ class RequestHttpxClient(RequestRealClient):
             method,
             url,
             response,
-            response_body_type,
+            response_type,
         )
 
     @override
@@ -96,7 +96,7 @@ class RequestHttpxClient(RequestRealClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -122,7 +122,7 @@ class RequestHttpxClient(RequestRealClient):
             method,
             url,
             response,
-            response_body_type,
+            response_type,
         )
 
     @override
@@ -130,7 +130,7 @@ class RequestHttpxClient(RequestRealClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -156,7 +156,7 @@ class RequestHttpxClient(RequestRealClient):
             method,
             url,
             response,
-            response_body_type,
+            response_type,
         )
 
     @override
@@ -164,7 +164,7 @@ class RequestHttpxClient(RequestRealClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -190,7 +190,7 @@ class RequestHttpxClient(RequestRealClient):
             method,
             url,
             response,
-            response_body_type,
+            response_type,
         )
 
     @override
@@ -198,7 +198,7 @@ class RequestHttpxClient(RequestRealClient):
         self,
         url: URL,
         *,
-        response_body_type: Type[ResponseModelBody],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
@@ -224,7 +224,7 @@ class RequestHttpxClient(RequestRealClient):
             method,
             url,
             response,
-            response_body_type,
+            response_type,
         )
 
 
@@ -232,7 +232,7 @@ def parse_json_response(
     method: Method,
     url: URL,
     response: httpx.Response,
-    response_body_type: Type[ResponseModelBody],
+    response_type: Type[ResponseModelBody],
 ) -> ResponseModelBody:
     if response.content == b"":
         data: dict = {}
@@ -248,7 +248,7 @@ def parse_json_response(
             )
 
     try:
-        return response_body_type(**data)
+        return response_type(**data)
 
     except pydantic.ValidationError as error:
         raise ResponseJsonBodyValidationError(method, url, data, error)

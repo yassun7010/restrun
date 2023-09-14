@@ -37,5 +37,5 @@ class PostUser(PostOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PostUserResponseBody,
+            response_type=PostUserResponseBody,
         )

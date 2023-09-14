@@ -45,5 +45,5 @@ class PutPet(PutOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PutPetResponseBody,
+            response_type=PutPetResponseBody,
         )

@@ -43,5 +43,5 @@ class PostPet(PostOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PostPetResponseBody,
+            response_type=PostPetResponseBody,
         )

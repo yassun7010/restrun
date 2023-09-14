@@ -35,5 +35,5 @@ class GetUserLogout(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetUserLogoutResponseBody,
+            response_type=GetUserLogoutResponseBody,
         )

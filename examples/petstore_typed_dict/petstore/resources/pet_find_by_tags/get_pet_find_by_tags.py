@@ -50,6 +50,6 @@ class GetPetFindByTags(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetPetFindByTagsResponseBody,
+            response_type=GetPetFindByTagsResponseBody,
             query=query,
         )

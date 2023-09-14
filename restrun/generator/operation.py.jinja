@@ -85,7 +85,7 @@ class {{ operation.class_name }}(
 {% endif %}
         return self._client.get(
             self.path,
-            response_body_type={{ operation.response_body.class_name }},
+            response_type={{ operation.response_body.class_name }},
 {% if operation.query_parameters %}
             query=query,
 {% endif %}

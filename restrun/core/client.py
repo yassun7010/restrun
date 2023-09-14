@@ -133,10 +133,10 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: Literal[None],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
-    ) -> ResponseModelBody:
+    ) -> Literal[None]:
         ...
 
     @overload
@@ -145,10 +145,10 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[None],
+        response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
-    ) -> None:
+    ) -> ResponseModelBody:
         ...
 
     @abstractmethod
@@ -156,10 +156,10 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_type: Type[ResponseModelBody] | Type[None],
+        response_type: Type[ResponseModelBody] | Literal[None],
         headers=None,
         query=None,
-    ) -> ResponseModelBody | None:
+    ) -> ResponseModelBody | Literal[None]:
         ...
 
     @abstractmethod

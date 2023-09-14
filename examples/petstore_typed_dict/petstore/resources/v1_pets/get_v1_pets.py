@@ -14,4 +14,4 @@ class GetV1Pets(GetOperation):
         return "/v1/pets"
 
     def get(self) -> "GetV1PetsResponseBody":
-        return self._client.get(self.path, response_body_type=GetV1PetsResponseBody)
+        return self._client.get(self.path, response_type=GetV1PetsResponseBody)

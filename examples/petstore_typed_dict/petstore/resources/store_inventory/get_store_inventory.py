@@ -43,5 +43,5 @@ class GetStoreInventory(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetStoreInventoryResponseBody,
+            response_type=GetStoreInventoryResponseBody,
         )

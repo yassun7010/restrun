@@ -43,5 +43,5 @@ class GetUserUsername(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetUserUsernameResponseBody,
+            response_type=GetUserUsernameResponseBody,
         )

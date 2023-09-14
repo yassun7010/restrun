@@ -43,5 +43,5 @@ class PostUserCreateWithList(PostOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PostUserCreateWithListResponseBody,
+            response_type=PostUserCreateWithListResponseBody,
         )

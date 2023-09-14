@@ -49,6 +49,6 @@ class GetPetFindByStatus(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetPetFindByStatusResponseBody,
+            response_type=GetPetFindByStatusResponseBody,
             query=query,
         )

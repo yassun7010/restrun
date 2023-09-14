@@ -45,5 +45,5 @@ class GetPetPetId(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetPetPetIdResponseBody,
+            response_type=GetPetPetIdResponseBody,
         )

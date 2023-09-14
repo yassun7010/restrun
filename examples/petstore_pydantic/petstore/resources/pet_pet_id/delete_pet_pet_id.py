@@ -35,5 +35,5 @@ class DeletePetPetId(DeleteOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=DeletePetPetIdResponseBody,
+            response_type=DeletePetPetIdResponseBody,
         )

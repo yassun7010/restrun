@@ -37,5 +37,5 @@ class PutUserUsername(PutOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PutUserUsernameResponseBody,
+            response_type=PutUserUsernameResponseBody,
         )

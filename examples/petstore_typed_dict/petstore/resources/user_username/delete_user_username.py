@@ -37,5 +37,5 @@ class DeleteUserUsername(DeleteOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=DeleteUserUsernameResponseBody,
+            response_type=DeleteUserUsernameResponseBody,
         )

@@ -46,5 +46,5 @@ class GetStoreOrderOrderId(GetOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=GetStoreOrderOrderIdResponseBody,
+            response_type=GetStoreOrderOrderIdResponseBody,
         )

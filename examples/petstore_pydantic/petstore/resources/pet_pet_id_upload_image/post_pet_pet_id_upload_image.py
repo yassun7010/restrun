@@ -48,6 +48,6 @@ class PostPetPetIdUploadImage(PostOperation):
 
         return self._client.get(
             self.path,
-            response_body_type=PostPetPetIdUploadImageResponseBody,
+            response_type=PostPetPetIdUploadImageResponseBody,
             query=query,
         )
