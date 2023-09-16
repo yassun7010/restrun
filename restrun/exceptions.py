@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Never, Type
+from typing import TYPE_CHECKING, Never, Type
 
 import jinja2
 
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     import pydantic
 
     from restrun.core import http
-    from restrun.core.model import Model
+    from restrun.core.client import ResponseType
     from restrun.core.operation import Operation
     from restrun.generator import ClassInfo
 
@@ -68,8 +68,8 @@ class MockResponseTypeError(RestrunError, KeyError):
         self,
         method: "http.Method",
         url: "http.URL",
-        response_body: "Model | Literal[None]",
-        expected_type: "Type[Model]",
+        response_body: "ResponseType",
+        expected_type: "Type[ResponseType]",
     ) -> None:
         self.method = method
         self.url = url
