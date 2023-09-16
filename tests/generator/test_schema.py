@@ -5,7 +5,12 @@ from restrun.generator import AUTO_GENERATED_DOC_COMMENT, is_auto_generated_or_e
 from restrun.generator.context.restrun_context import RestrunContext
 from restrun.generator.context.schema_context import SchemaContext
 from restrun.generator.schema import SchemaGenerator
-from restrun.openapi.schema import PythonLiteralType, PythonObject, PythonObjectProperty
+from restrun.openapi.schema import (
+    PythonCustomStr,
+    PythonLiteralType,
+    PythonObject,
+    PythonObjectProperty,
+)
 from tests.conftest import format_by_black
 
 
@@ -105,3 +110,26 @@ class TestSchemaGenerator:
             code
             == f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\nLiteral = {literal.value}\n"
         )
+
+    def test_custom_str_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+    ):
+        schema_context = SchemaContext(
+            type_name="CustomStr",
+            file_name="custom_str",
+            data_type=PythonCustomStr("custom"),
+        )
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+        code = format_by_black(code)
+        if len(schema_context.import_field_types) != 0:
+            imports = "\n".join(schema_context.import_field_types) + "\n"
+        else:
+            imports = ""
+
+        assert code == f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\nCustomStr = str\n"

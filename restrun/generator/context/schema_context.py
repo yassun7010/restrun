@@ -48,6 +48,10 @@ class SchemaContext:
                 raise NeverReachError(self.data_type)
 
     @property
+    def is_literal_type(self) -> bool:
+        return isinstance(self.data_type, PythonLiteralType)
+
+    @property
     def import_field_types(self) -> list[str]:
         return get_import_modules(self.data_type)
 

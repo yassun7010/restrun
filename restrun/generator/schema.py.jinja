@@ -3,7 +3,13 @@
 {{ import_module }}
 {% endfor %}
 
-{% if schema.type == "ref" %}
+{% if schema.is_literal_type %}
+{{ schema.type_name }} = {{ schema.data_type.value }}
+
+{% elif schema.type == "custom_str" %}
+{{ schema.type_name }} = str
+
+{% elif schema.type == "ref" %}
 from {{ schama.data_type.module_name }} import {{ schema.data_type.class_name }}
 
 {% elif schema.type == "object" %}
@@ -24,8 +30,4 @@ class {{ object.class_name }}(typing_extensions.TypedDict):
 
 {% endif %}
 {% endfor %}
-
-{% else %}
-{{ schema.type_name }} = {{ schema.data_type.value }}
-
 {% endif %}
