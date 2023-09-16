@@ -1,8 +1,4 @@
-{{ auto_generated_doc_comment }}
-{%- for import_module in schema.import_field_types %}
-{{ import_module }}
-{% endfor %}
-
+{%- macro generate_schema(prefix, schema) -%}
 {% if schema.is_literal_type %}
 {{ schema.type_name }} = {{ schema.data_type.value }}
 
@@ -38,3 +34,11 @@ class {{ object.class_name }}(typing_extensions.TypedDict):
 {{ schema.data_type.class_name }} = {{ schema.data_type }}
 
 {% endif %}
+{%- endmacro -%}
+
+{{ auto_generated_doc_comment }}
+{%- for import_module in schema.import_field_types %}
+{{ import_module }}
+{% endfor %}
+
+{{ generate_schema("", schema) }}
