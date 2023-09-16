@@ -8,6 +8,7 @@ from restrun.generator.schema import SchemaGenerator
 from restrun.openapi.schema import (
     PythonCustomStr,
     PythonLiteralType,
+    PythonLiteralUnion,
     PythonObject,
     PythonObjectProperty,
 )
@@ -100,15 +101,10 @@ class TestSchemaGenerator:
             restrun_context,
             schema_context,
         )
-        code = format_by_black(code)
-        if len(schema_context.import_field_types) != 0:
-            imports = "\n".join(schema_context.import_field_types) + "\n"
-        else:
-            imports = ""
 
-        assert (
-            code
-            == f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\nLiteral = {literal.value}\n"
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            f"Literal = {literal.value}",
         )
 
     def test_custom_str_type_schema(
@@ -127,9 +123,38 @@ class TestSchemaGenerator:
             schema_context,
         )
         code = format_by_black(code)
-        if len(schema_context.import_field_types) != 0:
-            imports = "\n".join(schema_context.import_field_types) + "\n"
-        else:
-            imports = ""
 
-        assert code == f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\nCustomStr = str\n"
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            "CustomStr = str",
+        )
+
+    def test_literal_union_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+    ):
+        schema_context = SchemaContext(
+            type_name="LiteralUnion",
+            file_name="literal_union",
+            data_type=PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
+        )
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            "LiteralUnion = typing.Literal[1, 2, 3]",
+        )
+
+
+def expected_type(schema_context: SchemaContext, type_def: str) -> str:
+    if len(schema_context.import_field_types) != 0:
+        imports = "\n".join(schema_context.import_field_types) + "\n"
+    else:
+        imports = ""
+
+    return f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\n{type_def}\n"
