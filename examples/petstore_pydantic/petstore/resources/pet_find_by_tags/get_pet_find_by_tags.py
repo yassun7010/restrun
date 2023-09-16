@@ -21,7 +21,7 @@ from ...schemas import pet
 
 
 class PetFindByTagsQueryParameters(typing.TypedDict):
-    tags: "list[str]"
+    tags: "typing.NotRequired[list[str]]"
 
 
 class PetFindByTagsJsonResponse(typing.TypedDict):

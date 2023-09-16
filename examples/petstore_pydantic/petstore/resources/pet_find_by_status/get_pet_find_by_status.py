@@ -21,7 +21,7 @@ from ...schemas import pet
 
 
 class PetFindByStatusQueryParameters(typing.TypedDict):
-    status: "typing.Literal['available','pending','sold']"
+    status: "typing.NotRequired[typing.Literal['available','pending','sold']]"
 
 
 class PetFindByStatusJsonResponse(typing.TypedDict):

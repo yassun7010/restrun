@@ -19,9 +19,9 @@ from restrun.core.operation import (
 
 
 class UserLoginQueryParameters(typing.TypedDict):
-    username: "str"
+    username: "typing.NotRequired[str]"
 
-    password: "str"
+    password: "typing.NotRequired[str]"
 
 
 class UserLoginJsonResponse(typing.TypedDict):

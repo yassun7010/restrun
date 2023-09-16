@@ -26,6 +26,10 @@ class PythonHeaderParameter:
     description: str | None = None
     required: bool = True
 
+    @property
+    def typed_dict_field(self) -> str:
+        return as_typed_dict_field(self.data_type, self.required)
+
 
 @dataclass(frozen=True)
 class PythonQueryParameter:
@@ -33,12 +37,20 @@ class PythonQueryParameter:
     description: str | None = None
     required: bool = True
 
+    @property
+    def typed_dict_field(self) -> str:
+        return as_typed_dict_field(self.data_type, self.required)
+
 
 @dataclass(frozen=True)
 class PythonCookieParameter:
     data_type: PythonDataType
     description: str | None = None
     required: bool = True
+
+    @property
+    def typed_dict_field(self) -> str:
+        return as_typed_dict_field(self.data_type, self.required)
 
 
 PythonParameter = TypeVar(

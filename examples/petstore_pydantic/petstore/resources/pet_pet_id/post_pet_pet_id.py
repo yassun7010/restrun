@@ -19,9 +19,9 @@ from restrun.core.operation import (
 
 
 class PetPetIdQueryParameters(typing.TypedDict):
-    name: "str"
+    name: "typing.NotRequired[str]"
 
-    status: "str"
+    status: "typing.NotRequired[str]"
 
 
 PostPetPetIdResponseBody = typing.Literal[None]

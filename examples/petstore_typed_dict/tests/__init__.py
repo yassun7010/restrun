@@ -15,5 +15,5 @@ def test_client():
             ),
         )
         .request("https://petstore3.com/pet/findByTags")
-        .get({"tags": []})
+        .get()
     )

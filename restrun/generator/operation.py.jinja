@@ -15,7 +15,7 @@ from ...schemas import {{ module_name }}
 {% if operation.query_parameters %}
 class {{ operation.query_parameters.class_name }}(typing.TypedDict):
 {% for name, query in operation.query_parameters.items() %}
-    {{ name }}: "{{ query.data_type }}"
+    {{ name }}: "{{ query.typed_dict_field }}"
 {% endfor %}
 {% endif %}
 

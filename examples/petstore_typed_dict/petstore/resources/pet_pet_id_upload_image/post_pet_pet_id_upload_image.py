@@ -21,7 +21,7 @@ from ...schemas import api_response
 
 
 class PetPetIdUploadImageQueryParameters(typing.TypedDict):
-    additionalMetadata: "str"
+    additionalMetadata: "typing.NotRequired[str]"
 
 
 class PetPetIdUploadImageJsonResponse(typing.TypedDict):
