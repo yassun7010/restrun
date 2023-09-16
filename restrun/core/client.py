@@ -78,7 +78,6 @@ class RestrunMockClient(RestrunClient):
     def _client(self) -> "RequestMockClient":
         return self._mock_client
 
-    @abstractmethod
     def inject_get_response(
         self,
         url: http.URL,
@@ -89,7 +88,6 @@ class RestrunMockClient(RestrunClient):
             "RestrunMockClient.inject_get_response is not implemented."
         )
 
-    @abstractmethod
     def inject_post_response(
         self,
         url: http.URL,
@@ -100,7 +98,6 @@ class RestrunMockClient(RestrunClient):
             "RestrunMockClient.inject_post_response is not implemented."
         )
 
-    @abstractmethod
     def inject_put_response(
         self,
         url: http.URL,
@@ -111,7 +108,6 @@ class RestrunMockClient(RestrunClient):
             "RestrunMockClient.inject_put_response is not implemented."
         )
 
-    @abstractmethod
     def inject_patch_response(
         self,
         url: http.URL,
@@ -122,7 +118,6 @@ class RestrunMockClient(RestrunClient):
             "RestrunMockClient.inject_patch_response is not implemented."
         )
 
-    @abstractmethod
     def inject_delete_response(
         self,
         url: http.URL,
@@ -157,10 +152,10 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Literal[str],
+        response_type: str,
         headers: Headers | None = None,
         query: QuryParameters | None = None,
-    ) -> Literal[str]:
+    ) -> str:
         ...
 
     @overload
@@ -183,7 +178,7 @@ class RequestClient(ABC):
         response_type: Type[ResponseModelBody] | str | Literal[None],
         headers=None,
         query=None,
-    ) -> ResponseModelBody | Literal[None]:
+    ) -> ResponseModelBody | str | Literal[None]:
         ...
 
     @abstractmethod
