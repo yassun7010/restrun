@@ -88,3 +88,5 @@ def generate_command(space: "Namespace") -> None:
                 from restrun.linter.ruff import RuffLinter
 
                 RuffLinter().lint(base_dir)
+
+    logger.info("Successfully generated clients.")

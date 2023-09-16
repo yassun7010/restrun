@@ -1,4 +1,7 @@
 from argparse import ArgumentParser, Namespace, _SubParsersAction
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
@@ -21,4 +24,4 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 def new_command(space: Namespace) -> None:
     project_name = space.project
-    print(f"Create a new project: {project_name}")
+    logger.info(f"Create a new project: {project_name}")
