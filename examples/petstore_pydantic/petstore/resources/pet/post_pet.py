@@ -41,7 +41,7 @@ class PostPet(PostOperation):
         Add a new pet to the store
         """
 
-        return self._client.get(
+        return self._client.post(
             self.path,
             response_type=PostPetResponseBody,
         )

@@ -35,7 +35,7 @@ class PutUserUsername(PutOperation):
         This can only be done by the logged in user.
         """
 
-        return self._client.get(
+        return self._client.put(
             self.path,
             response_type=PutUserUsernameResponseBody,
         )

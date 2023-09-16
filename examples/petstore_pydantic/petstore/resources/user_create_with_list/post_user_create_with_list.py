@@ -41,7 +41,7 @@ class PostUserCreateWithList(PostOperation):
         Creates list of users with given input array
         """
 
-        return self._client.get(
+        return self._client.post(
             self.path,
             response_type=PostUserCreateWithListResponseBody,
         )

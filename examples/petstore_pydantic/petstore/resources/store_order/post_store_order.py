@@ -43,7 +43,7 @@ class PostStoreOrder(PostOperation):
         Place a new order in the store
         """
 
-        return self._client.get(
+        return self._client.post(
             self.path,
             response_type=PostStoreOrderResponseBody,
         )

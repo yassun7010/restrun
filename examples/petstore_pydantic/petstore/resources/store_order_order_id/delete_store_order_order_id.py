@@ -36,7 +36,7 @@ class DeleteStoreOrderOrderId(DeleteOperation):
         nonintegers will generate API errors
         """
 
-        return self._client.get(
+        return self._client.delete(
             self.path,
             response_type=DeleteStoreOrderOrderIdResponseBody,
         )

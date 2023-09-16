@@ -35,7 +35,7 @@ class DeleteUserUsername(DeleteOperation):
         This can only be done by the logged in user.
         """
 
-        return self._client.get(
+        return self._client.delete(
             self.path,
             response_type=DeleteUserUsernameResponseBody,
         )

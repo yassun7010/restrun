@@ -33,7 +33,7 @@ class DeletePetPetId(DeleteOperation):
         Deletes a pet
         """
 
-        return self._client.get(
+        return self._client.delete(
             self.path,
             response_type=DeletePetPetIdResponseBody,
         )

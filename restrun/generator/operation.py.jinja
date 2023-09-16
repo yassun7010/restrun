@@ -83,7 +83,7 @@ class {{ operation.class_name }}(
         {{ operation.summary_and_description | wordwrap | indent(8) }}
         """
 {% endif %}
-        return self._client.get(
+        return self._client.{{operation.method | lower}}(
             self.path,
             response_type={{ operation.response_body.class_name }},
 {% if operation.query_parameters %}

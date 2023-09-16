@@ -46,7 +46,7 @@ class PostPetPetIdUploadImage(PostOperation):
         uploads an image
         """
 
-        return self._client.get(
+        return self._client.post(
             self.path,
             response_type=PostPetPetIdUploadImageResponseBody,
             query=query,

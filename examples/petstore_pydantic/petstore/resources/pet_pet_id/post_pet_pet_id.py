@@ -41,7 +41,7 @@ class PostPetPetId(PostOperation):
         Updates a pet in the store with form data
         """
 
-        return self._client.get(
+        return self._client.post(
             self.path,
             response_type=PostPetPetIdResponseBody,
             query=query,

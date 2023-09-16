@@ -82,7 +82,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_get_response is not implemented."
@@ -92,7 +92,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_post_response is not implemented."
@@ -102,7 +102,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_put_response is not implemented."
@@ -112,7 +112,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_patch_response is not implemented."
@@ -122,7 +122,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_delete_response is not implemented."
@@ -248,40 +248,40 @@ class RequestRealClient(RequestClient):
 
 class RequestMockClient(RequestClient):
     def __init__(self) -> None:
-        self._store: list[tuple[tuple[Method, URL], ResponseType | RestrunError]] = []
+        self._store: list[tuple[tuple[Method, URL], "ResponseType | RestrunError"]] = []
 
     def inject_get_response(
         self,
         url: URL,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ):
         self._store.append((("GET", url), response))
 
     def inject_post_response(
         self,
         url: URL,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ):
         self._store.append((("POST", url), response))
 
     def inject_put_response(
         self,
         url: URL,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ):
         self._store.append((("PUT", url), response))
 
     def inject_patch_response(
         self,
         url: URL,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ):
         self._store.append((("PATCH", url), response))
 
     def inject_delete_response(
         self,
         url: URL,
-        response: ResponseType | RestrunError,
+        response: "ResponseType | RestrunError",
     ):
         self._store.append((("DELETE", url), response))
 

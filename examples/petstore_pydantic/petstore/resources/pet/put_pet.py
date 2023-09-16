@@ -43,7 +43,7 @@ class PutPet(PutOperation):
         Update an existing pet by Id
         """
 
-        return self._client.get(
+        return self._client.put(
             self.path,
             response_type=PutPetResponseBody,
         )
