@@ -1,3 +1,4 @@
+import os
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
 
@@ -33,23 +34,28 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def new_command(space: Namespace) -> None:
+    from pathlib import Path
+
     from rich.prompt import Prompt
 
     from restrun.exceptions import ProjectNameRequiredError
+    from restrun.strcase import module_name
 
     project_name: str | None = space.project
     if project_name is None:
-        project_name = Prompt.ask("Project name")
+        project_name = Prompt.ask(
+            "[dark_orange]Project Name[/]",
+            default=module_name(Path(os.getcwd()).name),
+        )
         if len(project_name) == 0:
             raise ProjectNameRequiredError()
 
     source: str | None = space.source
     if source is None:
         source = Prompt.ask(
-            "Resource source type",
+            "[dark_orange]Resource Source Type[/]",
             choices=["manual", "openapi"],
             default="manual",
-            show_default=True,
         )
 
     logger.info(f"Create a new project: {project_name}")
