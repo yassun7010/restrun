@@ -3,7 +3,10 @@
 {{ import_module }}
 {% endfor %}
 
-{% if schema.type == "object" %}
+{% if schema.type == "ref" %}
+from {{ schama.data_type.module_name }} import {{ schema.data_type.class_name }}
+
+{% elif schema.type == "object" %}
 {% set object = schema.data_type %}
 class {{ object.class_name }}(typing_extensions.TypedDict):
 {%- if object.title_and_description %}
@@ -21,4 +24,8 @@ class {{ object.class_name }}(typing_extensions.TypedDict):
 
 {% endif %}
 {% endfor %}
+
+{% else %}
+{{ schema.type_name }} = {{ schema.data_type.value }}
+
 {% endif %}

@@ -39,7 +39,7 @@ class PythonLiteralType(str, Enum):
     IDN_HOSTNAME = "str"
     IP_V4 = "str"
     IP_V6 = "str"
-    UUID = "uuid"
+    UUID = "uuid.UUID"
     URI = "str"
     URI_REFERENCE = "str"
     IRI = "str"
@@ -406,7 +406,6 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             | PythonLiteralType.IDN_HOSTNAME
             | PythonLiteralType.IP_V4
             | PythonLiteralType.IP_V6
-            | PythonLiteralType.UUID
             | PythonLiteralType.URI
             | PythonLiteralType.URI_REFERENCE
             | PythonLiteralType.IRI
@@ -416,6 +415,9 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             | PythonLiteralType.RELATIVE_JSON_POINTER
         ):
             return []
+
+        case PythonLiteralType.UUID:
+            return ["import uuid"]
 
         case (
             PythonLiteralType.DATETIME

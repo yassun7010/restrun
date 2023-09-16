@@ -52,3 +52,9 @@ def resource_context() -> ResourceContext:
         operation_map={},
         path="/v1/pets",
     )
+
+
+def format_by_black(contents: str) -> str:
+    from black import format_str, Mode
+
+    return format_str(contents, mode=Mode(preview=True))
