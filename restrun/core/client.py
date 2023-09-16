@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Literal, Self, Type, overload
+from typing import TYPE_CHECKING, Any, Literal, Mapping, Self, Type, overload
 
 from typing_extensions import override
 
@@ -23,6 +23,18 @@ from restrun.exceptions import (
 
 if TYPE_CHECKING:
     from restrun.core.resource import Resource
+
+    SingleResponseType = (
+        Model
+        | ResponseModelBody
+        | Mapping[str, Any]
+        | str
+        | int
+        | float
+        | Literal[None]
+    )
+
+    ResponseType = SingleResponseType | list[SingleResponseType]
 
 
 class RestrunClient(ABC):
@@ -71,7 +83,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_get_response is not implemented."
@@ -82,7 +94,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_post_response is not implemented."
@@ -93,7 +105,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_put_response is not implemented."
@@ -104,7 +116,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_patch_response is not implemented."
@@ -115,7 +127,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_delete_response is not implemented."
@@ -145,6 +157,18 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
+        response_type: Literal[str],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+    ) -> Literal[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def get(
+        self,
+        url: URL,
+        *,
         response_type: Type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
@@ -156,7 +180,7 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_type: Type[ResponseModelBody] | Literal[None],
+        response_type: Type[ResponseModelBody] | str | Literal[None],
         headers=None,
         query=None,
     ) -> ResponseModelBody | Literal[None]:
@@ -229,42 +253,40 @@ class RequestRealClient(RequestClient):
 
 class RequestMockClient(RequestClient):
     def __init__(self) -> None:
-        self._store: list[
-            tuple[tuple[Method, URL], Model | Literal[None] | RestrunError]
-        ] = []
+        self._store: list[tuple[tuple[Method, URL], ResponseType | RestrunError]] = []
 
     def inject_get_response(
         self,
         url: URL,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ):
         self._store.append((("GET", url), response))
 
     def inject_post_response(
         self,
         url: URL,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ):
         self._store.append((("POST", url), response))
 
     def inject_put_response(
         self,
         url: URL,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ):
         self._store.append((("PUT", url), response))
 
     def inject_patch_response(
         self,
         url: URL,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ):
         self._store.append((("PATCH", url), response))
 
     def inject_delete_response(
         self,
         url: URL,
-        response: Model | Literal[None] | RestrunError,
+        response: ResponseType | RestrunError,
     ):
         self._store.append((("DELETE", url), response))
 
