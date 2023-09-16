@@ -50,7 +50,7 @@ def write_schemas(
     schema_contexts: "list[SchemaContext]",
 ):
     from restrun.generator import is_auto_generated_or_empty
-    from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
+    from restrun.generator.schema import SchemaGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
     schema_dir_path = base_dir / "schemas"
@@ -74,9 +74,7 @@ def write_schemas(
 
         logger.debug(f'"{filepath}" generating...')
 
-        code = SchemaTypedDictGenerator().generate(
-            config, restrun_context, schema_context
-        )
+        code = SchemaGenerator().generate(config, restrun_context, schema_context)
 
         with open(filepath, "w") as file:
             file.write(code)

@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from restrun.generator.context.schema_context import SchemaContext
 
 
-class SchemaTypedDictGenerator:
+class SchemaGenerator:
     def generate(
         self,
         config: "Config",
@@ -19,7 +19,7 @@ class SchemaTypedDictGenerator:
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
-            template_path = Path(__file__).parent / "schema_typed_dict.py.jinja"
+            template_path = Path(__file__).parent / "schema.py.jinja"
 
         return render_template(
             template_path,
