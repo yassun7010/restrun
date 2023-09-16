@@ -12,6 +12,9 @@
 {% elif schema.type == "literal_union" %}
 {{ schema.type_name }} = {{ schema.data_type }}
 
+{% elif schema.type == "array" %}
+{{ schema.type_name }} = {{ schema.data_type }}
+
 {% elif schema.type == "object" %}
 {% set object = schema.data_type %}
 class {{ object.class_name }}(typing_extensions.TypedDict):

@@ -6,6 +6,7 @@ from restrun.generator.context.restrun_context import RestrunContext
 from restrun.generator.context.schema_context import SchemaContext
 from restrun.generator.schema import SchemaGenerator
 from restrun.openapi.schema import (
+    PythonArray,
     PythonCustomStr,
     PythonLiteralType,
     PythonLiteralUnion,
@@ -148,6 +149,27 @@ class TestSchemaGenerator:
         assert format_by_black(code) == expected_type(
             schema_context,
             "LiteralUnion = typing.Literal[1, 2, 3]",
+        )
+
+    def test_array_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+    ):
+        schema_context = SchemaContext(
+            type_name="ArrayInt",
+            file_name="array_int",
+            data_type=PythonArray("ArrayInt", PythonLiteralType.INT),
+        )
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            "ArrayInt = list[int]",
         )
 
 
