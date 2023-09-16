@@ -41,10 +41,6 @@ class Config(RootModel):
         return urls
 
     @property
-    def schema_type(self) -> str:
-        return self.root.schema_raw.schema_type
-
-    @property
     def formats(self) -> list[V1FormatConfig] | None:
         return self.root.formats
 

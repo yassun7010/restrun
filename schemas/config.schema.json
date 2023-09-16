@@ -91,17 +91,6 @@
                     "default": [],
                     "title": "source settings."
                 },
-                "schema": {
-                    "allOf": [
-                        {
-                            "$ref": "#/$defs/V1Schema"
-                        }
-                    ],
-                    "default": {
-                        "schema_type": "pydantic"
-                    },
-                    "title": "schema settings."
-                },
                 "format": {
                     "anyOf": [
                         {
@@ -331,23 +320,6 @@
                 "linter"
             ],
             "title": "V1RuffConfig",
-            "type": "object"
-        },
-        "V1Schema": {
-            "additionalProperties": false,
-            "properties": {
-                "schema_type": {
-                    "default": "pydantic",
-                    "description": "`pydantic` or `typed_dict`.",
-                    "enum": [
-                        "pydantic",
-                        "typed_dict"
-                    ],
-                    "title": "schema type.",
-                    "type": "string"
-                }
-            },
-            "title": "V1Schema",
             "type": "object"
         }
     },

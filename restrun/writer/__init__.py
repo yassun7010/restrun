@@ -2,7 +2,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.exceptions import NeverReachError
 from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.operation import OperationGenerator
 from restrun.strcase import module_name
@@ -51,7 +50,6 @@ def write_schemas(
     schema_contexts: "list[SchemaContext]",
 ):
     from restrun.generator import is_auto_generated_or_empty
-    from restrun.generator.schema_pydantic import SchemaPydanticGenerator
     from restrun.generator.schema_typed_dict import SchemaTypedDictGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
@@ -76,19 +74,9 @@ def write_schemas(
 
         logger.debug(f'"{filepath}" generating...')
 
-        match config.root.schema_raw.schema_type:
-            case "pydantic":
-                code = SchemaPydanticGenerator().generate(
-                    config, restrun_context, schema_context
-                )
-
-            case "typed_dict":
-                code = SchemaTypedDictGenerator().generate(
-                    config, restrun_context, schema_context
-                )
-
-            case _:
-                raise NeverReachError(config.root.schema_raw.schema_type)
+        code = SchemaTypedDictGenerator().generate(
+            config, restrun_context, schema_context
+        )
 
         with open(filepath, "w") as file:
             file.write(code)

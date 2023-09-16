@@ -5,10 +5,7 @@
             "path": "."
         },
         {
-            "path": "examples/petstore_pydantic",
-        },
-        {
-            "path": "examples/petstore_typed_dict",
+            "path": "examples/petstore",
         }
     ],
     "settings": {
