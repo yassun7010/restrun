@@ -4,8 +4,7 @@ from restrun.cli import App
 def main() -> None:
     try:
         App.run()
-    except Exception as e:
-        print(e)
+    except Exception:
         exit(1)
 
 
