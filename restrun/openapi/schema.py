@@ -392,7 +392,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             return imports
 
         case PythonReference():
-            return [f"from .import {data_type.module_name}"]
+            return [f"from . import {data_type.module_name}"]
 
         case (
             PythonLiteralType.NONE
