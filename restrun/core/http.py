@@ -8,13 +8,12 @@ URL: TypeAlias = str
 Headers: TypeAlias = dict
 QuryParameters: TypeAlias = Mapping
 RequestJsonBody: TypeAlias = Mapping
-ResponseBody: TypeAlias = str
 ResponseDictBody = TypeVar("ResponseDictBody", bound=Mapping)
 ResponseModelBody = TypeVar("ResponseModelBody", bound=Model)
-_SingleResponseType = (
+_SingleResponse = (
     Model | ResponseModelBody | Mapping[str, Any] | ResponseDictBody | str | int | float
 )
-ResponseType = _SingleResponseType | list[_SingleResponseType] | None
+Response = _SingleResponse | list[_SingleResponse] | None
 
 Method: TypeAlias = Literal[
     "DELETE",

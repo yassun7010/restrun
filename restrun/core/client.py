@@ -12,13 +12,13 @@ from restrun.core.http import (
     RequestJsonBody,
     ResponseDictBody,
     ResponseModelBody,
-    ResponseType,
+    Response,
 )
 from restrun.exceptions import (
     MockRequestError,
     MockResponseBodyRemainsError,
     MockResponseNotFoundError,
-    MockResponseTypeError,
+    MockResponseError,
     RestrunError,
 )
 
@@ -71,7 +71,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_get_response is not implemented."
@@ -81,7 +81,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_post_response is not implemented."
@@ -91,7 +91,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_put_response is not implemented."
@@ -101,7 +101,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_patch_response is not implemented."
@@ -111,7 +111,7 @@ class RestrunMockClient(RestrunClient):
         self,
         url: http.URL,
         *,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ) -> Self:
         raise NotImplementedError(
             "RestrunMockClient.inject_delete_response is not implemented."
@@ -212,10 +212,10 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers=None,
         query=None,
-    ) -> ResponseType:
+    ) -> Response:
         ...
 
     @overload
@@ -314,11 +314,11 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         ...
 
     @overload
@@ -417,11 +417,11 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         ...
 
     @overload
@@ -520,11 +520,11 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         ...
 
     @overload
@@ -623,11 +623,11 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         ...
 
     @abstractmethod
@@ -649,46 +649,46 @@ class RequestRealClient(RequestClient):
 
 class RequestMockClient(RequestClient):
     def __init__(self) -> None:
-        self._store: list[tuple[tuple[Method, URL], "ResponseType | RestrunError"]] = []
+        self._store: list[tuple[tuple[Method, URL], "Response | RestrunError"]] = []
 
     def inject_get_response(
         self,
         url: URL,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ):
         self._store.append((("GET", url), response))
 
     def inject_post_response(
         self,
         url: URL,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ):
         self._store.append((("POST", url), response))
 
     def inject_put_response(
         self,
         url: URL,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ):
         self._store.append((("PUT", url), response))
 
     def inject_patch_response(
         self,
         url: URL,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ):
         self._store.append((("PATCH", url), response))
 
     def inject_delete_response(
         self,
         url: URL,
-        response: "ResponseType | RestrunError",
+        response: "Response | RestrunError",
     ):
         self._store.append((("DELETE", url), response))
 
     def _extract_response(
-        self, method: Method, url: URL, *, response_type: type[ResponseType]
-    ) -> ResponseType:
+        self, method: Method, url: URL, *, response_type: type[Response]
+    ) -> Response:
         if len(self._store) == 0:
             raise MockResponseNotFoundError()
 
@@ -702,7 +702,7 @@ class RequestMockClient(RequestClient):
             raise response
 
         if not isinstance(response, response_type):
-            raise MockResponseTypeError(method, url, response, response_type)
+            raise MockResponseError(method, url, response, response_type)
 
         return response
 
@@ -711,10 +711,10 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         return self._extract_response(
             "GET",
             url,
@@ -726,11 +726,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         return self._extract_response(
             "POST",
             url,
@@ -742,11 +742,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         return self._extract_response(
             "PUT",
             url,
@@ -758,11 +758,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         return self._extract_response(
             "PATCH",
             url,
@@ -774,11 +774,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: type[ResponseType],
+        response_type: type[Response],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseType:
+    ) -> Response:
         return self._extract_response(
             "DELETE",
             url,
