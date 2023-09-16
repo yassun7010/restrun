@@ -17,9 +17,10 @@ from restrun.exceptions import FileExtensionError
 from .v1 import V1Config
 
 DEFAULT_CONFIG_FILES = [
-    Path("restrun.toml"),
     Path("restrun.yaml"),
     Path("restrun.yml"),
+    Path("restrun.json"),
+    Path("restrun.toml"),
 ]
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
 
