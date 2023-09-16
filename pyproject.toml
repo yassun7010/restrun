@@ -13,6 +13,7 @@ test = "pytest"
 format = "black ."
 lint = "pyright restrun/** tests/** examples/**"
 generate-config-jsonschema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
+execute-examples = "sh scripts/execute_examples.sh"
 
 [tool.poetry.dependencies]
 python = "^3.11"

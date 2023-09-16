@@ -11,10 +11,9 @@
 #
 from typing import Literal, Self, overload
 
-from typing_extensions import override
-
 from restrun.core.client import RestrunMockClient
 from restrun.exceptions import RestrunError
+from typing_extensions import override
 
 from ..resources.pet import post_pet, put_pet
 from ..resources.pet_find_by_status import get_pet_find_by_status

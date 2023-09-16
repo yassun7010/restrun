@@ -7,8 +7,21 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+restrun = { path = "../.." }
+typing-extensions = "^4.7.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.pyright]
+exclude = ["**/__pycache__"]
+reportPrivateImportUsage = "none"
+reportUnusedImport = true
+
+[tool.ruff]
