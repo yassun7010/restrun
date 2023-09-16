@@ -32,7 +32,7 @@ class RestrunClient(ABC):
         ...
 
     @abstractmethod
-    def request(self, url: str) -> "Resource":
+    def resource(self, url: str) -> "Resource":
         ...
 
     def close(self) -> None:

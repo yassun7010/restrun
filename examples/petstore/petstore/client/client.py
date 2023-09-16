@@ -37,104 +37,104 @@ from .mixins import bearer_token_login_mixin
 
 class PetstoreClient(bearer_token_login_mixin.BearerTokenLoginMixin, RestrunClient):
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/store/inventory"],
     ) -> "store_inventory.StoreInventoryResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/pet/{petId}/uploadImage"],
     ) -> "pet_pet_id_upload_image.PetPetIdUploadImageResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/pet/findByTags"],
     ) -> "pet_find_by_tags.PetFindByTagsResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/user/{username}"],
     ) -> "user_username.UserUsernameResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/user"],
     ) -> "user.UserResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/store/order/{orderId}"],
     ) -> "store_order_order_id.StoreOrderOrderIdResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/pet/{petId}"],
     ) -> "pet_pet_id.PetPetIdResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/user/login"],
     ) -> "user_login.UserLoginResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/v1/pets"],
     ) -> "v1_pets.V1PetsResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/pet"],
     ) -> "pet.PetResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/store/order"],
     ) -> "store_order.StoreOrderResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/user/createWithList"],
     ) -> "user_create_with_list.UserCreateWithListResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/pet/findByStatus"],
     ) -> "pet_find_by_status.PetFindByStatusResource":
         ...
 
     @overload
-    def request(
+    def resource(
         self,
         url: Literal["https://petstore3.com/user/logout"],
     ) -> "user_logout.UserLogoutResource":
         ...
 
-    def request(self, url):
+    def resource(self, url):
         if url in ["https://petstore3.com/store/inventory"]:
             return store_inventory.StoreInventoryResource(self._client)
 
