@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Literal, Mapping, Self, Type, overload
+from typing import TYPE_CHECKING, Literal, Self, overload
 
 from typing_extensions import override
 
@@ -10,9 +10,10 @@ from restrun.core.http import (
     Method,
     QuryParameters,
     RequestJsonBody,
+    ResponseDictBody,
     ResponseModelBody,
+    ResponseType,
 )
-from restrun.core.model import Model
 from restrun.exceptions import (
     MockRequestError,
     MockResponseBodyRemainsError,
@@ -23,18 +24,6 @@ from restrun.exceptions import (
 
 if TYPE_CHECKING:
     from restrun.core.resource import Resource
-
-    SingleResponseType = (
-        Model
-        | ResponseModelBody
-        | Mapping[str, Any]
-        | str
-        | int
-        | float
-        | Literal[None]
-    )
-
-    ResponseType = SingleResponseType | list[SingleResponseType]
 
 
 class RestrunClient(ABC):
@@ -140,7 +129,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Literal[None],
+        response_type: type[None],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> Literal[None]:
@@ -152,7 +141,7 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: str,
+        response_type: type[str],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> str:
@@ -164,10 +153,58 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[list[str]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+    ) -> list[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def get(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseDictBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+    ) -> ResponseDictBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def get(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseDictBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+    ) -> list[ResponseDictBody]:
+        ...
+
+    @overload
+    @abstractmethod
+    def get(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
     ) -> ResponseModelBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def get(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseModelBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+    ) -> list[ResponseModelBody]:
         ...
 
     @abstractmethod
@@ -175,10 +212,101 @@ class RequestClient(ABC):
         self,
         url,
         *,
-        response_type: Type[ResponseModelBody] | str | Literal[None],
+        response_type: type[ResponseType],
         headers=None,
         query=None,
-    ) -> ResponseModelBody | str | Literal[None]:
+    ) -> ResponseType:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[None],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> Literal[None]:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[str],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> str:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[str]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseDictBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseDictBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseDictBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseDictBody]:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseModelBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseModelBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def post(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseModelBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseModelBody]:
         ...
 
     @abstractmethod
@@ -186,11 +314,102 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseType:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[None],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> Literal[None]:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[str],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> str:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[str]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseDictBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseDictBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseDictBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseDictBody]:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def put(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseModelBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseModelBody]:
         ...
 
     @abstractmethod
@@ -198,11 +417,102 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseType:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[None],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> Literal[None]:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[str],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> str:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[str]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseDictBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseDictBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseDictBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseDictBody]:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def patch(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseModelBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseModelBody]:
         ...
 
     @abstractmethod
@@ -210,11 +520,102 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseType:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[None],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> Literal[None]:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[str],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> str:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[str]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[str]:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseDictBody],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> ResponseDictBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseDictBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseDictBody]:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[ResponseModelBody],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
     ) -> ResponseModelBody:
+        ...
+
+    @overload
+    @abstractmethod
+    def delete(
+        self,
+        url: URL,
+        *,
+        response_type: type[list[ResponseModelBody]],
+        headers: Headers | None = None,
+        query: QuryParameters | None = None,
+        body: RequestJsonBody | None = None,
+    ) -> list[ResponseModelBody]:
         ...
 
     @abstractmethod
@@ -222,11 +623,11 @@ class RequestClient(ABC):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         ...
 
     @abstractmethod
@@ -286,8 +687,8 @@ class RequestMockClient(RequestClient):
         self._store.append((("DELETE", url), response))
 
     def _extract_response(
-        self, method: Method, url: URL, *, response_type: Type[ResponseModelBody]
-    ) -> ResponseModelBody:
+        self, method: Method, url: URL, *, response_type: type[ResponseType]
+    ) -> ResponseType:
         if len(self._store) == 0:
             raise MockResponseNotFoundError()
 
@@ -310,10 +711,10 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         return self._extract_response(
             "GET",
             url,
@@ -325,11 +726,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         return self._extract_response(
             "POST",
             url,
@@ -341,11 +742,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         return self._extract_response(
             "PUT",
             url,
@@ -357,11 +758,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         return self._extract_response(
             "PATCH",
             url,
@@ -373,11 +774,11 @@ class RequestMockClient(RequestClient):
         self,
         url: URL,
         *,
-        response_type: Type[ResponseModelBody],
+        response_type: type[ResponseType],
         headers: Headers | None = None,
         query: QuryParameters | None = None,
         body: RequestJsonBody | None = None,
-    ) -> ResponseModelBody:
+    ) -> ResponseType:
         return self._extract_response(
             "DELETE",
             url,

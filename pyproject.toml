@@ -11,7 +11,7 @@ restrun = "restrun.__main__:main"
 [tool.taskipy.tasks]
 test = "pytest"
 format = "black ."
-lint = "pyright restrun/** tests/**"
+lint = "pyright restrun/** tests/** examples/**"
 generate-config-jsonschema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
 
 [tool.poetry.dependencies]
