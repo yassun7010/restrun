@@ -11,8 +11,10 @@
 #
 import typing
 
+import typing_extensions
 
-class Address(typing.TypedDict):
+
+class Address(typing_extensions.TypedDict):
     street: typing.NotRequired[str]
 
     city: typing.NotRequired[str]

@@ -5,7 +5,7 @@
 
 {% if schema.type == "object" %}
 {% set object = schema.data_type %}
-class {{ object.class_name }}(typing.TypedDict):
+class {{ object.class_name }}(typing_extensions.TypedDict):
 {%- if object.title_and_description %}
     """
     {{ object.title_and_description | wordwrap | indent(4) }}

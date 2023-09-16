@@ -11,8 +11,10 @@
 #
 import typing
 
+import typing_extensions
 
-class User(typing.TypedDict):
+
+class User(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     username: typing.NotRequired[str]

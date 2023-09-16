@@ -11,6 +11,7 @@
 #
 import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -18,7 +19,7 @@ from restrun.core.operation import (
 )
 
 
-class PetPetIdQueryParameters(typing.TypedDict):
+class PetPetIdQueryParameters(typing_extensions.TypedDict):
     name: "typing.NotRequired[str]"
 
     status: "typing.NotRequired[str]"

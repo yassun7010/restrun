@@ -12,8 +12,10 @@
 import datetime
 import typing
 
+import typing_extensions
 
-class Order(typing.TypedDict):
+
+class Order(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     petId: typing.NotRequired[int]

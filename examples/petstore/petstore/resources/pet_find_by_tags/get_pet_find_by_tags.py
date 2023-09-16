@@ -11,6 +11,7 @@
 #
 import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -20,11 +21,11 @@ from restrun.core.operation import (
 from ...schemas import pet
 
 
-class PetFindByTagsQueryParameters(typing.TypedDict):
+class PetFindByTagsQueryParameters(typing_extensions.TypedDict):
     tags: "typing.NotRequired[list[str]]"
 
 
-class PetFindByTagsJsonResponse(typing.TypedDict):
+class PetFindByTagsJsonResponse(typing_extensions.TypedDict):
     pass
 
 

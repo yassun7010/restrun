@@ -11,8 +11,10 @@
 #
 import typing
 
+import typing_extensions
 
-class ApiResponse(typing.TypedDict):
+
+class ApiResponse(typing_extensions.TypedDict):
     code: typing.NotRequired[int]
 
     type: typing.NotRequired[str]

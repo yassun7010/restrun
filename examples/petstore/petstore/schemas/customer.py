@@ -11,10 +11,12 @@
 #
 import typing
 
+import typing_extensions
+
 from . import address
 
 
-class Customer(typing.TypedDict):
+class Customer(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     username: typing.NotRequired[str]

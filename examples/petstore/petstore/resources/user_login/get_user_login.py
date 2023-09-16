@@ -11,6 +11,7 @@
 #
 import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -18,13 +19,13 @@ from restrun.core.operation import (
 )
 
 
-class UserLoginQueryParameters(typing.TypedDict):
+class UserLoginQueryParameters(typing_extensions.TypedDict):
     username: "typing.NotRequired[str]"
 
     password: "typing.NotRequired[str]"
 
 
-class UserLoginJsonResponse(typing.TypedDict):
+class UserLoginJsonResponse(typing_extensions.TypedDict):
     pass
 
 

@@ -11,10 +11,12 @@
 #
 import typing
 
+import typing_extensions
+
 from . import category, tag
 
 
-class Pet(typing.TypedDict):
+class Pet(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     name: str

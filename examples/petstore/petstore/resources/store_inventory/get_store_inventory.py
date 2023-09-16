@@ -9,8 +9,8 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -18,7 +18,7 @@ from restrun.core.operation import (
 )
 
 
-class StoreInventoryJsonResponse(typing.TypedDict):
+class StoreInventoryJsonResponse(typing_extensions.TypedDict):
     pass
 
 

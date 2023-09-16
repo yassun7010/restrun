@@ -9,8 +9,8 @@
 # For more information about restrun,
 # please refer to https://github.com/yassun7010/restrun .
 #
-import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -20,7 +20,7 @@ from restrun.core.operation import (
 from ...schemas import order
 
 
-class StoreOrderOrderIdJsonResponse(typing.TypedDict):
+class StoreOrderOrderIdJsonResponse(typing_extensions.TypedDict):
     pass
 
 

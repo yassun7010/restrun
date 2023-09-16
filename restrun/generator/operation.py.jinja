@@ -1,5 +1,6 @@
 {{ auto_generated_doc_comment }}
 import typing
+import typing_extensions
 
 import pydantic
 
@@ -13,14 +14,14 @@ from ...schemas import {{ module_name }}
 {% endfor %}
 
 {% if operation.query_parameters %}
-class {{ operation.query_parameters.class_name }}(typing.TypedDict):
+class {{ operation.query_parameters.class_name }}(typing_extensions.TypedDict):
 {% for name, query in operation.query_parameters.items() %}
     {{ name }}: "{{ query.typed_dict_field }}"
 {% endfor %}
 {% endif %}
 
 {% if operation.request_json_body %}
-class {{ operation.request_json_body.class_name }}(typing.TypedDict):
+class {{ operation.request_json_body.class_name }}(typing_extensions.TypedDict):
 {% if operation.request_json_body.description %}
     """
     {{ operation.request_json_body.description | indent(4) }}
@@ -32,7 +33,7 @@ class {{ operation.request_json_body.class_name }}(typing.TypedDict):
 {% endif %}
 
 {% if operation.response_json_body %}
-class {{ operation.response_json_body.class_name }}(typing.TypedDict):
+class {{ operation.response_json_body.class_name }}(typing_extensions.TypedDict):
 {% if operation.response_json_body.description %}
     """
     {{ operation.response_json_body.description | indent(4) }}

@@ -11,8 +11,10 @@
 #
 import typing
 
+import typing_extensions
 
-class Category(typing.TypedDict):
+
+class Category(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     name: typing.NotRequired[str]

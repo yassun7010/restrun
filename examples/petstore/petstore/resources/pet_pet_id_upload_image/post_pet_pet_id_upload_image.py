@@ -11,6 +11,7 @@
 #
 import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -20,11 +21,11 @@ from restrun.core.operation import (
 from ...schemas import api_response
 
 
-class PetPetIdUploadImageQueryParameters(typing.TypedDict):
+class PetPetIdUploadImageQueryParameters(typing_extensions.TypedDict):
     additionalMetadata: "typing.NotRequired[str]"
 
 
-class PetPetIdUploadImageJsonResponse(typing.TypedDict):
+class PetPetIdUploadImageJsonResponse(typing_extensions.TypedDict):
     pass
 
 

@@ -11,8 +11,10 @@
 #
 import typing
 
+import typing_extensions
 
-class Tag(typing.TypedDict):
+
+class Tag(typing_extensions.TypedDict):
     id: typing.NotRequired[int]
 
     name: typing.NotRequired[str]

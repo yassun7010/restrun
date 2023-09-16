@@ -11,6 +11,7 @@
 #
 import typing
 
+import typing_extensions
 
 from restrun.core import http
 from restrun.core.operation import (
@@ -20,11 +21,11 @@ from restrun.core.operation import (
 from ...schemas import pet
 
 
-class PetFindByStatusQueryParameters(typing.TypedDict):
+class PetFindByStatusQueryParameters(typing_extensions.TypedDict):
     status: "typing.NotRequired[typing.Literal['available','pending','sold']]"
 
 
-class PetFindByStatusJsonResponse(typing.TypedDict):
+class PetFindByStatusJsonResponse(typing_extensions.TypedDict):
     pass
 
 

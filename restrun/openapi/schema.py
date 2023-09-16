@@ -385,7 +385,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             return get_import_modules(data_type.items)
 
         case PythonObject():
-            imports = ["import typing"]
+            imports = ["import typing", "import typing_extensions"]
             for property in data_type.properties.values():
                 imports.extend(get_import_modules(property.data_type))
 
