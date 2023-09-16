@@ -16,6 +16,7 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
         "project",
         type=str,
         metavar="PROJECT",
+        nargs="?",
         help="project name.",
     )
 
@@ -23,5 +24,5 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def new_command(space: Namespace) -> None:
-    project_name = space.project
+    project_name: str | None = space.project
     logger.info(f"Create a new project: {project_name}")
