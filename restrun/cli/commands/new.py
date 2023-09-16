@@ -20,6 +20,15 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
         help="project name.",
     )
 
+    parser.add_argument(
+        "--source",
+        type=str,
+        metavar="SOURCE_TYPE",
+        choices=["manual", "openapi"],
+        required=False,
+        help="resource source type.",
+    )
+
     parser.set_defaults(handler=new_command)
 
 
@@ -33,5 +42,14 @@ def new_command(space: Namespace) -> None:
         project_name = Prompt.ask("Project name")
         if len(project_name) == 0:
             raise ProjectNameRequiredError()
+
+    source: str | None = space.source
+    if source is None:
+        source = Prompt.ask(
+            "Resource source type",
+            choices=["manual", "openapi"],
+            default="manual",
+            show_default=True,
+        )
 
     logger.info(f"Create a new project: {project_name}")
