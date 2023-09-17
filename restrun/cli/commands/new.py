@@ -8,8 +8,8 @@ logger = getLogger(__name__)
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     parser: ArgumentParser = subparsers.add_parser(
         "new",
-        description="Create new [restrun]RESTRUN[/] project.",
-        help="Create new RESTRUN project.",
+        description="create new [restrun]RESTRUN[/] project.",
+        help="create new RESTRUN project.",
         **kwargs,
     )
 

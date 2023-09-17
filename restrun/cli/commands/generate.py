@@ -12,8 +12,8 @@ logger = getLogger(__name__)
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     parser: ArgumentParser = subparsers.add_parser(
         "generate",
-        description="Generate clients.",
-        help="Generate clients.",
+        description="generate clients.",
+        help="generate clients.",
         **kwargs,
     )
 
