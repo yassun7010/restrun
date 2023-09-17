@@ -34,11 +34,11 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 def generate_command(space: "Namespace") -> None:
     from restrun import strcase
-    from restrun.config import DEFAULT_CONFIG_FILE, get_path, load
+    from restrun.config import find_config_file, load
     from restrun.generator.context.restrun_context import make_rustrun_context
     from restrun.writer import write_clients, write_resources
 
-    config_path = get_path(space.config, DEFAULT_CONFIG_FILE)
+    config_path = find_config_file(space.config)
 
     with open(config_path) as file:
         config = load(file)

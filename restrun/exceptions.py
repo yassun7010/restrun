@@ -36,6 +36,15 @@ class NeverReachError(RestrunError, ValueError):
         return f"Never reach {self.type}."
 
 
+class RestrunConfigNotFoundError(RestrunError, FileNotFoundError):
+    def __init__(self, config_path: Path) -> None:
+        self.config_path = config_path
+
+    @property
+    def message(self) -> str:
+        return f'"{self.config_path}" file not found.'
+
+
 class MockResponseNotFoundError(RestrunError, KeyError):
     @property
     def message(self) -> str:

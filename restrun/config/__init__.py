@@ -2,7 +2,7 @@ import json
 import os
 from io import StringIO
 from pathlib import Path
-from typing import IO, overload
+from typing import IO
 
 import jinja2
 import tomllib
@@ -12,7 +12,7 @@ from pydantic import RootModel
 from restrun.config.v1.format import V1FormatConfig
 from restrun.config.v1.lint import V1LintConfig
 from restrun.core import http
-from restrun.exceptions import FileExtensionError
+from restrun.exceptions import FileExtensionError, RestrunConfigNotFoundError
 
 from .v1 import V1Config
 
@@ -50,25 +50,19 @@ class Config(RootModel):
         return self.root.lints
 
 
-@overload
-def get_path(path: Path | None, default: None) -> Path | None:
-    ...
-
-
-@overload
-def get_path(path: Path | None, default: Path) -> Path:
-    ...
-
-
-def get_path(path: Path | None = None, default: Path | None = None) -> Path | None:
+def find_config_file(path: Path | None) -> Path:
     if path is not None:
-        return path
+        if path.exists():
+            return path
+        else:
+            raise RestrunConfigNotFoundError(path)
 
     for filename in DEFAULT_CONFIG_FILES:
         if filename.exists():
             return filename
+
     else:
-        return default
+        raise RestrunConfigNotFoundError(DEFAULT_CONFIG_FILE)
 
 
 def load(file: IO, **kwargs) -> Config:
