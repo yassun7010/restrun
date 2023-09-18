@@ -30,6 +30,7 @@ from restrun.openapi.schema import (
     PythonReference,
     get_data_type,
     is_object,
+    title_and_description,
 )
 from restrun.strcase import class_name
 
@@ -57,17 +58,7 @@ class OperationContext:
 
     @cached_property
     def summary_and_description(self) -> str | None:
-        if self.summary and self.description and self.summary != self.description:
-            return f"{self.summary}\n\n{self.description}"
-
-        elif self.summary:
-            return self.summary
-
-        elif self.description:
-            return self.description
-
-        else:
-            return None
+        return title_and_description(self.summary, self.description)
 
     @property
     def request_body(self) -> "PythonRequestBody | None":
