@@ -35,6 +35,7 @@ class PostPetPetId(PostOperation):
 
     def post(
         self,
+        petId: "int",
         query: "PetPetIdQueryParameters| None" = None,
     ) -> "PostPetPetIdResponseBody":
         """

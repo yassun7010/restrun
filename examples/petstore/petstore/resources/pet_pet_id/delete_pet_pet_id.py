@@ -27,6 +27,7 @@ class DeletePetPetId(DeleteOperation):
 
     def delete(
         self,
+        petId: "int",
     ) -> "DeletePetPetIdResponseBody":
         """
         Deletes a pet

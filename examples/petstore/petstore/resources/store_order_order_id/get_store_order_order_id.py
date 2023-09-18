@@ -35,6 +35,7 @@ class GetStoreOrderOrderId(GetOperation):
 
     def get(
         self,
+        orderId: "int",
     ) -> "GetStoreOrderOrderIdResponseBody":
         """
         Find purchase order by ID

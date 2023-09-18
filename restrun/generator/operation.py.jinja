@@ -63,6 +63,11 @@ class {{ operation.class_name }}(
 
     def {{operation.method | lower}}(
         self,
+{% if operation.path_parameters %}
+{% for name, path in operation.path_parameters.items() %}
+        {{ name }}: "{{ path.data_type }}",
+{% endfor %}
+{% endif %}
 {% if operation.query_parameters %}
         query: "{{ operation.query_parameters.class_name }}
         {%- if operation.query_parameters.allow_empty -%}

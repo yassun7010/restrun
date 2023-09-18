@@ -27,6 +27,7 @@ class DeleteUserUsername(DeleteOperation):
 
     def delete(
         self,
+        username: "str",
     ) -> "DeleteUserUsernameResponseBody":
         """
         Delete user

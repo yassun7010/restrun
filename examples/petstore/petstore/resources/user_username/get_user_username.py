@@ -35,6 +35,7 @@ class GetUserUsername(GetOperation):
 
     def get(
         self,
+        username: "str",
     ) -> "GetUserUsernameResponseBody":
         """
         Get user by user name

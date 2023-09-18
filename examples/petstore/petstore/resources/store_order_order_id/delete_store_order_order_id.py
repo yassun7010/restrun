@@ -27,6 +27,7 @@ class DeleteStoreOrderOrderId(DeleteOperation):
 
     def delete(
         self,
+        orderId: "int",
     ) -> "DeleteStoreOrderOrderIdResponseBody":
         """
         Delete purchase order by ID

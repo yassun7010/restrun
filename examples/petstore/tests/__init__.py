@@ -14,6 +14,6 @@ def test_client():
                 photoUrls=[],
             ),
         )
-        .resource("https://petstore3.com/pet/findByTags")
-        .get()
+        .resource("https://petstore3.com/pet/{petId}")
+        .get(12)
     )

@@ -27,6 +27,7 @@ class PutUserUsername(PutOperation):
 
     def put(
         self,
+        username: "str",
     ) -> "PutUserUsernameResponseBody":
         """
         Update user

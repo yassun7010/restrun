@@ -35,6 +35,7 @@ class GetPetPetId(GetOperation):
 
     def get(
         self,
+        petId: "int",
     ) -> "GetPetPetIdResponseBody":
         """
         Find pet by ID
