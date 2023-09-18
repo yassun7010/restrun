@@ -88,6 +88,7 @@ class App:
         try:
             if hasattr(space, "handler"):
                 space.handler(space)
+
             else:
                 parser.print_help()
 
@@ -98,6 +99,7 @@ class App:
         except Exception as e:
             if space.verbose:
                 logger.exception(e)
+
             else:
                 logger.error(e)
 
