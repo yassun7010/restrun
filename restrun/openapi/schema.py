@@ -81,10 +81,10 @@ class PythonCustomStr:
 @dataclass(frozen=True)
 class PythonArray:
     name: str
-    items: "PythonDataType"
+    item_type: "PythonDataType"
 
     def __str__(self) -> str:
-        return f"list[{self.items}]"
+        return f"list[{self.item_type}]"
 
 
 @dataclass(frozen=True)
@@ -319,7 +319,7 @@ def get_data_type(
             case DataType_v3_1_0.ARRAY | DataType_v3_0_3.BOOLEAN:
                 return PythonArray(
                     name=name,
-                    items=(
+                    item_type=(
                         get_data_type(name, schema.items, schemas)
                         if schema.items is not None
                         else PythonLiteralType.ANY
@@ -382,7 +382,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             return []
 
         case PythonArray():
-            return get_import_modules(data_type.items)
+            return get_import_modules(data_type.item_type)
 
         case PythonObject():
             imports = ["import typing", "import typing_extensions"]
