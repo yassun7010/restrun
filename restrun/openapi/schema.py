@@ -118,7 +118,7 @@ class PythonObjectProperty:
 
 @dataclass(frozen=True)
 class PythonObject:
-    class_name: str
+    type_name: str
     properties: dict[str, PythonObjectProperty]
     additional_properties: bool = True
     title: str | None = None
@@ -149,7 +149,7 @@ class PythonObject:
         )
 
     def __str__(self) -> str:
-        return self.class_name
+        return self.type_name
 
 
 @dataclass(frozen=True)
@@ -158,7 +158,7 @@ class PythonReference:
     target: "PythonDataType"
 
     @cached_property
-    def class_name(self) -> str:
+    def type_name(self) -> str:
         return class_name(self.ref.split("/")[-1])
 
     @cached_property
@@ -166,7 +166,7 @@ class PythonReference:
         return module_name(self.ref.split("/")[-1])
 
     def __str__(self) -> str:
-        return f"{self.module_name}.{self.class_name}"
+        return f"{self.module_name}.{self.type_name}"
 
 
 PythonDataType = (
@@ -365,7 +365,7 @@ def get_data_type(
                     )
 
                 return PythonObject(
-                    class_name=class_name(name),
+                    type_name=class_name(name),
                     properties=properties,
                     additional_properties=schema.additionalProperties is not False,
                     title=schema.title,

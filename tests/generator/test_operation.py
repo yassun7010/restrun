@@ -25,7 +25,7 @@ class TestOperationGenerator:
                     response_json_body=PythonResponseJsonBody(
                         class_name="GetPetsResponse",
                         data_type=PythonObject(
-                            class_name="GetPetsJsonResponse", properties={}
+                            type_name="GetPetsJsonResponse", properties={}
                         ),
                     ),
                 ),

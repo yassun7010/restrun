@@ -23,7 +23,7 @@ class TestSchema:
             openapi.root.components.schemas["Order"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Order",
+            type_name="Order",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "petId": PythonObjectProperty(PythonLiteralType.INT),
@@ -51,7 +51,7 @@ class TestSchema:
             openapi.root.components.schemas["Customer"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Customer",
+            type_name="Customer",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "username": PythonObjectProperty(PythonLiteralType.STR),
@@ -60,7 +60,7 @@ class TestSchema:
                         item_data_type=PythonReference(
                             ref="#/components/schemas/Address",
                             target=PythonObject(
-                                class_name="Address",
+                                type_name="Address",
                                 properties={
                                     "street": PythonObjectProperty(
                                         PythonLiteralType.STR
@@ -89,7 +89,7 @@ class TestSchema:
             openapi.root.components.schemas["Address"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Address",
+            type_name="Address",
             properties={
                 "street": PythonObjectProperty(PythonLiteralType.STR),
                 "city": PythonObjectProperty(PythonLiteralType.STR),
@@ -109,7 +109,7 @@ class TestSchema:
             openapi.root.components.schemas["Category"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Category",
+            type_name="Category",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "name": PythonObjectProperty(PythonLiteralType.STR),
@@ -127,7 +127,7 @@ class TestSchema:
             openapi.root.components.schemas["User"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="User",
+            type_name="User",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "username": PythonObjectProperty(PythonLiteralType.STR),
@@ -153,7 +153,7 @@ class TestSchema:
             openapi.root.components.schemas["Tag"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Tag",
+            type_name="Tag",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "name": PythonObjectProperty(PythonLiteralType.STR),
@@ -171,7 +171,7 @@ class TestSchema:
             openapi.root.components.schemas["Pet"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="Pet",
+            type_name="Pet",
             properties={
                 "id": PythonObjectProperty(PythonLiteralType.INT),
                 "name": PythonObjectProperty(
@@ -182,7 +182,7 @@ class TestSchema:
                     PythonReference(
                         ref="#/components/schemas/Category",
                         target=PythonObject(
-                            class_name="Category",
+                            type_name="Category",
                             properties={
                                 "id": PythonObjectProperty(PythonLiteralType.INT),
                                 "name": PythonObjectProperty(PythonLiteralType.STR),
@@ -201,7 +201,7 @@ class TestSchema:
                         item_data_type=PythonReference(
                             ref="#/components/schemas/Tag",
                             target=PythonObject(
-                                class_name="Tag",
+                                type_name="Tag",
                                 properties={
                                     "id": PythonObjectProperty(PythonLiteralType.INT),
                                     "name": PythonObjectProperty(PythonLiteralType.STR),
@@ -231,7 +231,7 @@ class TestSchema:
             openapi.root.components.schemas["ApiResponse"],
             openapi.root.components.schemas,
         ) == PythonObject(
-            class_name="ApiResponse",
+            type_name="ApiResponse",
             properties={
                 "code": PythonObjectProperty(PythonLiteralType.INT),
                 "type": PythonObjectProperty(PythonLiteralType.STR),

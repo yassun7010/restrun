@@ -120,7 +120,7 @@ class OperationContext:
             data_type = body.data_type
             match data_type:
                 case PythonReference():
-                    origin_type = data_type.module_name + "." + data_type.class_name
+                    origin_type = data_type.module_name + "." + data_type.type_name
 
                 case _:
                     origin_type = data_type

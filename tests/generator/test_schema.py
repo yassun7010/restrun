@@ -33,7 +33,7 @@ class TestSchemaGenerator:
                     type_name="User",
                     file_name="user",
                     data_type=PythonObject(
-                        class_name="User",
+                        type_name="User",
                         properties={
                             "id": PythonObjectProperty(
                                 PythonLiteralType.INT, required=True
@@ -63,7 +63,7 @@ class TestSchemaGenerator:
                 type_name="User",
                 file_name="user",
                 data_type=PythonObject(
-                    class_name="User",
+                    type_name="User",
                     properties={
                         "id": PythonObjectProperty(
                             PythonLiteralType.INT, required=True
@@ -253,7 +253,7 @@ class TestSchemaGenerator:
             file_name="array",
             data_type=PythonArray(
                 PythonObject(
-                    class_name="User",
+                    type_name="User",
                     properties={
                         "id": PythonObjectProperty(
                             PythonLiteralType.INT, required=True

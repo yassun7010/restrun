@@ -18,7 +18,7 @@
 
 {% elif schema.type == "object" %}
 {% set object = schema.data_type %}
-class {{ object.class_name + suffix }}(typing_extensions.TypedDict):
+class {{ object.type_name + suffix }}(typing_extensions.TypedDict):
 {%- if object.title_and_description %}
     """
     {{ object.title_and_description | wordwrap | indent(4) }}
@@ -36,7 +36,7 @@ class {{ object.class_name + suffix }}(typing_extensions.TypedDict):
 {% endfor %}
 
 {% elif schema.type == "ref" %}
-{{ schema.data_type.class_name + suffix }} = {{ schema.data_type }}
+{{ schema.data_type.type_name + suffix }} = {{ schema.data_type }}
 
 {% endif %}
 {%- endmacro -%}
