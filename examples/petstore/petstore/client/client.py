@@ -39,98 +39,98 @@ class PetstoreClient(bearer_token_login_mixin.BearerTokenLoginMixin, RestrunClie
     def resource(
         self,
         url: Literal["https://petstore3.com/store/inventory"],
-    ) -> "store_inventory.StoreInventoryResource":
+    ) -> store_inventory.StoreInventoryResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/pet/{petId}/uploadImage"],
-    ) -> "pet_pet_id_upload_image.PetPetIdUploadImageResource":
+    ) -> pet_pet_id_upload_image.PetPetIdUploadImageResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/pet/findByTags"],
-    ) -> "pet_find_by_tags.PetFindByTagsResource":
+    ) -> pet_find_by_tags.PetFindByTagsResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/user/{username}"],
-    ) -> "user_username.UserUsernameResource":
+    ) -> user_username.UserUsernameResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/user"],
-    ) -> "user.UserResource":
+    ) -> user.UserResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/store/order/{orderId}"],
-    ) -> "store_order_order_id.StoreOrderOrderIdResource":
+    ) -> store_order_order_id.StoreOrderOrderIdResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/pet/{petId}"],
-    ) -> "pet_pet_id.PetPetIdResource":
+    ) -> pet_pet_id.PetPetIdResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/user/login"],
-    ) -> "user_login.UserLoginResource":
+    ) -> user_login.UserLoginResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/v1/pets"],
-    ) -> "v1_pets.V1PetsResource":
+    ) -> v1_pets.V1PetsResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/pet"],
-    ) -> "pet.PetResource":
+    ) -> pet.PetResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/store/order"],
-    ) -> "store_order.StoreOrderResource":
+    ) -> store_order.StoreOrderResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/user/createWithList"],
-    ) -> "user_create_with_list.UserCreateWithListResource":
+    ) -> user_create_with_list.UserCreateWithListResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/pet/findByStatus"],
-    ) -> "pet_find_by_status.PetFindByStatusResource":
+    ) -> pet_find_by_status.PetFindByStatusResource:
         ...
 
     @overload
     def resource(
         self,
         url: Literal["https://petstore3.com/user/logout"],
-    ) -> "user_logout.UserLogoutResource":
+    ) -> user_logout.UserLogoutResource:
         ...
 
     def resource(self, url):

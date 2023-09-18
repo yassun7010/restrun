@@ -26,7 +26,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
 {% set resource = restrun.resources[0] %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @override
-    def resource(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.class_name }}":
+    def resource(self, url: {{ urls | literal }},) -> {{resource.module_name}}.{{ resource.class_name }}:
         if url in {{ urls }}:
             return {{resource.module_name}}.{{ resource.class_name }}(self._client)
 
@@ -36,7 +36,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
 {% for resource in restrun.resources %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @overload
-    def resource(self, url: {{ urls | literal }},) -> "{{resource.module_name}}.{{ resource.class_name }}":
+    def resource(self, url: {{ urls | literal }},) -> {{resource.module_name}}.{{ resource.class_name }}:
         ...
 {% endfor %}
 
