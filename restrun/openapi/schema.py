@@ -178,10 +178,10 @@ class PythonTypeNamedDataType:
         return self.data_type.__str__()
 
 
-PythonUnnamedDataType = PythonLiteralType | PythonCustomStr | PythonLiteralUnion
-PythonNamedDataType = (
-    PythonTypeNamedDataType | PythonArray | PythonObject | PythonReference
+PythonUnnamedDataType = (
+    PythonLiteralType | PythonCustomStr | PythonLiteralUnion | PythonArray
 )
+PythonNamedDataType = PythonTypeNamedDataType | PythonObject | PythonReference
 PythonDataType = PythonUnnamedDataType | PythonNamedDataType
 
 
@@ -467,9 +467,6 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
 def get_named_schema(schma_name: str, data_type: PythonDataType) -> PythonNamedDataType:
     match data_type:
         case PythonTypeNamedDataType():
-            return data_type
-
-        case PythonArray():
             return data_type
 
         case PythonObject():

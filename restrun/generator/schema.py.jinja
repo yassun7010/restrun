@@ -9,7 +9,7 @@
 {{ schema_name }} = {{ schema.data_type }}
 
 {% elif schema.type == "array" %}
-{% if schema.data_type.need_item_data_type_def %}
+{% if schema.data_type.data_type.need_item_data_type_def %}
 {%- set item_schema_name = schema_name + "Item" -%}
 {{ generate_schema(item_schema_name, schema.array_item_schema) }}
 {{ schema_name }} = list[{{ item_schema_name }}]

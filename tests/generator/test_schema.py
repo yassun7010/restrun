@@ -31,7 +31,6 @@ class TestSchemaGenerator:
                 config,
                 restrun_context,
                 SchemaContext(
-                    type_name="User",
                     file_name="user",
                     data_type=PythonObject(
                         type_name="User",
@@ -61,7 +60,6 @@ class TestSchemaGenerator:
             config,
             restrun_context,
             SchemaContext(
-                type_name="User",
                 file_name="user",
                 data_type=PythonObject(
                     type_name="User",
@@ -97,7 +95,6 @@ class TestSchemaGenerator:
         literal: PythonLiteralType,
     ):
         schema_context = SchemaContext(
-            type_name="Literal",
             file_name="literal",
             data_type=PythonTypeNamedDataType("Literal", literal),
         )
@@ -118,7 +115,6 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="CustomStr",
             file_name="custom_str",
             data_type=PythonTypeNamedDataType(
                 "CustomStr",
@@ -143,7 +139,6 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="LiteralUnion",
             file_name="literal_union",
             data_type=PythonTypeNamedDataType(
                 "LiteralUnion",
@@ -167,9 +162,13 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="ArrayInt",
             file_name="array_int",
-            data_type=PythonArray(PythonLiteralType.INT),
+            data_type=PythonTypeNamedDataType(
+                type_name="ArrayInt",
+                data_type=PythonArray(
+                    item_data_type=PythonLiteralType.INT,
+                ),
+            ),
         )
         code = SchemaGenerator().generate(
             config,
@@ -188,7 +187,6 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="Ref",
             file_name="ref",
             data_type=PythonReference("Ref", PythonLiteralType.INT),
         )
@@ -214,9 +212,11 @@ class TestSchemaGenerator:
         literal: PythonLiteralType,
     ):
         schema_context = SchemaContext(
-            type_name="Array",
             file_name="array",
-            data_type=PythonArray(literal),
+            data_type=PythonTypeNamedDataType(
+                type_name="Array",
+                data_type=PythonArray(literal),
+            ),
         )
         code = SchemaGenerator().generate(
             config,
@@ -235,9 +235,11 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="Array",
             file_name="array",
-            data_type=PythonArray(PythonReference("Ref", PythonLiteralType.INT)),
+            data_type=PythonTypeNamedDataType(
+                type_name="Array",
+                data_type=PythonArray(PythonReference("Ref", PythonLiteralType.INT)),
+            ),
         )
         code = SchemaGenerator().generate(
             config,
@@ -256,22 +258,24 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         schema_context = SchemaContext(
-            type_name="Array",
             file_name="array",
-            data_type=PythonArray(
-                PythonObject(
-                    type_name="User",
-                    properties={
-                        "id": PythonObjectProperty(
-                            PythonLiteralType.INT, required=True
-                        ),
-                        "name": PythonObjectProperty(
-                            PythonLiteralType.STR, required=True
-                        ),
-                        "age": PythonObjectProperty(
-                            PythonLiteralType.INT, required=True
-                        ),
-                    },
+            data_type=PythonTypeNamedDataType(
+                type_name="Array",
+                data_type=PythonArray(
+                    item_data_type=PythonObject(
+                        type_name="User",
+                        properties={
+                            "id": PythonObjectProperty(
+                                PythonLiteralType.INT, required=True
+                            ),
+                            "name": PythonObjectProperty(
+                                PythonLiteralType.STR, required=True
+                            ),
+                            "age": PythonObjectProperty(
+                                PythonLiteralType.INT, required=True
+                            ),
+                        },
+                    ),
                 ),
             ),
         )
