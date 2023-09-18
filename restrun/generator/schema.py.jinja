@@ -1,6 +1,6 @@
 {%- macro generate_schema(schema_name, schema) -%}
 {% if schema.is_literal_type %}
-{{ schema_name }} = {{ schema.data_type.value }}
+{{ schema_name }} = {{ schema.data_type.data_type.value }}
 
 {% elif schema.type == "custom_str" %}
 {{ schema_name }} = str

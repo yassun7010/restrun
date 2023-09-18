@@ -15,6 +15,7 @@ from restrun.openapi.schema import (
     PythonObject,
     PythonObjectProperty,
     PythonReference,
+    PythonTypeNamedDataType,
 )
 from tests.conftest import format_by_black
 
@@ -98,7 +99,7 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="Literal",
             file_name="literal",
-            data_type=literal,
+            data_type=PythonTypeNamedDataType("Literal", literal),
         )
         code = SchemaGenerator().generate(
             config,
@@ -119,7 +120,10 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="CustomStr",
             file_name="custom_str",
-            data_type=PythonCustomStr("custom"),
+            data_type=PythonTypeNamedDataType(
+                "CustomStr",
+                PythonCustomStr("custom"),
+            ),
         )
         code = SchemaGenerator().generate(
             config,
@@ -141,7 +145,10 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="LiteralUnion",
             file_name="literal_union",
-            data_type=PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
+            data_type=PythonTypeNamedDataType(
+                "LiteralUnion",
+                PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
+            ),
         )
         code = SchemaGenerator().generate(
             config,

@@ -169,14 +169,20 @@ class PythonReference:
         return f"{self.module_name}.{self.type_name}"
 
 
-PythonDataType = (
-    PythonLiteralType
-    | PythonCustomStr
-    | PythonLiteralUnion
-    | PythonArray
-    | PythonObject
-    | PythonReference
+@dataclass(frozen=True)
+class PythonTypeNamedDataType:
+    type_name: str
+    data_type: "PythonUnnamedDataType"
+
+    def __str__(self) -> str:
+        return self.data_type.__str__()
+
+
+PythonUnnamedDataType = PythonLiteralType | PythonCustomStr | PythonLiteralUnion
+PythonNamedDataType = (
+    PythonTypeNamedDataType | PythonArray | PythonObject | PythonReference
 )
+PythonDataType = PythonUnnamedDataType | PythonNamedDataType
 
 
 @dataclass
@@ -438,6 +444,9 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
         case PythonLiteralType.ANY:
             return ["import typing"]
 
+        case PythonTypeNamedDataType():
+            return get_import_modules(data_type.data_type)
+
         case _:
             raise NeverReachError(data_type)
 
@@ -453,6 +462,24 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
         )
 
     return schemas
+
+
+def get_named_schema(schma_name: str, data_type: PythonDataType) -> PythonNamedDataType:
+    match data_type:
+        case PythonTypeNamedDataType():
+            return data_type
+
+        case PythonArray():
+            return data_type
+
+        case PythonObject():
+            return data_type
+
+        case PythonReference():
+            return data_type
+
+        case _:
+            return PythonTypeNamedDataType(schma_name, data_type)
 
 
 def make_python_data_schema(
