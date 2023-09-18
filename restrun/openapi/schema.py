@@ -152,7 +152,7 @@ class PythonReference:
 @dataclass(frozen=True)
 class PythonSchema:
     type_name: str
-    data_type: "PythonUnnamedDataType"
+    data_type: "PythonSchemaDataType"
     title: str | None = None
     description: str | None = None
 
@@ -164,11 +164,11 @@ class PythonSchema:
         return self.data_type.__str__()
 
 
-PythonUnnamedDataType = (
+PythonSchemaDataType = (
     PythonLiteralType | PythonCustomStr | PythonLiteralUnion | PythonArray
 )
 PythonNamedDataType = PythonSchema | PythonObject | PythonReference
-PythonDataType = PythonUnnamedDataType | PythonNamedDataType
+PythonDataType = PythonSchemaDataType | PythonNamedDataType
 
 
 @dataclass
