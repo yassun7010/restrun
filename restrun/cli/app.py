@@ -91,6 +91,10 @@ class App:
             else:
                 parser.print_help()
 
+        except KeyboardInterrupt:
+            print()
+            logger.info("Cannel by user.")
+
         except Exception as e:
             if space.verbose:
                 logger.exception(e)
