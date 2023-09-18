@@ -94,7 +94,7 @@ class App:
 
         except KeyboardInterrupt:
             print()
-            logger.info("Cannel by user.")
+            logger.info("Cancelled by user 👋")
 
         except Exception as e:
             if space.verbose:
