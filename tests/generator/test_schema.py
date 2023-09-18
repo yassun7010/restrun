@@ -220,6 +220,29 @@ class TestSchemaGenerator:
             f"Array = list[{ literal.value }]",
         )
 
+    def test_array_ref_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+    ):
+        schema_context = SchemaContext(
+            type_name="Array",
+            file_name="array",
+            data_type=PythonArray(
+                "Array", PythonReference("Ref", PythonLiteralType.INT)
+            ),
+        )
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            "Array = list[ref.Ref]",
+        )
+
 
 def expected_type(schema_context: SchemaContext, type_def: str) -> str:
     if len(schema_context.import_field_types) != 0:
