@@ -106,7 +106,7 @@ class TestSchemaGenerator:
 
         assert format_by_black(code) == expected_type(
             schema_context,
-            f"Literal = {literal.value}",
+            f"Literal = { literal.value }",
         )
 
     def test_custom_str_type_schema(
@@ -192,6 +192,32 @@ class TestSchemaGenerator:
         assert format_by_black(code) == expected_type(
             schema_context,
             "Ref = ref.Ref",
+        )
+
+    @pytest.mark.parametrize(
+        "literal",
+        list(PythonLiteralType),
+    )
+    def test_array_literal_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+        literal: PythonLiteralType,
+    ):
+        schema_context = SchemaContext(
+            type_name="Array",
+            file_name="array",
+            data_type=PythonArray("Array", literal),
+        )
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            f"Array = list[{ literal.value }]",
         )
 
 

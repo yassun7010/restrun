@@ -83,6 +83,13 @@ class PythonArray:
     name: str
     item_type: "PythonDataType"
 
+    @property
+    def need_item_type_def(self) -> bool:
+        if isinstance(self.item_type, PythonArray):
+            return self.item_type.need_item_type_def
+        else:
+            return isinstance(self.item_type, PythonObject)
+
     def __str__(self) -> str:
         return f"list[{self.item_type}]"
 
@@ -316,7 +323,7 @@ def get_data_type(
             case DataType_v3_1_0.BOOLEAN | DataType_v3_0_3.BOOLEAN:
                 return PythonLiteralType.BOOL
 
-            case DataType_v3_1_0.ARRAY | DataType_v3_0_3.BOOLEAN:
+            case DataType_v3_1_0.ARRAY | DataType_v3_0_3.ARRAY:
                 return PythonArray(
                     name=name,
                     item_type=(
