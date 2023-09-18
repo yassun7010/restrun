@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 import pytest
 
 from restrun.config import Config
@@ -243,11 +245,61 @@ class TestSchemaGenerator:
             "Array = list[ref.Ref]",
         )
 
+    def test_array_object_type_schema(
+        self,
+        config: Config,
+        restrun_context: RestrunContext,
+    ):
+        schema_context = SchemaContext(
+            type_name="Array",
+            file_name="array",
+            data_type=PythonArray(
+                "Array",
+                PythonObject(
+                    class_name="User",
+                    properties={
+                        "id": PythonObjectProperty(
+                            PythonLiteralType.INT, required=True
+                        ),
+                        "name": PythonObjectProperty(
+                            PythonLiteralType.STR, required=True
+                        ),
+                        "age": PythonObjectProperty(
+                            PythonLiteralType.INT, required=True
+                        ),
+                    },
+                ),
+            ),
+        )
+
+        code = SchemaGenerator().generate(
+            config,
+            restrun_context,
+            schema_context,
+        )
+
+        assert format_by_black(code) == expected_type(
+            schema_context,
+            dedent(
+                """
+                    class UserItem(typing_extensions.TypedDict):
+                        id: int
+
+                        name: str
+
+                        age: int
+
+
+                    Array = list[UserItem]
+                    """
+            ).rstrip(),
+        )
+
 
 def expected_type(schema_context: SchemaContext, type_def: str) -> str:
     if len(schema_context.import_field_types) != 0:
-        imports = "\n".join(schema_context.import_field_types) + "\n"
+        imports = "\n\n".join(schema_context.import_field_types) + "\n"
     else:
         imports = ""
 
-    return f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\n{type_def}\n"
+    return format_by_black(f"{AUTO_GENERATED_DOC_COMMENT}\n{imports}\n\n{type_def}\n")

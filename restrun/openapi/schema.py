@@ -81,17 +81,17 @@ class PythonCustomStr:
 @dataclass(frozen=True)
 class PythonArray:
     name: str
-    item_type: "PythonDataType"
+    item_data_type: "PythonDataType"
 
     @property
-    def need_item_type_def(self) -> bool:
-        if isinstance(self.item_type, PythonArray):
-            return self.item_type.need_item_type_def
+    def need_item_data_type_def(self) -> bool:
+        if isinstance(self.item_data_type, PythonArray):
+            return self.item_data_type.need_item_data_type_def
         else:
-            return isinstance(self.item_type, PythonObject)
+            return isinstance(self.item_data_type, PythonObject)
 
     def __str__(self) -> str:
-        return f"list[{self.item_type}]"
+        return f"list[{self.item_data_type}]"
 
 
 @dataclass(frozen=True)
@@ -326,7 +326,7 @@ def get_data_type(
             case DataType_v3_1_0.ARRAY | DataType_v3_0_3.ARRAY:
                 return PythonArray(
                     name=name,
-                    item_type=(
+                    item_data_type=(
                         get_data_type(name, schema.items, schemas)
                         if schema.items is not None
                         else PythonLiteralType.ANY
@@ -389,7 +389,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             return []
 
         case PythonArray():
-            return get_import_modules(data_type.item_type)
+            return get_import_modules(data_type.item_data_type)
 
         case PythonObject():
             imports = ["import typing", "import typing_extensions"]

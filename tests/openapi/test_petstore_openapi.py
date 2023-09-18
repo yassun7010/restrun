@@ -58,7 +58,7 @@ class TestSchema:
                 "address": PythonObjectProperty(
                     PythonArray(
                         name="address",
-                        item_type=PythonReference(
+                        item_data_type=PythonReference(
                             ref="#/components/schemas/Address",
                             target=PythonObject(
                                 class_name="Address",
@@ -194,14 +194,14 @@ class TestSchema:
                 "photoUrls": PythonObjectProperty(
                     PythonArray(
                         name="photoUrls",
-                        item_type=PythonLiteralType.STR,
+                        item_data_type=PythonLiteralType.STR,
                     ),
                     required=True,
                 ),
                 "tags": PythonObjectProperty(
                     PythonArray(
                         name="tags",
-                        item_type=PythonReference(
+                        item_data_type=PythonReference(
                             ref="#/components/schemas/Tag",
                             target=PythonObject(
                                 class_name="Tag",

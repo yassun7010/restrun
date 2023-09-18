@@ -156,7 +156,7 @@ def get_schema_module_names(data_type: PythonDataType) -> set[str]:
         case PythonReference():
             module_names.add(data_type.module_name)
         case PythonArray():
-            module_names.update(get_schema_module_names(data_type.item_type))
+            module_names.update(get_schema_module_names(data_type.item_data_type))
 
     return module_names
 
