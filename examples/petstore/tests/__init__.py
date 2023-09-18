@@ -9,7 +9,7 @@ def test_client():
             "https://petstore3.com/pet/{petId}",
             response=GetPetPetIdResponseBody(
                 id=12,
-                name="aaa",
+                name="taro",
                 status="available",
                 photoUrls=[],
             ),
