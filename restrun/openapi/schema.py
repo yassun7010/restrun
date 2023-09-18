@@ -103,17 +103,7 @@ class PythonObjectProperty:
 
     @cached_property
     def title_and_description(self) -> str | None:
-        if self.title and self.description and self.title != self.description:
-            return f"{self.title}\n\n{self.description}"
-
-        elif self.title:
-            return self.title
-
-        elif self.description:
-            return self.description
-
-        else:
-            return None
+        return title_and_description(self.title, self.description)
 
 
 @dataclass(frozen=True)
@@ -126,17 +116,7 @@ class PythonObject:
 
     @cached_property
     def title_and_description(self) -> str | None:
-        if self.title and self.description and self.title != self.description:
-            return f"{self.title}\n\n{self.description}"
-
-        elif self.title:
-            return self.title
-
-        elif self.description:
-            return self.description
-
-        else:
-            return None
+        return title_and_description(self.title, self.description)
 
     @cached_property
     def allow_empty(self) -> bool:
@@ -178,17 +158,7 @@ class PythonSchema:
 
     @cached_property
     def title_and_description(self) -> str | None:
-        if self.title and self.description and self.title != self.description:
-            return f"{self.title}\n\n{self.description}"
-
-        elif self.title:
-            return self.title
-
-        elif self.description:
-            return self.description
-
-        else:
-            return None
+        return title_and_description(self.title, self.description)
 
     def __str__(self) -> str:
         return self.data_type.__str__()
@@ -518,3 +488,17 @@ def is_object(data_type: PythonDataType) -> bool:
         return is_object(data_type.target)
     else:
         return isinstance(data_type, PythonObject)
+
+
+def title_and_description(title: str | None, description: str | None) -> str | None:
+    if title and description and title != description:
+        return f"{title}\n\n{description}"
+
+    elif title:
+        return title
+
+    elif description:
+        return description
+
+    else:
+        return None
