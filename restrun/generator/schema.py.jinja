@@ -62,6 +62,7 @@ class {{ schema_name }}(typing_extensions.TypedDict):
 {% endif %}
 {%- endmacro -%}
 
+{#- start auto generation -#}
 {{ auto_generated_doc_comment }}
 {%- for import_module in schema.import_field_types %}
 {{ import_module }}
