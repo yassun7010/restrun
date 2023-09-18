@@ -15,7 +15,7 @@ from restrun.openapi.schema import (
     PythonObject,
     PythonObjectProperty,
     PythonReference,
-    PythonTypeNamedDataType,
+    PythonSchema,
 )
 from tests.conftest import format_by_black
 
@@ -96,7 +96,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="literal",
-            data_type=PythonTypeNamedDataType("Literal", literal),
+            data_type=PythonSchema("Literal", literal),
         )
         code = SchemaGenerator().generate(
             config,
@@ -116,7 +116,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="custom_str",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 "CustomStr",
                 PythonCustomStr("custom"),
             ),
@@ -140,7 +140,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="literal_union",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 "LiteralUnion",
                 PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
             ),
@@ -163,7 +163,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="array_int",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 type_name="ArrayInt",
                 data_type=PythonArray(
                     item_data_type=PythonLiteralType.INT,
@@ -213,7 +213,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="array",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 type_name="Array",
                 data_type=PythonArray(literal),
             ),
@@ -236,7 +236,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="array",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 type_name="Array",
                 data_type=PythonArray(PythonReference("Ref", PythonLiteralType.INT)),
             ),
@@ -259,7 +259,7 @@ class TestSchemaGenerator:
     ):
         schema_context = SchemaContext(
             file_name="array",
-            data_type=PythonTypeNamedDataType(
+            data_type=PythonSchema(
                 type_name="Array",
                 data_type=PythonArray(
                     item_data_type=PythonObject(

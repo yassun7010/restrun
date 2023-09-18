@@ -170,9 +170,25 @@ class PythonReference:
 
 
 @dataclass(frozen=True)
-class PythonTypeNamedDataType:
+class PythonSchema:
     type_name: str
     data_type: "PythonUnnamedDataType"
+    title: str | None = None
+    description: str | None = None
+
+    @cached_property
+    def title_and_description(self) -> str | None:
+        if self.title and self.description and self.title != self.description:
+            return f"{self.title}\n\n{self.description}"
+
+        elif self.title:
+            return self.title
+
+        elif self.description:
+            return self.description
+
+        else:
+            return None
 
     def __str__(self) -> str:
         return self.data_type.__str__()
@@ -181,7 +197,7 @@ class PythonTypeNamedDataType:
 PythonUnnamedDataType = (
     PythonLiteralType | PythonCustomStr | PythonLiteralUnion | PythonArray
 )
-PythonNamedDataType = PythonTypeNamedDataType | PythonObject | PythonReference
+PythonNamedDataType = PythonSchema | PythonObject | PythonReference
 PythonDataType = PythonUnnamedDataType | PythonNamedDataType
 
 
@@ -444,7 +460,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
         case PythonLiteralType.ANY:
             return ["import typing"]
 
-        case PythonTypeNamedDataType():
+        case PythonSchema():
             return get_import_modules(data_type.data_type)
 
         case _:
@@ -466,7 +482,7 @@ def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:
 
 def get_named_schema(schma_name: str, data_type: PythonDataType) -> PythonNamedDataType:
     match data_type:
-        case PythonTypeNamedDataType():
+        case PythonSchema():
             return data_type
 
         case PythonObject():
@@ -476,7 +492,7 @@ def get_named_schema(schma_name: str, data_type: PythonDataType) -> PythonNamedD
             return data_type
 
         case _:
-            return PythonTypeNamedDataType(schma_name, data_type)
+            return PythonSchema(schma_name, data_type)
 
 
 def make_python_data_schema(

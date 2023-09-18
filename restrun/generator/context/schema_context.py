@@ -12,7 +12,7 @@ from restrun.openapi.schema import (
     PythonNamedDataType,
     PythonObject,
     PythonReference,
-    PythonTypeNamedDataType,
+    PythonSchema,
     get_import_modules,
     get_named_schema,
     get_schemas,
@@ -32,7 +32,7 @@ class SchemaContext:
     @property
     def type(self) -> str:
         match self.data_type:
-            case PythonTypeNamedDataType():
+            case PythonSchema():
                 data_type = self.data_type.data_type
                 match data_type:
                     case PythonLiteralType():
@@ -58,14 +58,14 @@ class SchemaContext:
 
     @property
     def is_literal_type(self) -> bool:
-        if isinstance(self.data_type, PythonTypeNamedDataType):
+        if isinstance(self.data_type, PythonSchema):
             return isinstance(self.data_type.data_type, PythonLiteralType)
         else:
             return False
 
     @property
     def array_item_schema(self) -> Self | None:
-        if not isinstance(self.data_type, PythonTypeNamedDataType):
+        if not isinstance(self.data_type, PythonSchema):
             return None
 
         data_type = self.data_type.data_type
@@ -82,11 +82,11 @@ class SchemaContext:
             case PythonReference():
                 item_data_type = item_data_type
 
-            case PythonTypeNamedDataType():
+            case PythonSchema():
                 item_data_type = item_data_type
 
             case _:
-                item_data_type = PythonTypeNamedDataType(item_type_name, item_data_type)
+                item_data_type = PythonSchema(item_type_name, item_data_type)
 
         return SchemaContext(
             file_name=self.file_name,
