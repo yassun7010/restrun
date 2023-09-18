@@ -1,24 +1,25 @@
-{%- macro generate_schema(suffix, schema) -%}
+{%- macro generate_schema(schema_name, schema) -%}
 {% if schema.is_literal_type %}
-{{ schema.type_name + suffix }} = {{ schema.data_type.value }}
+{{ schema_name }} = {{ schema.data_type.value }}
 
 {% elif schema.type == "custom_str" %}
-{{ schema.type_name + suffix }} = str
+{{ schema_name }} = str
 
 {% elif schema.type == "literal_union" %}
-{{ schema.type_name + suffix }} = {{ schema.data_type }}
+{{ schema_name }} = {{ schema.data_type }}
 
 {% elif schema.type == "array" %}
 {% if schema.data_type.need_item_data_type_def %}
-{{ generate_schema("Item", schema.array_item_schema) }}
-{{ schema.type_name + suffix }} = list[{{ schema.data_type.item_data_type }}Item]
+{%- set item_schema_name = schema_name + "Item" -%}
+{{ generate_schema(item_schema_name, schema.array_item_schema) }}
+{{ schema_name }} = list[{{ item_schema_name }}]
 {% else %}
-{{ schema.type_name + suffix }} = {{ schema.data_type }}
+{{ schema_name }} = {{ schema.data_type }}
 {% endif %}
 
 {% elif schema.type == "object" %}
 {% set object = schema.data_type %}
-class {{ object.type_name + suffix }}(typing_extensions.TypedDict):
+class {{ schema_name }}(typing_extensions.TypedDict):
 {%- if object.title_and_description %}
     """
     {{ object.title_and_description | wordwrap | indent(4) }}
@@ -36,7 +37,7 @@ class {{ object.type_name + suffix }}(typing_extensions.TypedDict):
 {% endfor %}
 
 {% elif schema.type == "ref" %}
-{{ schema.data_type.type_name + suffix }} = {{ schema.data_type }}
+{{ schema_name }} = {{ schema.data_type }}
 
 {% endif %}
 {%- endmacro -%}
@@ -46,4 +47,4 @@ class {{ object.type_name + suffix }}(typing_extensions.TypedDict):
 {{ import_module }}
 {% endfor %}
 
-{{ generate_schema("", schema) }}
+{{ generate_schema(schema.type_name, schema) }}
