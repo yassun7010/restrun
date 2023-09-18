@@ -141,8 +141,8 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             file_name="literal_union",
             data_type=PythonSchema(
-                "LiteralUnion",
-                PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
+                type_name="LiteralUnion",
+                data_type=PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
             ),
         )
         code = SchemaGenerator().generate(

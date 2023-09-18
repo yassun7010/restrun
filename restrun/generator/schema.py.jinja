@@ -1,12 +1,27 @@
 {%- macro generate_schema(schema_name, schema) -%}
 {% if schema.is_literal_type %}
 {{ schema_name }} = {{ schema.data_type.data_type.value }}
+{%- if schema.title_and_description %}
+"""
+{{ schema.title_and_description | wordwrap }}
+"""
+{% endif %}
 
 {% elif schema.type == "custom_str" %}
 {{ schema_name }} = str
+{%- if schema.title_and_description %}
+"""
+{{ schema.title_and_description | wordwrap }}
+"""
+{% endif %}
 
 {% elif schema.type == "literal_union" %}
 {{ schema_name }} = {{ schema.data_type }}
+{%- if schema.title_and_description %}
+"""
+{{ schema.title_and_description | wordwrap }}
+"""
+{% endif %}
 
 {% elif schema.type == "array" %}
 {% if schema.data_type.data_type.need_item_data_type_def %}
@@ -15,6 +30,11 @@
 {{ schema_name }} = list[{{ item_schema_name }}]
 {% else %}
 {{ schema_name }} = {{ schema.data_type }}
+{% endif %}
+{%- if schema.title_and_description %}
+"""
+{{ schema.title_and_description | wordwrap }}
+"""
 {% endif %}
 
 {% elif schema.type == "object" %}

@@ -94,6 +94,13 @@ class SchemaContext:
         )
 
     @property
+    def title_and_description(self) -> str | None:
+        if isinstance(self.data_type, PythonReference):
+            return None
+
+        return self.data_type.title_and_description
+
+    @property
     def import_field_types(self) -> list[str]:
         return get_import_modules(self.data_type)
 
