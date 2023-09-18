@@ -290,16 +290,16 @@ class TestSchemaGenerator:
             schema_context,
             dedent(
                 """
-                    class ArrayItem(typing_extensions.TypedDict):
-                        id: int
+                class ArrayItem(typing_extensions.TypedDict):
+                    id: int
 
-                        name: str
+                    name: str
 
-                        age: int
+                    age: int
 
 
-                    Array = list[ArrayItem]
-                    """
+                Array = list[ArrayItem]
+                """
             ).rstrip(),
         )
 
