@@ -162,7 +162,7 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="ArrayInt",
             file_name="array_int",
-            data_type=PythonArray("ArrayInt", PythonLiteralType.INT),
+            data_type=PythonArray(PythonLiteralType.INT),
         )
         code = SchemaGenerator().generate(
             config,
@@ -209,7 +209,7 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="Array",
             file_name="array",
-            data_type=PythonArray("Array", literal),
+            data_type=PythonArray(literal),
         )
         code = SchemaGenerator().generate(
             config,
@@ -230,9 +230,7 @@ class TestSchemaGenerator:
         schema_context = SchemaContext(
             type_name="Array",
             file_name="array",
-            data_type=PythonArray(
-                "Array", PythonReference("Ref", PythonLiteralType.INT)
-            ),
+            data_type=PythonArray(PythonReference("Ref", PythonLiteralType.INT)),
         )
         code = SchemaGenerator().generate(
             config,
@@ -254,7 +252,6 @@ class TestSchemaGenerator:
             type_name="Array",
             file_name="array",
             data_type=PythonArray(
-                "Array",
                 PythonObject(
                     class_name="User",
                     properties={

@@ -80,7 +80,6 @@ class PythonCustomStr:
 
 @dataclass(frozen=True)
 class PythonArray:
-    name: str
     item_data_type: "PythonDataType"
 
     @property
@@ -325,7 +324,6 @@ def get_data_type(
 
             case DataType_v3_1_0.ARRAY | DataType_v3_0_3.ARRAY:
                 return PythonArray(
-                    name=name,
                     item_data_type=(
                         get_data_type(name, schema.items, schemas)
                         if schema.items is not None

@@ -57,7 +57,6 @@ class TestSchema:
                 "username": PythonObjectProperty(PythonLiteralType.STR),
                 "address": PythonObjectProperty(
                     PythonArray(
-                        name="address",
                         item_data_type=PythonReference(
                             ref="#/components/schemas/Address",
                             target=PythonObject(
@@ -193,14 +192,12 @@ class TestSchema:
                 ),
                 "photoUrls": PythonObjectProperty(
                     PythonArray(
-                        name="photoUrls",
                         item_data_type=PythonLiteralType.STR,
                     ),
                     required=True,
                 ),
                 "tags": PythonObjectProperty(
                     PythonArray(
-                        name="tags",
                         item_data_type=PythonReference(
                             ref="#/components/schemas/Tag",
                             target=PythonObject(
