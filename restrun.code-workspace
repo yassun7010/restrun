@@ -69,7 +69,6 @@
             "redhat.vscode-yaml",
             "tamasfe.even-better-toml",
             "charliermarsh.ruff",
-            "ms-pyright.pyright",
         ],
         "unwantedRecommendations": [
             "ms-python.isort",
