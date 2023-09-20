@@ -1,5 +1,6 @@
 import json
 import os
+from enum import Enum
 from io import StringIO
 from pathlib import Path
 from typing import IO
@@ -23,6 +24,15 @@ DEFAULT_CONFIG_FILES = [
     Path("restrun.toml"),
 ]
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
+
+
+class FormatType(Enum):
+    JSON = "json"
+    YAML = "yaml"
+    TOML = "toml"
+
+    def __str__(self):
+        return self.value
 
 
 class Config(RootModel):
