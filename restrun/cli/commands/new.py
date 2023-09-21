@@ -2,6 +2,8 @@ import os
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
 
+from restrun.cli.prompt.select_prompt import select_prompt
+
 logger = getLogger(__name__)
 
 
@@ -36,10 +38,13 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 def new_command(space: Namespace) -> None:
     from pathlib import Path
 
+    from rich.console import Console
     from rich.prompt import Prompt
 
     from restrun.exceptions import ProjectNameRequiredError
     from restrun.strcase import module_name
+
+    console = Console()
 
     project_name: str | None = space.project
     if project_name is None:
@@ -52,10 +57,9 @@ def new_command(space: Namespace) -> None:
 
     source: str | None = space.source
     if source is None:
-        source = Prompt.ask(
-            "[dark_orange]Resource Source Type[/]",
-            choices=["manual", "openapi"],
-            default="manual",
+        console.print("[dark_orange]Source Type[/]:")
+        source = select_prompt(
+            options=["manual", "openapi"],
         )
 
     logger.info(f"Create a new project: {project_name}")
