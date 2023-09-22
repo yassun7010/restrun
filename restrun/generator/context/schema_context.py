@@ -3,7 +3,6 @@ from typing import Self
 
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.exceptions import NeverReachError
-from restrun.openapi.openapi import OpenAPI
 from restrun.openapi.schema import (
     PythonArray,
     PythonCustomStr,
@@ -111,5 +110,5 @@ def make_schema_contexts(source: V1OpenAPISource) -> list[SchemaContext]:
             file_name=module_name(schema.name),
             data_type=get_named_schema(schema.name, schema.data_type),
         )
-        for schema in get_schemas(OpenAPI.from_url(source.location))
+        for schema in get_schemas(source.openapi_model)
     ]

@@ -1,3 +1,4 @@
+from functools import cached_property
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -5,6 +6,7 @@ from pydantic import Field, HttpUrl
 
 from restrun.core.http import URL
 from restrun.core.model import ExtraForbidModel
+from restrun.openapi.openapi import OpenAPI
 
 
 class V1OpenAPIServer(ExtraForbidModel):
@@ -29,3 +31,7 @@ class V1OpenAPISource(ExtraForbidModel):
             return None
 
         return [url.url for url in self.openapi.servers]
+
+    @cached_property
+    def openapi_model(self) -> OpenAPI:
+        return OpenAPI.from_url(self.location)

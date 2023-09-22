@@ -4,7 +4,6 @@ from functools import cached_property
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.core.http import URL, Method
 from restrun.openapi.openapi import (
-    OpenAPI,
     Operation,
     Reference_v3_0_3,
     Reference_v3_1_0,
@@ -155,7 +154,7 @@ def get_schema_module_names(data_type: PythonDataType) -> set[str]:
 def make_operation_contexts(
     urls: list[URL] | None, source: V1OpenAPISource
 ) -> list[OperationContext]:
-    openapi = OpenAPI.from_url(source.location)
+    openapi = source.openapi_model
     paths = openapi.root.paths
 
     if paths is None:
