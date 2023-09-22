@@ -10,15 +10,12 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 
-from restrun.core.client import RequestRealClient, RestrunRealClient
+from .client import NewCommandSampleClient
+from .mock_client import NewCommandSampleMockClient
+from .real_client import NewCommandSampleRealClient
 
-from .client import NewSampleClient
-
-
-class NewSampleRealClient(RestrunRealClient, NewSampleClient):
-    def __init__(self, client: RequestRealClient) -> None:
-        self._real_client = client
-
-    @property
-    def _client(self) -> RequestRealClient:
-        return self._real_client
+__all__ = [
+    "NewCommandSampleClient",
+    "NewCommandSampleMockClient",
+    "NewCommandSampleRealClient",
+]

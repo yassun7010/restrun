@@ -1,5 +1,5 @@
 version: '1'
-name: new_sample
+name: new_command_sample
 source:
   type: openapi
   location: https://petstore3.swagger.io/api/v3/openapi.json

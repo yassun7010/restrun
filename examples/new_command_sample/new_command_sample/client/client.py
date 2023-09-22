@@ -25,7 +25,7 @@ from ..resources import (
 )
 
 
-class NewSampleClient(RestrunClient):
+class NewCommandSampleClient(RestrunClient):
     @overload
     def resource(
         self,

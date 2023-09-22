@@ -8,7 +8,7 @@ class TestCliAppNewCommand:
         App.run(
             [
                 "new",
-                "new_sample",
+                "new_command_sample",
                 "--openapi",
                 "https://petstore3.swagger.io/api/v3/openapi.json",
             ]
