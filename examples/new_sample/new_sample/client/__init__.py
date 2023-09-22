@@ -10,12 +10,12 @@
 # please refer to https://github.com/yassun7010/restrun .
 #
 
-from .client import New_sampleClient
-from .mock_client import New_sampleMockClient
-from .real_client import New_sampleRealClient
+from .client import NewSampleClient
+from .mock_client import NewSampleMockClient
+from .real_client import NewSampleRealClient
 
 __all__ = [
-    "New_sampleClient",
-    "New_sampleMockClient",
-    "New_sampleRealClient",
+    "NewSampleClient",
+    "NewSampleMockClient",
+    "NewSampleRealClient",
 ]

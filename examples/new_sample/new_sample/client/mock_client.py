@@ -21,10 +21,10 @@ from ..resources.user import post_user
 from ..resources.user_login import get_user_login
 from ..resources.user_logout import get_user_logout
 from ..resources.user_username import put_user_username
-from .client import New_sampleClient
+from .client import NewSampleClient
 
 
-class New_sampleMockClient(RestrunMockClient, New_sampleClient):
+class NewSampleMockClient(RestrunMockClient, NewSampleClient):
     @overload
     def inject_get_response(
         self,

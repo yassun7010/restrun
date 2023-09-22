@@ -1,4 +1,4 @@
-{%- set client_class = restrun.client_prefix | capitalize + "Client" -%}
+{%- set client_class = restrun.client_prefix | class_name + "Client" -%}
 {{ auto_generated_doc_comment }}
 from typing import Literal
 

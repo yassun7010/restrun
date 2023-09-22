@@ -1,5 +1,5 @@
-{%- set client_class = restrun.client_prefix | capitalize + "Client" -%}
-{%- set real_client_class = restrun.client_prefix | capitalize + "RealClient" -%}
+{%- set client_class = restrun.client_prefix | class_name + "Client" -%}
+{%- set real_client_class = restrun.client_prefix | class_name + "RealClient" -%}
 {{ auto_generated_doc_comment }}
 from typing import Self
 

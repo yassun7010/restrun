@@ -12,10 +12,10 @@
 
 from restrun.core.client import RequestRealClient, RestrunRealClient
 
-from .client import New_sampleClient
+from .client import NewSampleClient
 
 
-class New_sampleRealClient(RestrunRealClient, New_sampleClient):
+class NewSampleRealClient(RestrunRealClient, NewSampleClient):
     def __init__(self, client: RequestRealClient) -> None:
         self._real_client = client
 
