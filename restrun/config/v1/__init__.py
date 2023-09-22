@@ -22,14 +22,18 @@ class V1Config(ExtraForbidModel):
     ] = None
 
     source: Annotated[
-        V1Source | list[V1Source],
+        V1Source | list[V1Source] | None,
         Field(title="source settings."),
-    ] = []
+    ] = None
 
     @property
     def sources(self) -> list[V1Source]:
+        if self.source is None:
+            return []
+
         if isinstance(self.source, list):
             return self.source
+
         return [self.source]
 
     format: Annotated[

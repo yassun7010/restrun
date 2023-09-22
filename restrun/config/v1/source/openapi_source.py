@@ -1,7 +1,6 @@
-from pathlib import Path
 from typing import Annotated, Literal
 
-from pydantic import Field, HttpUrl
+from pydantic import Field
 
 from restrun.core.http import URL
 from restrun.core.model import ExtraForbidModel
@@ -17,7 +16,7 @@ class V1IOpenAPI(ExtraForbidModel):
 
 class V1OpenAPISource(ExtraForbidModel):
     type: Literal["openapi"]
-    location: Annotated[Path | HttpUrl, Field(title="openapi file location.")]
+    location: Annotated[str, Field(title="openapi file location.")]
     openapi: Annotated[
         V1IOpenAPI | None,
         Field(title="server urls"),
