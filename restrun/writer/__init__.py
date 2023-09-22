@@ -16,6 +16,15 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
+def write_module(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
+    from restrun.generator.module import ModuleGenerator
+
+    write_python_code(
+        base_dir / "__init__.py",
+        lambda: ModuleGenerator().generate(config, context),
+    )
+
+
 def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator

@@ -2,9 +2,6 @@ from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParse
 from logging import getLogger
 from pathlib import Path
 
-from restrun.generator.context.operation_context import make_operation_contexts
-from restrun.generator.context.schema_context import make_schema_contexts
-from restrun.writer import write_operations, write_schemas
 
 logger = getLogger(__name__)
 
@@ -37,6 +34,9 @@ def generate_command(space: "Namespace") -> None:
     from restrun.config import find_config_file, load
     from restrun.generator.context.restrun_context import make_rustrun_context
     from restrun.writer import write_clients, write_resources
+    from restrun.generator.context.operation_context import make_operation_contexts
+    from restrun.generator.context.schema_context import make_schema_contexts
+    from restrun.writer import write_module, write_operations, write_schemas
 
     config_path = find_config_file(space.config)
 
@@ -46,6 +46,8 @@ def generate_command(space: "Namespace") -> None:
     base_dir = config_path.parent / strcase.module_name(config.name)
 
     restrun_context = make_rustrun_context(base_dir, config)
+
+    write_module(base_dir, config, restrun_context)
 
     for source in config.root.sources:
         if source.type == "openapi":
