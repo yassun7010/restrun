@@ -2,7 +2,7 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from restrun.generator import is_auto_generated_or_empty
+from restrun.generator import write_python_code
 from restrun.generator.operation import OperationGenerator
 from restrun.strcase import module_name
 
@@ -17,7 +17,6 @@ logger = getLogger(__name__)
 
 
 def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
-    from restrun.generator import is_auto_generated_or_empty
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator
     from restrun.generator.client_module import ClientModuleGenerator
@@ -31,18 +30,10 @@ def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -
         ("__init__.py", ClientModuleGenerator()),
         (Path("mixins") / "__init__.py", ClientMixinsModuleGenerator()),
     ]:
-        filepath = base_dir / "client" / filename
-        if not filepath.parent.exists():
-            filepath.parent.mkdir()
-
-        if filepath.exists() and not is_auto_generated_or_empty(filepath):
-            continue
-
-        logger.debug(f'"{filepath}" generating...')
-
-        code = generator.generate(config, context)
-        with open(filepath, "w") as file:
-            file.write(code)
+        write_python_code(
+            base_dir / "client" / filename,
+            lambda: generator.generate(config, context),
+        )
 
 
 def write_schemas(
@@ -51,35 +42,19 @@ def write_schemas(
     restrun_context: "RestrunContext",
     schema_contexts: "list[SchemaContext]",
 ):
-    from restrun.generator import is_auto_generated_or_empty
     from restrun.generator.schema import SchemaGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
-    schema_dir_path = base_dir / "schemas"
-    if not schema_dir_path.exists():
-        schema_dir_path.mkdir()
-
-    filepath = schema_dir_path / "__init__.py"
-
-    if filepath.exists() and not is_auto_generated_or_empty(filepath):
-        return
-
-    code = SchemasModuleGenerator().generate(config, restrun_context)
-    with open(filepath, "w") as file:
-        file.write(code)
+    write_python_code(
+        base_dir / "schemas" / "__init__.py",
+        lambda: SchemasModuleGenerator().generate(config, restrun_context),
+    )
 
     for schema_context in schema_contexts:
-        filepath = schema_dir_path / f"{schema_context.file_name}.py"
-
-        if filepath.exists() and not is_auto_generated_or_empty(filepath):
-            continue
-
-        logger.debug(f'"{filepath}" generating...')
-
-        code = SchemaGenerator().generate(config, restrun_context, schema_context)
-
-        with open(filepath, "w") as file:
-            file.write(code)
+        write_python_code(
+            base_dir / "schemas" / f"{schema_context.file_name}.py",
+            lambda: SchemaGenerator().generate(config, restrun_context, schema_context),
+        )
 
 
 def write_operations(
@@ -89,54 +64,34 @@ def write_operations(
     operation_contexts: "list[OperationContext]",
 ) -> None:
     for operation_context in operation_contexts:
-        filepath = (
+        write_python_code(
             base_dir
             / "resources"
             / module_name(operation_context.path_name)
-            / f"{module_name(operation_context.class_name)}.py"
+            / f"{module_name(operation_context.class_name)}.py",
+            lambda: OperationGenerator().generate(
+                config,
+                restrun_context,
+                operation_context,
+            ),
         )
-
-        if not filepath.parent.exists():
-            filepath.parent.mkdir()
-
-        if filepath.exists() and not is_auto_generated_or_empty(filepath):
-            continue
-
-        logger.debug(f'"{filepath}" generating...')
-
-        code = OperationGenerator().generate(config, restrun_context, operation_context)
-        with open(filepath, "w") as file:
-            file.write(code)
 
 
 def write_resources(
     base_dir: Path, config: "Config", context: "RestrunContext"
 ) -> None:
-    from restrun.generator import is_auto_generated_or_empty
     from restrun.generator.resource_module import ResourceModuleGenerator
     from restrun.generator.resources_module import ResourcesModuleGenerator
 
     for resource_context in context.resources:
-        resource_path = base_dir / "resources" / resource_context.module_name
-        if not resource_path.exists():
-            resource_path.mkdir(parents=True, exist_ok=True)
+        write_python_code(
+            base_dir / "resources" / resource_context.module_name / "__init__.py",
+            lambda: ResourceModuleGenerator().generate(
+                config, context, resource_context
+            ),
+        )
 
-        filepath = resource_path / "__init__.py"
-        if filepath.exists() and not is_auto_generated_or_empty(filepath):
-            continue
-
-        logger.debug(f'"{filepath}" generating...')
-
-        code = ResourceModuleGenerator().generate(config, context, resource_context)
-        with open(resource_path / "__init__.py", "w") as file:
-            file.write(code)
-
-    filepath = base_dir / "resources" / "__init__.py"
-    if filepath.exists() and not is_auto_generated_or_empty(filepath):
-        return
-
-    logger.debug(f'"{filepath}" generating...')
-
-    code = ResourcesModuleGenerator().generate(config, context)
-    with open(filepath, "w") as file:
-        file.write(code)
+    write_python_code(
+        base_dir / "resources" / "__init__.py",
+        lambda: ResourcesModuleGenerator().generate(config, context),
+    )

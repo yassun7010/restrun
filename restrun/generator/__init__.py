@@ -1,7 +1,9 @@
+from logging import getLogger
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Generic, Type, TypeAlias, TypeVar
+from typing import Callable, Generic, Type, TypeAlias, TypeVar
+from venv import logger
 
 import jinja2
 
@@ -13,6 +15,8 @@ from restrun.exceptions import (
     PythonFileExecutionError,
 )
 from restrun.strcase import class_name, module_name
+
+logger = getLogger(__name__)
 
 PythonCode: TypeAlias = str
 GeneratedPythonCode: TypeAlias = str
@@ -35,6 +39,20 @@ AUTO_GENERATED_DOC_COMMENT = f"""
 # please refer to https://github.com/yassun7010/restrun .
 #
 """.strip()
+
+
+def write_python_code(filepath: Path, generator: Callable[[], str]) -> None:
+    if not filepath.parent.exists():
+        filepath.parent.mkdir(parents=True)
+
+    if filepath.exists() and not is_auto_generated_or_empty(filepath):
+        return
+
+    logger.debug(f'"{filepath}" generating...')
+
+    code = generator()
+    with open(filepath, "w") as file:
+        file.write(code)
 
 
 def is_auto_generated_or_empty(source: Path | PythonCode) -> bool:

@@ -44,6 +44,7 @@ def generate_command(space: "Namespace") -> None:
         config = load(file)
 
     base_dir = config_path.parent / strcase.module_name(config.name)
+
     restrun_context = make_rustrun_context(base_dir, config)
 
     for source in config.root.sources:
