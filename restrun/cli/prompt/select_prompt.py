@@ -11,6 +11,10 @@ from prompt_toolkit.widgets import RadioList
 _T = TypeVar("_T")
 
 
+class SelectList(RadioList):
+    open_character = "  ("
+
+
 def select_prompt(
     options: list[tuple[_T, str | HTML]] | list[_T],
     value: _T | None = None,
@@ -25,7 +29,7 @@ def select_prompt(
         else:
             new_options.append((option, str(option)))
 
-    radio_list = RadioList(new_options)
+    radio_list = SelectList(new_options)
     bindings = KeyBindings()
 
     @bindings.add("c-c")
