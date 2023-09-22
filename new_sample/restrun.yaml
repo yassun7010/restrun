@@ -1,0 +1,10 @@
+version: '1'
+name: new_sample
+source:
+  type: openapi
+  location: !!python/object/apply:pathlib.PosixPath
+  - 'https:'
+  - petstore3.swagger.io
+  - api
+  - v3
+  - openapi.json

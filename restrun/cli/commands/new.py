@@ -82,7 +82,7 @@ def new_command(space: Namespace) -> None:
                 )
             source = V1OpenAPISource(
                 type=source_type,
-                location=openapi_location,
+                location=Path(openapi_location),
             )
 
         case "manual":

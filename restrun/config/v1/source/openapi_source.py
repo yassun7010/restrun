@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Annotated, Literal
 
 from pydantic import Field
@@ -16,7 +17,7 @@ class V1IOpenAPI(ExtraForbidModel):
 
 class V1OpenAPISource(ExtraForbidModel):
     type: Literal["openapi"]
-    location: Annotated[str, Field(title="openapi file location.")]
+    location: Annotated[Path, Field(title="openapi file location.")]
     openapi: Annotated[
         V1IOpenAPI | None,
         Field(title="server urls"),
