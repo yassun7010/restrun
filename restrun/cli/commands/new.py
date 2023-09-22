@@ -2,8 +2,6 @@ import os
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
 
-import yaml
-
 from restrun.cli.prompt.select_prompt import select_prompt
 from restrun.config import DEFAULT_CONFIG_FILE
 from restrun.config.v1 import V1Config
@@ -82,7 +80,7 @@ def new_command(space: Namespace) -> None:
                 )
             source = V1OpenAPISource(
                 type=source_type,
-                location=Path(openapi_location),
+                location=openapi_location,  # type: ignore
             )
 
         case "manual":
@@ -102,14 +100,8 @@ def new_command(space: Namespace) -> None:
     )
 
     with open(project_path / DEFAULT_CONFIG_FILE, "w") as file:
-        file.write(
-            yaml.dump(
-                config.model_dump(
-                    exclude_none=True,
-                    exclude_unset=True,
-                ),
-                sort_keys=False,
-            )
-        )
+        from restrun import yaml
+
+        file.write(yaml.dump(config))
 
     logger.info(f'Create a new project: "{project_name}" 🚀')
