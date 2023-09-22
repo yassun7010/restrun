@@ -62,4 +62,4 @@ def new_command(space: Namespace) -> None:
             options=["manual", "openapi"],
         )
 
-    logger.info(f"Create a new project: {project_name}")
+    logger.info(f'Create a new project: "{project_name}" 🚀')
