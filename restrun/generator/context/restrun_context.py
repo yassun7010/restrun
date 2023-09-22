@@ -81,10 +81,20 @@ class RestrunContext:
     def get_operation_urls(
         self, resource_info: "ClassInfo[Operation]"
     ) -> list[http.URL]:
-        return [
+        urls = [
             f'{url.rstrip("/")}/{resource_info.class_type.path.lstrip("/")}'
             for url in self.server_urls
         ]
+
+        return (
+            urls
+            if len(urls) != 0
+            else [
+                http.URL(
+                    f"https://example.com/{resource_info.class_type.path.strip('/')}"
+                )
+            ]
+        )
 
     def get_resource_urls(self, resource: "ResourceContext") -> list[http.URL]:
         urls: set[http.URL] = set()

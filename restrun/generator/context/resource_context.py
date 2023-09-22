@@ -88,7 +88,11 @@ class ResourceContext:
 def make_resource_contexts(base_dir: Path) -> list[ResourceContext]:
     resource_contexts = []
 
-    for resource_dir in (base_dir / "resources").iterdir():
+    resources_path = base_dir / "resources"
+    if not resources_path.exists():
+        resources_path.mkdir(parents=True)
+
+    for resource_dir in resources_path.iterdir():
         if not resource_dir.is_dir():
             continue
 

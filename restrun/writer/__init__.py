@@ -32,6 +32,8 @@ def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -
         (Path("mixins") / "__init__.py", ClientMixinsModuleGenerator()),
     ]:
         filepath = base_dir / "client" / filename
+        if not filepath.parent.exists():
+            filepath.parent.mkdir()
 
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
@@ -115,16 +117,18 @@ def write_resources(
     from restrun.generator.resources_module import ResourcesModuleGenerator
 
     for resource_context in context.resources:
-        filepath = base_dir / "resources" / resource_context.module_name / "__init__.py"
+        resource_path = base_dir / "resources" / resource_context.module_name
+        if not resource_path.exists():
+            resource_path.mkdir(parents=True, exist_ok=True)
+
+        filepath = resource_path / "__init__.py"
         if filepath.exists() and not is_auto_generated_or_empty(filepath):
             continue
 
         logger.debug(f'"{filepath}" generating...')
 
         code = ResourceModuleGenerator().generate(config, context, resource_context)
-        with open(
-            base_dir / "resources" / resource_context.module_name / "__init__.py", "w"
-        ) as file:
+        with open(resource_path / "__init__.py", "w") as file:
             file.write(code)
 
     filepath = base_dir / "resources" / "__init__.py"
