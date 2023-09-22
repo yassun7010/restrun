@@ -53,7 +53,8 @@ def new_command(space: Namespace) -> None:
         source=source,
     )
 
-    with open(project_path / DEFAULT_CONFIG_FILE, "w") as file:
+    config_path = project_path / DEFAULT_CONFIG_FILE
+    with open(config_path, "w") as file:
         from restrun import yaml
 
         file.write(yaml.dump(config))
