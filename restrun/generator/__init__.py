@@ -158,24 +158,3 @@ def render_template(template_path: Path, **kwargs) -> "GeneratedPythonCode":
 
         except Exception as error:
             raise JinjaRenderError(template_path, error)
-
-
-def generate_python_code(config_path: Path, enable_format: bool, enable_lint: bool):
-    from restrun import strcase
-    from restrun.config import load
-    from restrun.formatter import format_python_codes
-    from restrun.linter import lint_python_codes
-    from restrun.writer import write_python_codes
-
-    with open(config_path) as file:
-        config = load(file)
-
-    base_dir = config_path.parent / strcase.module_name(config.name)
-
-    write_python_codes(base_dir, config, config_path)
-
-    if enable_format is not False:
-        format_python_codes(base_dir, config)
-
-    if enable_lint is not False:
-        lint_python_codes(base_dir, config)
