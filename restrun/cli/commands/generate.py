@@ -67,8 +67,6 @@ def generate_command(space: "Namespace") -> None:
             if module := importlib.util.module_from_spec(spec):
                 sys.modules[spec.name] = module
 
-    resources_context = make_resources_context(base_dir)
-
     for source in config.root.sources:
         if source.type == "openapi":
             if (
@@ -89,8 +87,9 @@ def generate_command(space: "Namespace") -> None:
                 make_operation_contexts(source.server_urls, source),
             )
 
-    write_resources(base_dir, config, restrun_context, resources_context)
+    resources_context = make_resources_context(base_dir)
 
+    write_resources(base_dir, config, restrun_context, resources_context)
     write_clients(base_dir, config, restrun_context, resources_context)
 
     if space.format is not False:
