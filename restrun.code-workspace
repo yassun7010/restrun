@@ -5,6 +5,7 @@
             "path": "."
         },
         {
+            "name": "examples/petstore",
             "path": "examples/petstore",
         }
     ],
