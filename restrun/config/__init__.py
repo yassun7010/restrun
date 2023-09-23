@@ -21,8 +21,8 @@ from .v1 import V1Config
 
 
 DEFAULT_CONFIG_FILES = [
-    Path("restrun.yaml"),
     Path("restrun.yml"),
+    Path("restrun.yaml"),
     Path("restrun.json"),
     Path("restrun.toml"),
 ]
