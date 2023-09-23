@@ -7,7 +7,7 @@ from tests.data import DATA_DIR
 
 
 class TestCliAppCreateConfigCommand:
-    def test_create_config(self) -> None:
+    def test_create_config_command(self) -> None:
         with TemporaryDirectory() as dir:
             os.chdir(dir)
             App.run(
@@ -21,7 +21,7 @@ class TestCliAppCreateConfigCommand:
                 ]
             )
 
-    def test_create_config_another_filepath(self) -> None:
+    def test_create_config_command_another_filepath(self) -> None:
         with TemporaryDirectory() as dir:
             os.chdir(dir)
             App.run(
