@@ -15,12 +15,19 @@ from restrun.core.client import RestrunMockClient
 from restrun.exceptions import RestrunError
 from typing_extensions import override
 
-from ..resources.pet_pet_id import post_pet_pet_id
+from ..resources.pet import post_pet, put_pet
+from ..resources.pet_find_by_status import get_pet_find_by_status
+from ..resources.pet_find_by_tags import get_pet_find_by_tags
+from ..resources.pet_pet_id import get_pet_pet_id, post_pet_pet_id
+from ..resources.pet_pet_id_upload_image import post_pet_pet_id_upload_image
 from ..resources.store_inventory import get_store_inventory
+from ..resources.store_order import post_store_order
+from ..resources.store_order_order_id import get_store_order_order_id
 from ..resources.user import post_user
+from ..resources.user_create_with_list import post_user_create_with_list
 from ..resources.user_login import get_user_login
 from ..resources.user_logout import get_user_logout
-from ..resources.user_username import put_user_username
+from ..resources.user_username import get_user_username, put_user_username
 from .client import NewCommandSampleClient
 
 
@@ -37,9 +44,55 @@ class NewCommandSampleMockClient(RestrunMockClient, NewCommandSampleClient):
     @overload
     def inject_get_response(
         self,
+        url: Literal["https://example.com/pet/findByTags"],
+        *,
+        response: get_pet_find_by_tags.GetPetFindByTagsResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_get_response(
+        self,
+        url: Literal["https://example.com/user/{username}"],
+        *,
+        response: get_user_username.GetUserUsernameResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_get_response(
+        self,
+        url: Literal["https://example.com/store/order/{orderId}"],
+        *,
+        response: get_store_order_order_id.GetStoreOrderOrderIdResponseBody
+        | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_get_response(
+        self,
+        url: Literal["https://example.com/pet/{petId}"],
+        *,
+        response: get_pet_pet_id.GetPetPetIdResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_get_response(
+        self,
         url: Literal["https://example.com/user/login"],
         *,
         response: get_user_login.GetUserLoginResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_get_response(
+        self,
+        url: Literal["https://example.com/pet/findByStatus"],
+        *,
+        response: get_pet_find_by_status.GetPetFindByStatusResponseBody | RestrunError,
     ) -> "Self":
         ...
 
@@ -61,6 +114,16 @@ class NewCommandSampleMockClient(RestrunMockClient, NewCommandSampleClient):
     @overload
     def inject_post_response(
         self,
+        url: Literal["https://example.com/pet/{petId}/uploadImage"],
+        *,
+        response: post_pet_pet_id_upload_image.PostPetPetIdUploadImageResponseBody
+        | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_post_response(
+        self,
         url: Literal["https://example.com/user"],
         *,
         response: post_user.PostUserResponseBody | RestrunError,
@@ -76,19 +139,60 @@ class NewCommandSampleMockClient(RestrunMockClient, NewCommandSampleClient):
     ) -> "Self":
         ...
 
+    @overload
+    def inject_post_response(
+        self,
+        url: Literal["https://example.com/pet"],
+        *,
+        response: post_pet.PostPetResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_post_response(
+        self,
+        url: Literal["https://example.com/store/order"],
+        *,
+        response: post_store_order.PostStoreOrderResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @overload
+    def inject_post_response(
+        self,
+        url: Literal["https://example.com/user/createWithList"],
+        *,
+        response: post_user_create_with_list.PostUserCreateWithListResponseBody
+        | RestrunError,
+    ) -> "Self":
+        ...
+
     @override
     def inject_post_response(self, url, *, response) -> "Self":
         self._client.inject_post_response(url, response)
 
         return self
 
-    @override
+    @overload
     def inject_put_response(
         self,
         url: Literal["https://example.com/user/{username}"],
         *,
         response: put_user_username.PutUserUsernameResponseBody | RestrunError,
     ) -> "Self":
+        ...
+
+    @overload
+    def inject_put_response(
+        self,
+        url: Literal["https://example.com/pet"],
+        *,
+        response: put_pet.PutPetResponseBody | RestrunError,
+    ) -> "Self":
+        ...
+
+    @override
+    def inject_put_response(self, url, *, response) -> "Self":
         self._client.inject_put_response(url, response)
 
         return self

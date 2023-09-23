@@ -1,7 +1,11 @@
 from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParsersAction
+import imp
+from importlib import import_module
+import importlib
 from logging import getLogger
+import os
 from pathlib import Path
-
+import importlib.util
 
 logger = getLogger(__name__)
 
@@ -44,6 +48,9 @@ def generate_command(space: "Namespace") -> None:
         config = load(file)
 
     base_dir = config_path.parent / strcase.module_name(config.name)
+
+    relative_path = base_dir.absolute().relative_to(Path(os.getcwd()))
+    imp.load_source(relative_path.name, str(relative_path / "__init__.py"))
 
     restrun_context = make_rustrun_context(base_dir, config)
 

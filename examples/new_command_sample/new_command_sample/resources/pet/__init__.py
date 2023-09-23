@@ -11,10 +11,8 @@
 #
 from restrun.core.resource import Resource
 
-from . import get_pet_pet_id, post_pet_pet_id
+from . import post_pet, put_pet
 
 
-class PetPetIdResource(
-    get_pet_pet_id.GetPetPetId, post_pet_pet_id.PostPetPetId, Resource
-):
+class PetResource(post_pet.PostPet, put_pet.PutPet, Resource):
     pass

@@ -11,10 +11,10 @@
 #
 from restrun.core.resource import Resource
 
-from . import get_pet_pet_id, post_pet_pet_id
+from . import post_user_create_with_list
 
 
-class PetPetIdResource(
-    get_pet_pet_id.GetPetPetId, post_pet_pet_id.PostPetPetId, Resource
+class UserCreateWithListResource(
+    post_user_create_with_list.PostUserCreateWithList, Resource
 ):
     pass

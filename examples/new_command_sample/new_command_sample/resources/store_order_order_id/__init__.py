@@ -11,10 +11,10 @@
 #
 from restrun.core.resource import Resource
 
-from . import get_pet_pet_id, post_pet_pet_id
+from . import get_store_order_order_id
 
 
-class PetPetIdResource(
-    get_pet_pet_id.GetPetPetId, post_pet_pet_id.PostPetPetId, Resource
+class StoreOrderOrderIdResource(
+    get_store_order_order_id.GetStoreOrderOrderId, Resource
 ):
     pass

@@ -11,8 +11,10 @@
 #
 from restrun.core.resource import Resource
 
-from . import put_user_username
+from . import get_user_username, put_user_username
 
 
-class UserUsernameResource(put_user_username.PutUserUsername, Resource):
+class UserUsernameResource(
+    get_user_username.GetUserUsername, put_user_username.PutUserUsername, Resource
+):
     pass
