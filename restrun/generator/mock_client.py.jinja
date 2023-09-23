@@ -8,7 +8,7 @@ from typing_extensions import override
 from restrun.core.client import RestrunMockClient
 from restrun.exceptions import RestrunError
 
-{% for resource in restrun.resources %}
+{% for resource in resources %}
 {% for operation_info in resource.operations -%}
 from ..resources.{{ resource.module_name }} import {{ operation_info.module_name }}
 {% endfor %}
@@ -24,10 +24,10 @@ from .mixins import (
 
 
 class {{ mock_client_class }}({{ (restrun.mock_client_mixin_path_names + ["RestrunMockClient", client_class])|join(", ") }}):
-{% if not restrun.has_operation %}
+{% if not resources.is_empty %}
     pass
 {% endif %}
-{% for method, operation_infos in restrun.operation_infos_map.items() %}
+{% for method, operation_infos in resources.operation_infos_map.items() %}
 {% if operation_infos | length == 0 %}
 {% elif operation_infos | length == 1 %}
 {% set operation_info = operation_infos[0] %}

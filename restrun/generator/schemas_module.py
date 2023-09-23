@@ -13,7 +13,7 @@ class SchemasModuleGenerator:
     def generate(
         self,
         config: "Config",
-        context: "RestrunContext",
+        restrun_context: "RestrunContext",
         template_path: Path | None = None,
     ) -> "GeneratedPythonCode":
         if template_path is None:
@@ -22,5 +22,5 @@ class SchemasModuleGenerator:
         return render_template(
             template_path,
             config=config,
-            restrun=context,
+            restrun=restrun_context,
         )

@@ -85,23 +85,6 @@ class ResourceContext:
         return self.delete_request is not None
 
 
-def make_resource_contexts(base_dir: Path) -> list[ResourceContext]:
-    resource_contexts = []
-
-    resources_path = base_dir / "resources"
-    if not resources_path.exists():
-        resources_path.mkdir(parents=True)
-
-    for resource_dir in resources_path.iterdir():
-        if not resource_dir.is_dir():
-            continue
-
-        if resource_context := make_resource_context(resource_dir):
-            resource_contexts.append(resource_context)
-
-    return resource_contexts
-
-
 def make_resource_context(resource_dir: Path) -> ResourceContext | None:
     operation_class_infos: dict[Type[Operation], list[ClassInfo[Operation]]] = {
         GetOperation: [],

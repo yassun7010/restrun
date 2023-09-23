@@ -33,19 +33,19 @@ class DeleteOperation(Operation):
     pass
 
 
-def get_method(request: Type[Operation]) -> Method:
-    if issubclass(request, GetOperation):
+def get_method(operation: Type[Operation]) -> Method:
+    if issubclass(operation, GetOperation):
         return "GET"
-    elif issubclass(request, PostOperation):
+    elif issubclass(operation, PostOperation):
         return "POST"
-    elif issubclass(request, PutOperation):
+    elif issubclass(operation, PutOperation):
         return "PUT"
-    elif issubclass(request, PatchOperation):
+    elif issubclass(operation, PatchOperation):
         return "PATCH"
-    elif issubclass(request, DeleteOperation):
+    elif issubclass(operation, DeleteOperation):
         return "DELETE"
     else:
-        raise UnknownOperationTypeError(request)
+        raise UnknownOperationTypeError(operation)
 
 
 def downcast(

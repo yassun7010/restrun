@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from glob import glob
 from pathlib import Path
-from typing import cast
 
 import restrun
 from restrun.config import Config
@@ -10,14 +9,11 @@ from restrun.core.operation import Operation
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.generator.context.resource_context import (
     ResourceContext,
-    make_resource_contexts,
 )
 
 
 @dataclass(frozen=True)
 class RestrunContext:
-    resources: list[ResourceContext]
-
     client_prefix: str
 
     server_urls: list[http.URL]
@@ -49,34 +45,6 @@ class RestrunContext:
             f"{mixin.module_name}.{mixin.class_name}"
             for mixin in self.mock_client_mixins
         ]
-
-    @property
-    def has_operation(self) -> bool:
-        return (
-            sum(
-                len(operation_infos)
-                for operation_infos in self.operation_infos_map.values()
-            )
-            != 0
-        )
-
-    @property
-    def operation_infos_map(self) -> dict[http.Method, list[ClassInfo[Operation]]]:
-        results: dict[http.Method, list[ClassInfo[Operation]]] = {
-            "GET": [],
-            "POST": [],
-            "PUT": [],
-            "PATCH": [],
-            "DELETE": [],
-        }
-
-        for resource in self.resources:
-            for method, operation_info in resource.operation_map.items():
-                results[cast(http.Method, method)].append(
-                    cast(ClassInfo[Operation], operation_info)
-                )
-
-        return results
 
     def get_operation_urls(
         self, resource_info: "ClassInfo[Operation]"
@@ -137,5 +105,4 @@ def make_rustrun_context(base_dir: Path, config: Config) -> RestrunContext:
         client_mixins=client_mixins,
         real_client_mixins=real_client_mixins,
         mock_client_mixins=mock_client_mixins,
-        resources=make_resource_contexts(base_dir),
     )

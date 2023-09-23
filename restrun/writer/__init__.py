@@ -9,6 +9,7 @@ from restrun.strcase import module_name
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator.context.operation_context import OperationContext
+    from restrun.generator.context.resources_context import ResourcesContext
     from restrun.generator.context.restrun_context import RestrunContext
     from restrun.generator.context.schema_context import SchemaContext
 
@@ -25,7 +26,12 @@ def write_module(base_dir: Path, config: "Config", context: "RestrunContext") ->
     )
 
 
-def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
+def write_clients(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resources_context: "ResourcesContext",
+) -> None:
     from restrun.generator.client import ClientGenerator
     from restrun.generator.client_mixins_module import ClientMixinsModuleGenerator
     from restrun.generator.client_module import ClientModuleGenerator
@@ -41,7 +47,11 @@ def write_clients(base_dir: Path, config: "Config", context: "RestrunContext") -
     ]:
         write_python_code(
             base_dir / "client" / filename,
-            lambda: generator.generate(config, context),
+            lambda: generator.generate(
+                config,
+                restrun_context,
+                resources_context,
+            ),
         )
 
 
@@ -87,20 +97,27 @@ def write_operations(
 
 
 def write_resources(
-    base_dir: Path, config: "Config", context: "RestrunContext"
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resources_context: "ResourcesContext",
 ) -> None:
     from restrun.generator.resource_module import ResourceModuleGenerator
     from restrun.generator.resources_module import ResourcesModuleGenerator
 
-    for resource_context in context.resources:
+    for resource_context in resources_context:
         write_python_code(
             base_dir / "resources" / resource_context.module_name / "__init__.py",
             lambda: ResourceModuleGenerator().generate(
-                config, context, resource_context
+                config, restrun_context, resource_context
             ),
         )
 
     write_python_code(
         base_dir / "resources" / "__init__.py",
-        lambda: ResourcesModuleGenerator().generate(config, context),
+        lambda: ResourcesModuleGenerator().generate(
+            config,
+            restrun_context,
+            resources_context,
+        ),
     )

@@ -3,6 +3,8 @@ from logging import getLogger
 import os
 from pathlib import Path
 
+from restrun.generator.context.resources_context import make_resources_context
+
 logger = getLogger(__name__)
 
 
@@ -47,12 +49,15 @@ def generate_command(space: "Namespace") -> None:
 
     base_dir = config_path.parent / strcase.module_name(config.name)
 
-    relative_path = base_dir.absolute().relative_to(Path(os.getcwd()))
-    imp.load_source(relative_path.name, str(relative_path / "__init__.py"))
-
     restrun_context = make_rustrun_context(base_dir, config)
 
     write_module(base_dir, config, restrun_context)
+
+    # import root module of generated code.
+    relative_path = base_dir.absolute().relative_to(Path(os.getcwd()))
+    imp.load_source(relative_path.name, str(relative_path / "__init__.py"))
+
+    resources_context = make_resources_context(base_dir)
 
     for source in config.root.sources:
         if source.type == "openapi":
@@ -74,9 +79,9 @@ def generate_command(space: "Namespace") -> None:
                 make_operation_contexts(source.server_urls, source),
             )
 
-    write_resources(base_dir, config, restrun_context)
+    write_resources(base_dir, config, restrun_context, resources_context)
 
-    write_clients(base_dir, config, restrun_context)
+    write_clients(base_dir, config, restrun_context, resources_context)
 
     if space.format is not False:
         for format in config.formats or []:

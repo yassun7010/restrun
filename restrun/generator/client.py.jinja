@@ -7,7 +7,7 @@ from typing_extensions import override, overload
 from restrun.core.client import RestrunClient
 from restrun.exceptions import URLNotSupportedError
 
-{% for resource in restrun.resources %}
+{% for resource in resources %}
 from ..resources import {{ resource.module_name }}
 {% endfor %}
 {% if restrun.client_mixins | length != 0 %}
@@ -20,10 +20,10 @@ from .mixins import (
 
 
 class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"])|join(", ") }}):
-{% if restrun.resources | length == 0 %}
+{% if resources | length == 0 %}
     pass
-{% elif restrun.resources | length == 1 %}
-{% set resource = restrun.resources[0] %}
+{% elif resources | length == 1 %}
+{% set resource = resources[0] %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @override
     def resource(self, url: {{ urls | literal }},) -> {{resource.module_name}}.{{ resource.class_name }}:
@@ -33,7 +33,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
         else:
           raise URLNotSupportedError(url)
 {% else %}
-{% for resource in restrun.resources %}
+{% for resource in resources %}
 {% set urls = restrun.get_resource_urls(resource) %}
     @overload
     def resource(self, url: {{ urls | literal }},) -> {{resource.module_name}}.{{ resource.class_name }}:
@@ -41,7 +41,7 @@ class {{ client_class }}({{ (restrun.client_mixin_path_names + ["RestrunClient"]
 {% endfor %}
 
     def resource(self, url):
-{% for resource in restrun.resources %}
+{% for resource in resources %}
 {% set urls = restrun.get_resource_urls(resource) %}
         if url in {{ urls }}:
             return {{resource.module_name}}.{{ resource.class_name }}(self._client)
