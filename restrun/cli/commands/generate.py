@@ -1,6 +1,5 @@
 from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParsersAction
 from logging import getLogger
-from pathlib import Path
 
 
 logger = getLogger(__name__)
@@ -30,8 +29,10 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def generate_command(space: "Namespace") -> None:
-    import importlib
-    import os
+    import importlib.util
+    import sys
+
+    from pathlib import Path
 
     from restrun import strcase
     from restrun.config import find_config_file, load
@@ -59,11 +60,12 @@ def generate_command(space: "Namespace") -> None:
     write_module(base_dir, config, restrun_context)
 
     # import root module of generated code.
-    relative_path = base_dir.absolute().relative_to(Path(os.getcwd()))
-    if loader := importlib.find_loader(
-        relative_path.name, str(relative_path / "__init__.py")
+    if spec := importlib.util.spec_from_file_location(
+        str(base_dir), base_dir / "__init__.py"
     ):
-        loader.load_module(relative_path.name)
+        if spec.loader is not None:
+            if module := importlib.util.module_from_spec(spec):
+                sys.modules[spec.name] = module
 
     resources_context = make_resources_context(base_dir)
 
