@@ -43,33 +43,23 @@ def new_command(space: Namespace) -> None:
     from pathlib import Path
 
     from restrun.cli.prompt.config import prompt_config
-    from restrun.cli.prompt.project_name import prompt_project_name
-    from restrun.cli.prompt.source import prompt_source
     from restrun.config import DEFAULT_CONFIG_FILE
     from restrun.exceptions import FileAlreadyExistsError
     from restrun.strcase import module_name
 
-    config_path: Path | None = space.config
-    if config_path and config_path.exists() and not space.overwrite:
-        raise FileAlreadyExistsError(config_path)
+    config = prompt_config(space.project, space.openapi)
 
-    project_name = prompt_project_name(space.project)
-    source = prompt_source(space.openapi)
-    project_path = Path(module_name(project_name))
+    project_path = Path(module_name(config.name))
     if not project_path.exists():
         project_path.mkdir()
 
-    config = prompt_config(space.project, space.openapi)
-
-    if config_path is None:
-        config_path = project_path / DEFAULT_CONFIG_FILE
-
-        if config_path.exists() and not space.overwrite:
-            raise FileAlreadyExistsError(config_path)
+    config_path = project_path / DEFAULT_CONFIG_FILE
+    if config_path.exists() and not space.overwrite:
+        raise FileAlreadyExistsError(config_path)
 
     with open(config_path, "w") as file:
         from restrun import yaml
 
         file.write(yaml.dump(config))
 
-    logger.info(f'Create a new project: "{project_name}" 🚀')
+    logger.info(f'Create a new project: "{config.name}" 🚀')
