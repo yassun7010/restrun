@@ -1,10 +1,12 @@
 import sys
+
 from logging import getLogger
 from pathlib import Path
 
 from typing_extensions import override
 
 from .formatter import Formatter
+
 
 logger = getLogger(__name__)
 
@@ -13,6 +15,7 @@ class BlackFormatter(Formatter):
     @override
     def format(self, target_dir: Path, *args: str) -> None:
         import black
+
         from click.testing import CliRunner
 
         if len(args) == 0:

@@ -1,12 +1,8 @@
 from typing import Type, Union
 
-from restrun.core.http import (
-    Method,
-)
+from restrun.core.http import Method
 from restrun.core.resource import Resource
-from restrun.exceptions import (
-    UnknownOperationTypeError,
-)
+from restrun.exceptions import UnknownOperationTypeError
 
 
 class Operation(Resource):

@@ -1,12 +1,14 @@
 import os
 import subprocess
 import sys
+
 from logging import getLogger
 from pathlib import Path
 
 from typing_extensions import override
 
 from .linter import Linter
+
 
 logger = getLogger(__name__)
 

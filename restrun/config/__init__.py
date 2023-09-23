@@ -1,13 +1,15 @@
 import json
 import os
+import tomllib
+
 from enum import Enum
 from io import StringIO
 from pathlib import Path
 from typing import IO
 
 import jinja2
-import tomllib
 import yaml
+
 from pydantic import RootModel
 
 from restrun.config.v1.format import V1FormatConfig
@@ -16,6 +18,7 @@ from restrun.core import http
 from restrun.exceptions import FileExtensionError, RestrunConfigNotFoundError
 
 from .v1 import V1Config
+
 
 DEFAULT_CONFIG_FILES = [
     Path("restrun.yaml"),

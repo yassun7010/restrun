@@ -1,5 +1,6 @@
 import logging
 import sys
+
 from argparse import ArgumentParser, BooleanOptionalAction
 from logging import getLogger
 from pathlib import Path
@@ -9,7 +10,8 @@ from rich.logging import RichHandler
 from rich_argparse import RichHelpFormatter
 
 import restrun
-from restrun.cli.commands import generate, new, get
+
+from restrun.cli.commands import generate, get, new
 from restrun.config import DEFAULT_CONFIG_FILE
 
 

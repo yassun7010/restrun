@@ -1,4 +1,5 @@
 import json
+
 from pathlib import Path
 
 from restrun.openapi.openapi import OpenAPI

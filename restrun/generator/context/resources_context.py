@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
 from typing import Iterator, cast
+
 from restrun.core import http
 from restrun.core.operation import Operation
 from restrun.generator import ClassInfo
-
 from restrun.generator.context.resource_context import (
     ResourceContext,
     make_resource_context,

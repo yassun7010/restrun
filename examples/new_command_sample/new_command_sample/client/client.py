@@ -11,9 +11,10 @@
 #
 from typing import Literal
 
+from typing_extensions import overload
+
 from restrun.core.client import RestrunClient
 from restrun.exceptions import URLNotSupportedError
-from typing_extensions import overload
 
 from ..resources import (
     pet,

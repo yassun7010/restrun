@@ -12,10 +12,9 @@
 import typing
 
 import typing_extensions
+
 from restrun.core import http
-from restrun.core.operation import (
-    GetOperation,
-)
+from restrun.core.operation import GetOperation
 
 from ...schemas import pet
 

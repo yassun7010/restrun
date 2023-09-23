@@ -1,6 +1,7 @@
-from typing_extensions import TypedDict
-from pydantic import ConfigDict, TypeAdapter, ValidationError
 import pytest
+
+from pydantic import ConfigDict, TypeAdapter, ValidationError
+from typing_extensions import TypedDict
 
 
 class TestPydanticTypeAdapter:

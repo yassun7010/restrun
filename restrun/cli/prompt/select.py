@@ -8,6 +8,7 @@ from prompt_toolkit.key_binding.key_bindings import KeyBindings, merge_key_bindi
 from prompt_toolkit.layout import Layout
 from prompt_toolkit.widgets import RadioList
 
+
 _T = TypeVar("_T")
 
 

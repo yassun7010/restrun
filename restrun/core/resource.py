@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from restrun.core import http
 
+
 if TYPE_CHECKING:
     from restrun.core.client import RequestClient
 

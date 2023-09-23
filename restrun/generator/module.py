@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 from restrun.generator import render_template
 
+
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator import GeneratedPythonCode

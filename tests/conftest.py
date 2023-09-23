@@ -1,5 +1,6 @@
 import os
 import uuid
+
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -62,6 +63,6 @@ def resource_context() -> ResourceContext:
 
 
 def format_by_black(contents: str) -> str:
-    from black import format_str, Mode
+    from black import Mode, format_str
 
     return format_str(contents, mode=Mode(preview=True))

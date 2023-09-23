@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Never, Type
 
 import jinja2
 
+
 if TYPE_CHECKING:
     import pydantic
 

@@ -1,25 +1,32 @@
 import json
+
 from pathlib import Path
 from typing import Self, TypeAlias
 
 import httpx
 import pydantic_core
-from openapi_pydantic.v3.v3_0_3 import DataType as DataType_v3_0_3
-from openapi_pydantic.v3.v3_0_3 import OpenAPI as OpenAPI_v3_0_3
-from openapi_pydantic.v3.v3_0_3 import Operation as Operation_v3_0_3
-from openapi_pydantic.v3.v3_0_3 import Parameter as Parameter_v3_0_3
-from openapi_pydantic.v3.v3_0_3 import Reference as Reference_v3_0_3
-from openapi_pydantic.v3.v3_0_3 import Schema as Schema_v3_0_3
-from openapi_pydantic.v3.v3_1_0 import DataType as DataType_v3_1_0
-from openapi_pydantic.v3.v3_1_0 import OpenAPI as OpenAPI_v3_1_0
-from openapi_pydantic.v3.v3_1_0 import Operation as Operation_v3_1_0
-from openapi_pydantic.v3.v3_1_0 import Parameter as Parameter_v3_1_0
-from openapi_pydantic.v3.v3_1_0 import Reference as Reference_v3_1_0
-from openapi_pydantic.v3.v3_1_0 import Schema as Schema_v3_1_0
+
+from openapi_pydantic.v3.v3_0_3 import (
+    DataType as DataType_v3_0_3,
+    OpenAPI as OpenAPI_v3_0_3,
+    Operation as Operation_v3_0_3,
+    Parameter as Parameter_v3_0_3,
+    Reference as Reference_v3_0_3,
+    Schema as Schema_v3_0_3,
+)
+from openapi_pydantic.v3.v3_1_0 import (
+    DataType as DataType_v3_1_0,
+    OpenAPI as OpenAPI_v3_1_0,
+    Operation as Operation_v3_1_0,
+    Parameter as Parameter_v3_1_0,
+    Reference as Reference_v3_1_0,
+    Schema as Schema_v3_1_0,
+)
 from pydantic import HttpUrl, RootModel
 
 from restrun.core.http import URL
 from restrun.exceptions import OpenAPIRequestError
+
 
 DataType: TypeAlias = DataType_v3_1_0 | DataType_v3_0_3
 Schema: TypeAlias = Schema_v3_1_0 | Schema_v3_0_3

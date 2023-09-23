@@ -3,13 +3,12 @@ from glob import glob
 from pathlib import Path
 
 import restrun
+
 from restrun.config import Config
 from restrun.core import http
 from restrun.core.operation import Operation
 from restrun.generator import ClassInfo, find_classes_from_code
-from restrun.generator.context.resource_context import (
-    ResourceContext,
-)
+from restrun.generator.context.resource_context import ResourceContext
 
 
 @dataclass(frozen=True)

@@ -1,14 +1,8 @@
-from typing import (
-    Any,
-    Callable,
-    Mapping,
-    NotRequired,
-    Type,
-    TypedDict,
-)
+from typing import Any, Callable, Mapping, NotRequired, Type, TypedDict
 
 import httpx
 import pydantic
+
 from typing_extensions import override
 
 from restrun.core.client import RequestRealClient

@@ -7,8 +7,8 @@ from restrun.generator import render_template
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator import GeneratedPythonCode
-    from restrun.generator.context.restrun_context import RestrunContext
     from restrun.generator.context.resources_context import ResourcesContext
+    from restrun.generator.context.restrun_context import RestrunContext
 
 
 class ResourcesModuleGenerator:

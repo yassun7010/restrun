@@ -1,8 +1,10 @@
 import sys
+
 from argparse import ArgumentParser, FileType, Namespace, _SubParsersAction
 from logging import getLogger
 
 from restrun.config import FormatType
+
 
 logger = getLogger(__name__)
 

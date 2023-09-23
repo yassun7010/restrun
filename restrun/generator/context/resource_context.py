@@ -16,6 +16,7 @@ from restrun.exceptions import DuplicateOperationTypeError, OperationURLInvalidE
 from restrun.generator import ClassInfo, find_classes_from_code
 from restrun.strcase import class_name
 
+
 logger = getLogger(__name__)
 
 

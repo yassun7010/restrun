@@ -4,6 +4,7 @@ from typing_extensions import TypeAlias
 
 from restrun.core.model import Model
 
+
 URL: TypeAlias = str
 Headers: TypeAlias = dict
 QuryParameters: TypeAlias = Mapping

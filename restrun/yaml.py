@@ -2,6 +2,7 @@ from pathlib import PosixPath, WindowsPath
 from typing import OrderedDict
 
 import yaml
+
 from pydantic_core import Url
 from yaml.nodes import ScalarNode as ScalarNode
 

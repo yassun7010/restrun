@@ -6,6 +6,7 @@ from restrun.generator import write_python_code
 from restrun.generator.operation import OperationGenerator
 from restrun.strcase import module_name
 
+
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator.context.operation_context import OperationContext

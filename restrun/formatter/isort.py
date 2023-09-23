@@ -6,6 +6,7 @@ from typing_extensions import override
 
 from .formatter import Formatter
 
+
 logger = getLogger(__name__)
 
 

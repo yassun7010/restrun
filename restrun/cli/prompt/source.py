@@ -1,4 +1,5 @@
 import rich
+
 from rich.prompt import Prompt
 
 from restrun.cli.prompt.select import select_prompt

@@ -11,10 +11,9 @@
 #
 
 import typing_extensions
+
 from restrun.core import http
-from restrun.core.operation import (
-    PostOperation,
-)
+from restrun.core.operation import PostOperation
 
 from ...schemas import pet
 

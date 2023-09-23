@@ -1,6 +1,8 @@
+import os
+
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
-import os
+
 
 logger = getLogger(__name__)
 

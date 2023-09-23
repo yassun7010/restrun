@@ -10,7 +10,7 @@ restrun = "restrun.__main__:main"
 
 [tool.taskipy.tasks]
 test = "pytest"
-format = "black ."
+format = "isort . && black ."
 lint = "pyright restrun/** tests/** examples/**"
 schema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
 examples = "sh scripts/execute_examples.sh"
@@ -52,3 +52,9 @@ reportPrivateImportUsage = "none"
 reportUnusedImport = true
 
 [tool.ruff]
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+lines_between_types = 1
+lines_after_imports = 2
