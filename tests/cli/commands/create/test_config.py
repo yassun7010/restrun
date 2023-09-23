@@ -20,3 +20,19 @@ class TestCliAppCreateConfigCommand:
                     str(DATA_DIR / "petstore.openapi_v3_0_2.json"),
                 ]
             )
+
+    def test_create_config_another_filepath(self) -> None:
+        with TemporaryDirectory() as dir:
+            os.chdir(dir)
+            App.run(
+                [
+                    "--config",
+                    "resturn.json",
+                    "create",
+                    "config",
+                    "--project",
+                    "test",
+                    "--openapi",
+                    str(DATA_DIR / "petstore.openapi_v3_0_2.json"),
+                ]
+            )
