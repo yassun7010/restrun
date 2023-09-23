@@ -86,9 +86,12 @@
                                 "$ref": "#/$defs/V1OpenAPISource"
                             },
                             "type": "array"
+                        },
+                        {
+                            "type": "null"
                         }
                     ],
-                    "default": [],
+                    "default": null,
                     "title": "source settings."
                 },
                 "format": {
@@ -117,7 +120,8 @@
                         }
                     ],
                     "default": true,
-                    "title": "format generated code. default formatters are 'isort' and 'black'."
+                    "description": " default formatters are 'isort' and 'black'.",
+                    "title": "format generated code."
                 },
                 "lint": {
                     "anyOf": [
@@ -135,7 +139,8 @@
                         }
                     ],
                     "default": true,
-                    "title": "lint generated code. default linter is 'ruffo'"
+                    "description": "default linter is 'ruff'",
+                    "title": "lint generated code."
                 }
             },
             "required": [

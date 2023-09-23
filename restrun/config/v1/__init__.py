@@ -26,6 +26,22 @@ class V1Config(ExtraForbidModel):
         Field(title="source settings."),
     ] = None
 
+    format: Annotated[
+        bool | V1FormatConfig | list[V1FormatConfig],
+        Field(
+            title="format generated code.",
+            description=" default formatters are 'isort' and 'black'.",
+        ),
+    ] = True
+
+    lint: Annotated[
+        bool | V1LintConfig | list[V1LintConfig],
+        Field(
+            title="lint generated code.",
+            description="default linter is 'ruff'",
+        ),
+    ] = True
+
     @property
     def sources(self) -> list[V1Source]:
         if self.source is None:
@@ -35,13 +51,6 @@ class V1Config(ExtraForbidModel):
             return self.source
 
         return [self.source]
-
-    format: Annotated[
-        bool | V1FormatConfig | list[V1FormatConfig],
-        Field(
-            title="format generated code. default formatters are 'isort' and 'black'.",
-        ),
-    ] = True
 
     @property
     def formats(self) -> list[V1FormatConfig] | None:
@@ -59,11 +68,6 @@ class V1Config(ExtraForbidModel):
 
         else:
             return self.format
-
-    lint: Annotated[
-        bool | V1LintConfig | list[V1LintConfig],
-        Field(title="lint generated code. default linter is 'ruffo'"),
-    ] = True
 
     @property
     def lints(self) -> list[V1LintConfig] | None:
