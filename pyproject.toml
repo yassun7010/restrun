@@ -14,6 +14,7 @@ format = "isort restrun && black restrun"
 lint = "pyright restrun/** tests/** examples/**"
 schema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
 examples = "sh scripts/execute_examples.sh"
+docs = "mkdocs serve"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -37,6 +38,7 @@ ipython = "^8.14.0"
 pytest = "^7.4.0"
 pyright = "^1.1.324"
 taskipy = "^1.12.0"
+mkdocs-material = "^9.4.1"
 
 [build-system]
 requires = ["poetry-core"]
