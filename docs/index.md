@@ -2,6 +2,6 @@
 
 --8<-- "README.md:badges"
 
-[RESTRUN](index.md) generate command shell completion file from config file.
+RESTRUN is `REST(full api) + RUN(ner)` generator for Python.
 
 ## Features
