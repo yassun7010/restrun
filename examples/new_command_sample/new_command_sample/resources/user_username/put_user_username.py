@@ -11,8 +11,11 @@
 #
 import typing
 
+
 from restrun.core import http
-from restrun.core.operation import PutOperation
+from restrun.core.operation import (
+    PutOperation,
+)
 
 
 PutUserUsernameResponseBody = typing.Literal[None]

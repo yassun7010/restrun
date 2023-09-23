@@ -13,7 +13,9 @@
 import typing_extensions
 
 from restrun.core import http
-from restrun.core.operation import GetOperation
+from restrun.core.operation import (
+    GetOperation,
+)
 
 
 class StoreInventoryJsonResponse(typing_extensions.TypedDict):

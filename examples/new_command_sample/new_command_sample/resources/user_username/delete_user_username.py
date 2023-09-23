@@ -11,8 +11,11 @@
 #
 import typing
 
+
 from restrun.core import http
-from restrun.core.operation import DeleteOperation
+from restrun.core.operation import (
+    DeleteOperation,
+)
 
 
 DeleteUserUsernameResponseBody = typing.Literal[None]
