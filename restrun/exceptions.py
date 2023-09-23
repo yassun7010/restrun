@@ -192,7 +192,7 @@ class OperationURLInvalidError(RestrunError, ValueError):
 
 
 class FileExtensionError(RestrunError, ValueError):
-    def __init__(self, file: str, extension: str) -> None:
+    def __init__(self, file: Path | str, extension: str) -> None:
         self._file = file
         self._extension = extension
 

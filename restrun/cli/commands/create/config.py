@@ -1,15 +1,21 @@
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
 
+from restrun.exceptions import FileExtensionError
+
 
 logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
+    from restrun.config import DEFAULT_CONFIG_FILE
+
+    help = f'create [literal]"{DEFAULT_CONFIG_FILE}"[/].'
+
     parser: ArgumentParser = subparsers.add_parser(
         "config",
-        description="create config.",
-        help="create config.",
+        description=help,
+        help=help,
         **kwargs,
     )
 
@@ -45,9 +51,21 @@ def create_config_command(space: Namespace) -> None:
     if config_path.exists():
         raise FileAlreadyExistsError(config_path)
 
+    extension = config_path.suffix
+    if extension not in (".json", ".yml", ".yaml"):
+        raise FileExtensionError(config_path, extension)
+
     config = prompt_config(space.project, space.openapi)
 
     with open(config_path, "w") as file:
         from restrun import yaml
 
-        file.write(yaml.dump(config))
+        match extension:
+            case ".json":
+                file.write(config.model_dump_json())
+
+            case ".yml", ".yaml":
+                file.write(yaml.dump(config))
+
+            case _:
+                raise FileExtensionError(config_path, extension)
