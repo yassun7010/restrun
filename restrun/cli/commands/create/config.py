@@ -59,7 +59,7 @@ def create_config_command(space: Namespace) -> None:
         raise FileAlreadyExistsError(config_path)
 
     config_ext = config_path.suffix
-    if config_ext not in (".json", ".yml", ".yaml"):
+    if config_ext not in (".yml", ".yaml", ".json"):
         raise FileExtensionError(config_path, config_ext)
 
     config = prompt_config(space.project, space.openapi)
@@ -68,11 +68,11 @@ def create_config_command(space: Namespace) -> None:
         from restrun import yaml
 
         match config_ext:
-            case ".json":
-                file.write(config.model_dump_json())
-
             case ".yml" | ".yaml":
                 file.write(yaml.dump(config))
+
+            case ".json":
+                file.write(config.model_dump_json())
 
             case _:
                 raise FileExtensionError(config_path, config_ext)

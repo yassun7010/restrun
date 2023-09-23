@@ -1,6 +1,5 @@
 import json
 import os
-import tomllib
 
 from enum import Enum
 from io import StringIO
@@ -24,7 +23,6 @@ DEFAULT_CONFIG_FILES = [
     Path("restrun.yml"),
     Path("restrun.yaml"),
     Path("restrun.json"),
-    Path("restrun.toml"),
 ]
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
 
@@ -32,7 +30,6 @@ DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
 class FormatType(Enum):
     JSON = "json"
     YAML = "yaml"
-    TOML = "toml"
 
     def __str__(self):
         return self.value
@@ -81,14 +78,11 @@ def find_config_file(path: Path | None) -> Path:
 def load(file: IO, **kwargs) -> Config:
     root, extension = os.path.splitext(file.name)
     match extension:
-        case ".json":
-            config = json.load(file)
-
         case ".yaml" | ".yml":
             config = yaml.full_load(file)
 
-        case ".toml":
-            config = tomllib.load(file)
+        case ".json":
+            config = json.load(file)
 
         case ".jinja" | "jinja2" | ".j2":
             data: bytes | str = file.read()
