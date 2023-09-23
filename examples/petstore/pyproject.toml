@@ -25,3 +25,6 @@ reportPrivateImportUsage = "none"
 reportUnusedImport = true
 
 [tool.ruff]
+
+[tool.isort]
+profile = "black"

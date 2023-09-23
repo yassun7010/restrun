@@ -12,8 +12,9 @@
 import typing
 
 from restrun.core import http
-from restrun.core.operation import GetOperation
-
+from restrun.core.operation import (
+    GetOperation,
+)
 
 GetUserLogoutResponseBody = typing.Literal[None]
 

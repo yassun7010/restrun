@@ -14,7 +14,6 @@ from .client import PetstoreClient
 from .mock_client import PetstoreMockClient
 from .real_client import PetstoreRealClient
 
-
 __all__ = [
     "PetstoreClient",
     "PetstoreMockClient",
