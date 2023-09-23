@@ -122,3 +122,52 @@ def write_resources(
             resources_context,
         ),
     )
+
+
+def write_python_codes(base_dir: Path, config: "Config", config_path: Path) -> None:
+    import importlib.util
+    import sys
+
+    from pathlib import Path
+
+    from restrun.generator.context.operation_context import make_operation_contexts
+    from restrun.generator.context.resources_context import make_resources_context
+    from restrun.generator.context.restrun_context import make_rustrun_context
+    from restrun.generator.context.schema_context import make_schema_contexts
+
+    restrun_context = make_rustrun_context(base_dir, config)
+
+    write_module(base_dir, config, restrun_context)
+
+    # import root module of generated code.
+    if spec := importlib.util.spec_from_file_location(
+        str(base_dir), base_dir / "__init__.py"
+    ):
+        if spec.loader is not None:
+            if module := importlib.util.module_from_spec(spec):
+                sys.modules[spec.name] = module
+
+    for source in config.root.sources:
+        if source.type == "openapi":
+            if (
+                isinstance(source.location, Path)
+                and not source.location.exists()
+                and (config_path.parent / source.location).exists()
+            ):
+                source.location = config_path.parent / source.location
+
+            write_schemas(
+                base_dir, config, restrun_context, make_schema_contexts(source)
+            )
+
+            write_operations(
+                base_dir,
+                config,
+                restrun_context,
+                make_operation_contexts(source.server_urls, source),
+            )
+
+    resources_context = make_resources_context(base_dir)
+
+    write_resources(base_dir, config, restrun_context, resources_context)
+    write_clients(base_dir, config, restrun_context, resources_context)
