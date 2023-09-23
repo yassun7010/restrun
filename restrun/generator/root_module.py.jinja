@@ -1,0 +1,12 @@
+{%- set client_class = restrun.client_prefix | class_name + "Client" -%}
+{%- set real_client_class = restrun.client_prefix | class_name + "RealClient" -%}
+{%- set mock_client_class = restrun.client_prefix | class_name + "MockClient" -%}
+{{ auto_generated_doc_comment }}
+
+from .client import {{ client_class }}, {{ mock_client_class }}, {{ real_client_class }}
+
+__all__ = [
+    "{{ client_class }}",
+    "{{ mock_client_class }}",
+    "{{ real_client_class }}",
+]

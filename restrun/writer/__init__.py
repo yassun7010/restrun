@@ -19,11 +19,11 @@ logger = getLogger(__name__)
 
 
 def write_module(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
-    from restrun.generator.module import ModuleGenerator
+    from restrun.generator.root_module import RootModuleGenerator
 
     write_python_code(
         base_dir / "__init__.py",
-        lambda: ModuleGenerator().generate(config, context),
+        lambda: RootModuleGenerator().generate(config, context),
     )
 
 
