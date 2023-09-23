@@ -35,6 +35,13 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
         help="openapi file location.",
     )
 
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        default=False,
+        help="overwrite existing file.",
+    )
+
     parser.set_defaults(handler=create_config_command)
 
 
@@ -48,7 +55,7 @@ def create_config_command(space: Namespace) -> None:
 
     config_path = Path(space.config or str(DEFAULT_CONFIG_FILE))
 
-    if config_path.exists():
+    if config_path.exists() and not space.overwrite:
         raise FileAlreadyExistsError(config_path)
 
     extension = config_path.suffix
@@ -64,7 +71,7 @@ def create_config_command(space: Namespace) -> None:
             case ".json":
                 file.write(config.model_dump_json())
 
-            case ".yml", ".yaml":
+            case ".yml" | ".yaml":
                 file.write(yaml.dump(config))
 
             case _:
