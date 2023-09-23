@@ -9,5 +9,5 @@
 
 RESTRUN is `rest(full api) + run(ner)` for Python.
 
-- Documentation
+- [Documentation](https://yassun7010.github.io/restrun/)
 - [Examples](https://github.com/yassun7010/restrun/tree/main/examples)
