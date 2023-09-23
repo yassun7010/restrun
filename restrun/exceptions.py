@@ -201,6 +201,15 @@ class FileExtensionError(RestrunError, ValueError):
         return f'file extension "{self._extension}" of "{self._file}" is not supported.'
 
 
+class FileAlreadyExistsError(RestrunError, FileExistsError):
+    def __init__(self, filepath: Path) -> None:
+        self.filepath = filepath
+
+    @property
+    def message(self) -> str:
+        return f'"{self.filepath}" already exists.'
+
+
 class FileNotFoundError(RestrunError, FileNotFoundError):
     def __init__(self, filepath: str | Path) -> None:
         self.filepath = Path(filepath) if isinstance(filepath, str) else filepath

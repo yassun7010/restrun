@@ -8,7 +8,7 @@ from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.exceptions import NeverReachError
 
 
-def prompt_source(openapi_location: str) -> V1OpenAPISource | None:
+def prompt_source(openapi_location: str | None) -> V1OpenAPISource | None:
     source_type: SourceType | None = None
     if openapi_location is not None:
         source_type = "openapi"

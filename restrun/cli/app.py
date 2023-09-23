@@ -11,7 +11,7 @@ from rich_argparse import RichHelpFormatter
 
 import restrun
 
-from restrun.cli.commands import generate, get, new
+from restrun.cli.commands import create, generate, get, new
 from restrun.config import DEFAULT_CONFIG_FILE
 
 
@@ -59,9 +59,16 @@ class App:
             required=True,
         )
 
-        new.add_subparser(subparser, formatter_class=parser.formatter_class)
-        generate.add_subparser(subparser, formatter_class=parser.formatter_class)
-        get.add_subparser(subparser, formatter_class=parser.formatter_class)
+        for add_subparser in [
+            new.add_subparser,
+            generate.add_subparser,
+            get.add_subparser,
+            create.add_subparser,
+        ]:
+            add_subparser(
+                subparser,
+                formatter_class=parser.formatter_class,
+            )
 
         logging.basicConfig(
             format="%(message)s",

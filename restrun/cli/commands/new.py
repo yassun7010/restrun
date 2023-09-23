@@ -1,5 +1,3 @@
-import os
-
 from argparse import ArgumentParser, Namespace, _SubParsersAction
 from logging import getLogger
 
@@ -35,13 +33,15 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def new_command(space: Namespace) -> None:
+    import os
+
     from pathlib import Path
 
     from restrun.cli.app import App
+    from restrun.cli.prompt.config import prompt_config
     from restrun.cli.prompt.project_name import prompt_project_name
     from restrun.cli.prompt.source import prompt_source
     from restrun.config import DEFAULT_CONFIG_FILE
-    from restrun.config.v1 import V1Config
     from restrun.strcase import module_name
 
     project_name = prompt_project_name(space.project)
@@ -50,11 +50,7 @@ def new_command(space: Namespace) -> None:
     if not project_path.exists():
         project_path.mkdir()
 
-    config = V1Config(
-        version="1",
-        name=project_name,
-        source=source,
-    )
+    config = prompt_config(space.project, space.openapi)
 
     config_path = project_path / DEFAULT_CONFIG_FILE
     with open(config_path, "w") as file:
