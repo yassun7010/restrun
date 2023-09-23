@@ -31,7 +31,7 @@ from restrun.openapi.schema import (
     is_object,
     title_and_description,
 )
-from restrun.strcase import class_name
+from restrun.utils.strcase import class_name
 
 
 @dataclass(frozen=True)

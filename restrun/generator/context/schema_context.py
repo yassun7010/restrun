@@ -16,7 +16,7 @@ from restrun.openapi.schema import (
     get_named_schema,
     get_schemas,
 )
-from restrun.strcase import module_name
+from restrun.utils.strcase import module_name
 
 
 @dataclass(frozen=True)

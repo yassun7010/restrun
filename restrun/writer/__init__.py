@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from restrun.generator import write_python_code
 from restrun.generator.operation import OperationGenerator
-from restrun.strcase import module_name
+from restrun.utils.strcase import module_name
 
 
 if TYPE_CHECKING:

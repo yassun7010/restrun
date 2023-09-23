@@ -6,7 +6,7 @@ from typing import Self
 from attr import dataclass
 
 from restrun.exceptions import NeverReachError
-from restrun.strcase import class_name, module_name
+from restrun.utils.strcase import class_name, module_name
 
 from .openapi import (
     DataType,

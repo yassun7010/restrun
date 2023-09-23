@@ -48,10 +48,10 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 def create_config_command(space: Namespace) -> None:
     from pathlib import Path
 
-    from restrun import yaml
     from restrun.cli.prompt.config import prompt_config
     from restrun.config import DEFAULT_CONFIG_FILE
     from restrun.exceptions import FileAlreadyExistsError
+    from restrun.utils import yaml
 
     config_path = Path(space.config or str(DEFAULT_CONFIG_FILE))
 
@@ -65,7 +65,7 @@ def create_config_command(space: Namespace) -> None:
     config = prompt_config(space.project, space.openapi)
 
     with open(config_path, "w") as file:
-        from restrun import yaml
+        from restrun.utils import yaml
 
         match config_ext:
             case ".yml" | ".yaml":

@@ -3,7 +3,7 @@ from pathlib import Path
 from restrun.cli.prompt.project_name import prompt_project_name
 from restrun.cli.prompt.source import prompt_source
 from restrun.config.v1 import V1Config
-from restrun.strcase import module_name
+from restrun.utils.strcase import module_name
 
 
 def prompt_config(

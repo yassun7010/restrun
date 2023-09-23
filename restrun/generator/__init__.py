@@ -16,7 +16,7 @@ from restrun.exceptions import (
     JinjaTemplateSyntaxError,
     PythonFileExecutionError,
 )
-from restrun.strcase import class_name, module_name
+from restrun.utils.strcase import class_name, module_name
 
 
 logger = getLogger(__name__)

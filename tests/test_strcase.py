@@ -1,6 +1,6 @@
 import pytest
 
-from restrun.strcase import class_name, module_name
+from restrun.utils.strcase import class_name, module_name
 
 
 class TestModuleName:

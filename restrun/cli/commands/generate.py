@@ -29,10 +29,10 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def generate_command(space: "Namespace") -> None:
-    from restrun import strcase
     from restrun.config import find_config_file, load
     from restrun.formatter import format_python_codes
     from restrun.linter import lint_python_codes
+    from restrun.utils import strcase
     from restrun.writer import write_python_codes
 
     config_path = find_config_file(space.config)

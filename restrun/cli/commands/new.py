@@ -45,7 +45,7 @@ def new_command(space: Namespace) -> None:
     from restrun.cli.prompt.config import prompt_config
     from restrun.config import DEFAULT_CONFIG_FILE
     from restrun.exceptions import FileAlreadyExistsError
-    from restrun.strcase import module_name
+    from restrun.utils.strcase import module_name
 
     config = prompt_config(space.project, space.openapi)
 
@@ -58,7 +58,7 @@ def new_command(space: Namespace) -> None:
         raise FileAlreadyExistsError(config_path)
 
     with open(config_path, "w") as file:
-        from restrun import yaml
+        from restrun.utils import yaml
 
         file.write(yaml.dump(config))
 
