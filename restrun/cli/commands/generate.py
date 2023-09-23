@@ -1,11 +1,7 @@
 from argparse import ArgumentParser, BooleanOptionalAction, Namespace, _SubParsersAction
-import imp
-from importlib import import_module
-import importlib
 from logging import getLogger
 import os
 from pathlib import Path
-import importlib.util
 
 logger = getLogger(__name__)
 
@@ -34,6 +30,8 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def generate_command(space: "Namespace") -> None:
+    import imp
+
     from restrun import strcase
     from restrun.config import find_config_file, load
     from restrun.generator.context.restrun_context import make_rustrun_context
