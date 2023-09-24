@@ -6,7 +6,7 @@ from restrun.core.model import ExtraForbidModel
 
 class V1IsortConfig(ExtraForbidModel):
     formatter: Literal["isort"]
-    options: dict[str, str | int | None] | None = None
+    options: dict[str, str | int | bool | None] | None = None
     settings_path: Path | None = None
 
     @property

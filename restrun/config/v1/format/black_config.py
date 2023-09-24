@@ -6,7 +6,7 @@ from restrun.core.model import ExtraForbidModel
 
 class V1BlackConfig(ExtraForbidModel):
     formatter: Literal["black"]
-    options: dict[str, str | int | None] | None = None
+    options: dict[str, str | int | bool | None] | None = None
     config_path: Path | None = None
 
     @property

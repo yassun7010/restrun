@@ -6,7 +6,7 @@ from restrun.core.model import ExtraForbidModel
 
 class V1RuffConfig(ExtraForbidModel):
     linter: Literal["ruff"]
-    options: dict[str, str | int | None] | None = None
+    options: dict[str, str | int | bool | None] | None = None
     config_path: Path | None = None
 
     @property
