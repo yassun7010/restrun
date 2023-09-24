@@ -8,10 +8,12 @@ logger = getLogger(__name__)
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     from . import config
 
+    description = "display resource."
+
     parser: ArgumentParser = subparsers.add_parser(
         "get",
-        description="display resource.",
-        help="display resource.",
+        description=description,
+        help=description,
         **kwargs,
     )
 

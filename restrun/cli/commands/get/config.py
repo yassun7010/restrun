@@ -10,10 +10,12 @@ logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
+    description = "display config."
+
     parser: ArgumentParser = subparsers.add_parser(
         "config",
-        description="display config.",
-        help="display config.",
+        description=description,
+        help=description,
         **kwargs,
     )
 

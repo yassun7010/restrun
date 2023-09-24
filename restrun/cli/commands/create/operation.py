@@ -6,12 +6,12 @@ logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
-    help = "create operation."
+    description = "create operation."
 
     parser: ArgumentParser = subparsers.add_parser(
         "operation",
-        description=help,
-        help=help,
+        description=description,
+        help=description,
         **kwargs,
     )
 

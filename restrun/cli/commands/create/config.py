@@ -10,12 +10,12 @@ logger = getLogger(__name__)
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     from restrun.config import DEFAULT_CONFIG_FILE
 
-    help = f'create [literal]"{DEFAULT_CONFIG_FILE}"[/].'
+    description = f'create [literal]"{DEFAULT_CONFIG_FILE}"[/].'
 
     parser: ArgumentParser = subparsers.add_parser(
         "config",
-        description=help,
-        help=help,
+        description=description,
+        help=description,
         **kwargs,
     )
 
