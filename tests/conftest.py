@@ -1,12 +1,14 @@
+import contextlib
 import os
 import uuid
 
 from contextlib import contextmanager
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from pytest import fixture
 
-from restrun.config import Config
+from restrun.config import DEFAULT_CONFIG_FILE, Config
 from restrun.config.v1 import V1Config
 from restrun.generator.context.resource_context import ResourceContext
 from restrun.generator.context.resources_context import ResourcesContext
@@ -29,7 +31,7 @@ def tempfilepath(path: Path):
 def config() -> Config:
     return Config(
         root=V1Config(
-            name="my",
+            name="test_project",
             version="1",
         )
     )
@@ -66,3 +68,15 @@ def format_by_black(contents: str) -> str:
     from black import Mode, format_str
 
     return format_str(contents, mode=Mode(preview=True))
+
+
+@contextmanager
+def new_restrun_project(config: Config):
+    with TemporaryDirectory() as dir:
+        with contextlib.chdir(dir):
+            with open(DEFAULT_CONFIG_FILE, "w") as file:
+                from restrun.utils import yaml
+
+                file.write(yaml.dump(config.root))
+
+            yield dir
