@@ -6,7 +6,7 @@ logger = getLogger(__name__)
 
 
 def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
-    from . import config
+    from . import config, operation
 
     parser: ArgumentParser = subparsers.add_parser(
         "create",
@@ -21,4 +21,8 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
         required=True,
     )
 
-    config.add_subparser(subparsers, formatter_class=parser.formatter_class)
+    for add_subparser in (config.add_subparser, operation.add_subparser):
+        add_subparser(
+            subparsers,
+            formatter_class=parser.formatter_class,
+        )
