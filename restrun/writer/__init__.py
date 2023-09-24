@@ -3,13 +3,13 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from restrun.generator import write_python_code
-from restrun.generator.operation import OperationGenerator
 from restrun.utils.strcase import module_name
 
 
 if TYPE_CHECKING:
     from restrun.config import Config
     from restrun.generator.context.operation_context import OperationContext
+    from restrun.generator.context.resource_context import ResourceContext
     from restrun.generator.context.resources_context import ResourcesContext
     from restrun.generator.context.restrun_context import RestrunContext
     from restrun.generator.context.schema_context import SchemaContext
@@ -56,13 +56,26 @@ def write_clients(
         )
 
 
+def write_schema(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    schema_context: "SchemaContext",
+):
+    from restrun.generator.schema import SchemaGenerator
+
+    write_python_code(
+        base_dir / "schemas" / f"{schema_context.file_name}.py",
+        lambda: SchemaGenerator().generate(config, restrun_context, schema_context),
+    )
+
+
 def write_schemas(
     base_dir: Path,
     config: "Config",
     restrun_context: "RestrunContext",
     schema_contexts: "list[SchemaContext]",
 ):
-    from restrun.generator.schema import SchemaGenerator
     from restrun.generator.schemas_module import SchemasModuleGenerator
 
     write_python_code(
@@ -71,10 +84,33 @@ def write_schemas(
     )
 
     for schema_context in schema_contexts:
-        write_python_code(
-            base_dir / "schemas" / f"{schema_context.file_name}.py",
-            lambda: SchemaGenerator().generate(config, restrun_context, schema_context),
+        write_schema(
+            base_dir,
+            config,
+            restrun_context,
+            schema_context,
         )
+
+
+def write_operation(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    operation_context: "OperationContext",
+) -> None:
+    from restrun.generator.operation import OperationGenerator
+
+    write_python_code(
+        base_dir
+        / "resources"
+        / module_name(operation_context.path_name)
+        / f"{module_name(operation_context.class_name)}.py",
+        lambda: OperationGenerator().generate(
+            config,
+            restrun_context,
+            operation_context,
+        ),
+    )
 
 
 def write_operations(
@@ -84,17 +120,28 @@ def write_operations(
     operation_contexts: "list[OperationContext]",
 ) -> None:
     for operation_context in operation_contexts:
-        write_python_code(
-            base_dir
-            / "resources"
-            / module_name(operation_context.path_name)
-            / f"{module_name(operation_context.class_name)}.py",
-            lambda: OperationGenerator().generate(
-                config,
-                restrun_context,
-                operation_context,
-            ),
+        write_operation(
+            base_dir,
+            config,
+            restrun_context,
+            operation_context,
         )
+
+
+def write_resource(
+    base_dir: Path,
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resource_context: "ResourceContext",
+) -> None:
+    from restrun.generator.resource_module import ResourceModuleGenerator
+
+    write_python_code(
+        base_dir / "resources" / resource_context.module_name / "__init__.py",
+        lambda: ResourceModuleGenerator().generate(
+            config, restrun_context, resource_context
+        ),
+    )
 
 
 def write_resources(
@@ -103,16 +150,7 @@ def write_resources(
     restrun_context: "RestrunContext",
     resources_context: "ResourcesContext",
 ) -> None:
-    from restrun.generator.resource_module import ResourceModuleGenerator
     from restrun.generator.resources_module import ResourcesModuleGenerator
-
-    for resource_context in resources_context:
-        write_python_code(
-            base_dir / "resources" / resource_context.module_name / "__init__.py",
-            lambda: ResourceModuleGenerator().generate(
-                config, restrun_context, resource_context
-            ),
-        )
 
     write_python_code(
         base_dir / "resources" / "__init__.py",
@@ -122,6 +160,14 @@ def write_resources(
             resources_context,
         ),
     )
+
+    for resource_context in resources_context:
+        write_resource(
+            base_dir,
+            config,
+            restrun_context,
+            resource_context,
+        )
 
 
 def write_python_codes(base_dir: Path, config: "Config", config_path: Path) -> None:
