@@ -11,3 +11,12 @@ RESTRUN is `REST(full api) + RUN(ner)` generator for Python.
 
 - [Documentation](https://yassun7010.github.io/restrun/)
 - [Examples](https://github.com/yassun7010/restrun/tree/main/examples)
+
+## Features
+
+- [x] Load OpenAPI.
+- [ ] Login method.
+- [ ] Create resource command.
+- [ ] Support plugins.
+- [ ] Support async.
+- [ ] Support test case generation.
