@@ -3,8 +3,6 @@ import sys
 from argparse import ArgumentParser, FileType, Namespace, _SubParsersAction
 from logging import getLogger
 
-from restrun.config import FormatType
-
 
 logger = getLogger(__name__)
 
@@ -21,8 +19,8 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
     parser.add_argument(
         "--format",
-        type=FormatType,
-        choices=[FormatType.JSON],
+        type=str,
+        choices=["json"],
         help="output format.",
     )
 

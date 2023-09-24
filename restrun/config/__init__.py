@@ -1,10 +1,9 @@
 import json
 import os
 
-from enum import Enum
 from io import StringIO
 from pathlib import Path
-from typing import IO
+from typing import IO, Literal
 
 import jinja2
 import yaml
@@ -28,12 +27,7 @@ DEFAULT_CONFIG_FILES = [
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_FILES[0]
 
 
-class FormatType(Enum):
-    JSON = "json"
-    YAML = "yaml"
-
-    def __str__(self):
-        return self.value
+FormatType = Literal["json", "yaml"]
 
 
 class Config(RootModel):
