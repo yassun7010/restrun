@@ -309,9 +309,3 @@ class OpenAPIRequestError(RestrunError):
             f'Failed to request the OpenAPI of {self.method} "{self.url}": '
             f"{self.content}"
         )
-
-
-class ProjectNameRequiredError(RestrunError, ValueError):
-    @property
-    def message(self) -> str:
-        return "Project name is required."
