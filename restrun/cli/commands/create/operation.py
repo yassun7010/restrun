@@ -34,8 +34,13 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
 
 
 def create_operation_command(space: Namespace) -> None:
+    from restrun.cli.prompt.resource_path import prompt_resource_path
     from restrun.config import find_config_file, load
 
     config_path = find_config_file(space.config)
     with open(config_path) as file:
         load(file)
+
+    prompt_resource_path(space.path)
+
+    logger.info("Successfully created operation 🎉")
