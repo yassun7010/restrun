@@ -8,3 +8,10 @@ source:
     openapi:
       servers:
         - url: https://petstore3.com/
+
+lint:
+  linter: ruff
+  options:
+    combine-as-imports: true
+    lines-between-types: 1
+    lines-after-imports: 2

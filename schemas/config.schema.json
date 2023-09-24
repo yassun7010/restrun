@@ -19,6 +19,9 @@
                                         "type": "integer"
                                     },
                                     {
+                                        "type": "boolean"
+                                    },
+                                    {
                                         "type": "null"
                                     }
                                 ]
@@ -186,6 +189,9 @@
                                         "type": "integer"
                                     },
                                     {
+                                        "type": "boolean"
+                                    },
+                                    {
                                         "type": "null"
                                     }
                                 ]
@@ -292,6 +298,9 @@
                                     },
                                     {
                                         "type": "integer"
+                                    },
+                                    {
+                                        "type": "boolean"
                                     },
                                     {
                                         "type": "null"
