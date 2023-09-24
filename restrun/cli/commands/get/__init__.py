@@ -20,7 +20,8 @@ def add_subparser(subparsers: _SubParsersAction, **kwargs) -> None:
     subparsers = parser.add_subparsers(
         title="commands",
         metavar="COMMAND",
-        required=True,
     )
 
     config.add_subparser(subparsers, formatter_class=parser.formatter_class)
+
+    parser.set_defaults(handler=lambda _: parser.print_help())

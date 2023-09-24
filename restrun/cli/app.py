@@ -56,7 +56,6 @@ class App:
         subparser = parser.add_subparsers(
             title="commands",
             metavar="COMMAND",
-            required=True,
         )
 
         for add_subparser in [
@@ -69,6 +68,8 @@ class App:
                 subparser,
                 formatter_class=parser.formatter_class,
             )
+
+        parser.set_defaults(handler=lambda _: parser.print_help())
 
         logging.basicConfig(
             format="%(message)s",
