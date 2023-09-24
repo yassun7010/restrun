@@ -1,5 +1,4 @@
 import rich
-
 from rich.prompt import Prompt
 
 from restrun.cli.prompt.select import select_prompt
@@ -26,6 +25,7 @@ def prompt_source(openapi_location: str | None) -> V1OpenAPISource | None:
             if openapi_location is None:
                 openapi_location = Prompt.ask(
                     "[dark_orange]OpenAPI Location[/]",
+                    default="https://petstore.swagger.io/v2/swagger.json",
                 )
 
             return V1OpenAPISource(
