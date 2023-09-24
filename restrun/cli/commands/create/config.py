@@ -51,7 +51,6 @@ def create_config_command(space: Namespace) -> None:
     from restrun.cli.prompt.config import prompt_config
     from restrun.config import DEFAULT_CONFIG_FILE
     from restrun.exceptions import FileAlreadyExistsError
-    from restrun.utils import yaml
 
     config_path = Path(space.config or str(DEFAULT_CONFIG_FILE))
 
