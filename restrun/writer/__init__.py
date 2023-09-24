@@ -18,7 +18,11 @@ if TYPE_CHECKING:
 logger = getLogger(__name__)
 
 
-def write_module(base_dir: Path, config: "Config", context: "RestrunContext") -> None:
+def write_root_module(
+    base_dir: Path,
+    config: "Config",
+    context: "RestrunContext",
+) -> None:
     from restrun.generator.root_module import RootModuleGenerator
 
     write_python_code(
@@ -183,15 +187,14 @@ def write_python_codes(base_dir: Path, config: "Config", config_path: Path) -> N
 
     restrun_context = make_rustrun_context(base_dir, config)
 
-    write_module(base_dir, config, restrun_context)
+    write_root_module(base_dir, config, restrun_context)
 
-    # import root module of generated code.
+    # import root module for operation module load.
     if spec := importlib.util.spec_from_file_location(
         str(base_dir), base_dir / "__init__.py"
     ):
-        if spec.loader is not None:
-            if module := importlib.util.module_from_spec(spec):
-                sys.modules[spec.name] = module
+        if module := importlib.util.module_from_spec(spec):
+            sys.modules[spec.name] = module
 
     for source in config.root.sources:
         if source.type == "openapi":
