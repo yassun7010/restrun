@@ -54,6 +54,8 @@ reportPrivateImportUsage = "none"
 reportUnusedImport = true
 
 [tool.ruff]
+[tool.ruff.isort]
+lines-after-imports = 2
 
 [tool.isort]
 profile = "black"
