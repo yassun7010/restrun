@@ -36,4 +36,4 @@ class TestClientGenerator:
 
         exec(code, None, locals)
 
-        assert locals["MyClient"] is not None
+        assert locals["TestProjectClient"] is not None
