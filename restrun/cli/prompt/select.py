@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import Sequence, TypeVar
 
 from prompt_toolkit import HTML
 from prompt_toolkit.application import Application
@@ -16,8 +16,8 @@ class SelectList(RadioList):
     open_character = "  ("
 
 
-def select_prompt(
-    options: list[tuple[_T, str | HTML]] | list[_T],
+def prompt_select(
+    options: Sequence[tuple[_T, str | HTML]] | list[_T],
     value: _T | None = None,
 ) -> _T:
     if value is not None:

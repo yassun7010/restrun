@@ -2,7 +2,7 @@ import rich
 
 from rich.prompt import Prompt
 
-from restrun.cli.prompt.select import select_prompt
+from restrun.cli.prompt.select import prompt_select
 from restrun.config.v1.source import SourceType
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
 from restrun.exceptions import NeverReachError
@@ -17,7 +17,7 @@ def prompt_source(openapi_location: str | None) -> V1OpenAPISource | None:
         options: list[SourceType] = ["manual", "openapi"]
 
         rich.get_console().print("[dark_orange]Source Type[/]:")
-        source_type = select_prompt(
+        source_type = prompt_select(
             options=options,
         )
 

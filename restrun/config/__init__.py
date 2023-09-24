@@ -15,6 +15,7 @@ from restrun.config.v1.format import V1FormatConfig
 from restrun.config.v1.lint import V1LintConfig
 from restrun.core import http
 from restrun.exceptions import FileExtensionError, RestrunConfigNotFoundError
+from restrun.utils import strcase
 
 from .v1 import V1Config
 
@@ -98,3 +99,7 @@ def load(file: IO, **kwargs) -> Config:
             raise FileExtensionError(file.name, extension)
 
     return Config.model_validate(config)
+
+
+def get_base_path(config, config_path: Path) -> Path:
+    return config_path.parent / strcase.module_name(config.name)

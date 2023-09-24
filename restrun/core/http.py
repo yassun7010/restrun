@@ -17,9 +17,9 @@ _SingleResponse = (
 Response = _SingleResponse | list[_SingleResponse] | None
 
 Method: TypeAlias = Literal[
-    "DELETE",
     "GET",
-    "PATCH",
     "POST",
     "PUT",
+    "PATCH",
+    "DELETE",
 ]
