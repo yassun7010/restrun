@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 import pytest
 
 from restrun.cli.app import App
-from tests.data import DATA_DIR
+from tests.__data__ import DATA_DIR
 
 
 class TestCliAppCreateConfigCommand:
