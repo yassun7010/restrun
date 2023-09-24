@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import IO, Literal
 
 import jinja2
-import yaml
 
 from pydantic import RootModel
 
@@ -74,6 +73,8 @@ def load(file: IO, **kwargs) -> Config:
     root, extension = os.path.splitext(file.name)
     match extension:
         case ".yaml" | ".yml":
+            import yaml
+
             config = yaml.full_load(file)
 
         case ".json":
