@@ -11,7 +11,7 @@ class TestRootModuleGenerator:
         restrun_context: RestrunContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            RootModuleGenerator().generate(
+            RootModuleGenerator.generate(
                 config,
                 restrun_context,
             )

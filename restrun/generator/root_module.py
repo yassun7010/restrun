@@ -11,8 +11,9 @@ if TYPE_CHECKING:
 
 
 class RootModuleGenerator:
+    @classmethod
     def generate(
-        self,
+        cls,
         config: "Config",
         restrun_context: "RestrunContext",
         template_path: Path | None = None,

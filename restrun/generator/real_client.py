@@ -12,8 +12,9 @@ if TYPE_CHECKING:
 
 
 class RealClientGenerator:
+    @classmethod
     def generate(
-        self,
+        cls,
         config: "Config",
         restrun_context: "RestrunContext",
         resources_context: "ResourcesContext",

@@ -13,7 +13,7 @@ class TestResourceModuleGenerator:
         resource_context: ResourceContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            ResourceModuleGenerator().generate(
+            ResourceModuleGenerator.generate(
                 config,
                 restrun_context,
                 resource_context,

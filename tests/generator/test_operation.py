@@ -14,7 +14,7 @@ class TestOperationGenerator:
         self, config: Config, restrun_context: RestrunContext
     ) -> None:
         assert is_auto_generated_or_empty(
-            OperationGenerator().generate(
+            OperationGenerator.generate(
                 config,
                 restrun_context,
                 OperationContext(

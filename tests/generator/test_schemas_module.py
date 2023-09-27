@@ -11,7 +11,7 @@ class TestSchemasModuleGenerator:
         restrun_context: RestrunContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            SchemasModuleGenerator().generate(
+            SchemasModuleGenerator.generate(
                 config,
                 restrun_context,
             )

@@ -13,7 +13,7 @@ class TestClientMixinsModuleGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            ClientMixinsModuleGenerator().generate(
+            ClientMixinsModuleGenerator.generate(
                 config,
                 restrun_context,
                 resources_context,

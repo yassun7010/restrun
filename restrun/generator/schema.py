@@ -12,8 +12,9 @@ if TYPE_CHECKING:
 
 
 class SchemaGenerator:
+    @classmethod
     def generate(
-        self,
+        cls,
         config: "Config",
         restrun_context: "RestrunContext",
         schema_context: "SchemaContext",

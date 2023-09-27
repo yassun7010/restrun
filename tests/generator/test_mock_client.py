@@ -13,7 +13,7 @@ class TestMockClientGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            MockClientGenerator().generate(
+            MockClientGenerator.generate(
                 config,
                 restrun_context,
                 resources_context,

@@ -12,8 +12,9 @@ if TYPE_CHECKING:
 
 
 class ResourceModuleGenerator:
+    @classmethod
     def generate(
-        self,
+        cls,
         config: "Config",
         restrun_context: "RestrunContext",
         resource_context: "ResourceContext",

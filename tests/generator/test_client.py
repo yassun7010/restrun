@@ -13,7 +13,7 @@ class TestClientGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            ClientGenerator().generate(
+            ClientGenerator.generate(
                 config,
                 restrun_context,
                 resources_context,
@@ -28,7 +28,7 @@ class TestClientGenerator:
     ) -> None:
         locals = {}
 
-        code = ClientGenerator().generate(
+        code = ClientGenerator.generate(
             config,
             restrun_context,
             resources_context,

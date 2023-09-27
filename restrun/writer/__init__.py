@@ -27,7 +27,7 @@ def write_root_module(
 
     write_python_code(
         base_dir / "__init__.py",
-        lambda: RootModuleGenerator().generate(config, context),
+        lambda: RootModuleGenerator.generate(config, context),
     )
 
 
@@ -70,7 +70,7 @@ def write_schema(
 
     write_python_code(
         base_dir / "schemas" / f"{schema_context.file_name}.py",
-        lambda: SchemaGenerator().generate(config, restrun_context, schema_context),
+        lambda: SchemaGenerator.generate(config, restrun_context, schema_context),
     )
 
 
@@ -84,7 +84,7 @@ def write_schemas(
 
     write_python_code(
         base_dir / "schemas" / "__init__.py",
-        lambda: SchemasModuleGenerator().generate(config, restrun_context),
+        lambda: SchemasModuleGenerator.generate(config, restrun_context),
     )
 
     for schema_context in schema_contexts:
@@ -109,7 +109,7 @@ def write_operation(
         / "resources"
         / module_name(operation_context.path_name)
         / f"{module_name(operation_context.class_name)}.py",
-        lambda: OperationGenerator().generate(
+        lambda: OperationGenerator.generate(
             config,
             restrun_context,
             operation_context,
@@ -142,7 +142,7 @@ def write_resource(
 
     write_python_code(
         base_dir / "resources" / resource_context.module_name / "__init__.py",
-        lambda: ResourceModuleGenerator().generate(
+        lambda: ResourceModuleGenerator.generate(
             config, restrun_context, resource_context
         ),
     )
@@ -158,7 +158,7 @@ def write_resources(
 
     write_python_code(
         base_dir / "resources" / "__init__.py",
-        lambda: ResourcesModuleGenerator().generate(
+        lambda: ResourcesModuleGenerator.generate(
             config,
             restrun_context,
             resources_context,

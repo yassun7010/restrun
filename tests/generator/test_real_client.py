@@ -13,7 +13,7 @@ class TestRealClientGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            RealClientGenerator().generate(
+            RealClientGenerator.generate(
                 config,
                 restrun_context,
                 resources_context,
