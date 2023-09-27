@@ -5,11 +5,13 @@ from humps import depascalize, pascalize
 
 def module_name(name: str) -> str:
     """Convert string to python module name."""
+
     return depascalize(_sanitize(name))
 
 
 def class_name(name: str) -> str:
     """Convert string to python class name."""
+
     return "".join([pascalize(s) for s in _sanitize(name).split("_")])
 
 
@@ -28,4 +30,5 @@ def _convert_unavailable_chars_to_underbar(name: str) -> str:
 def add_strcase_filters(env: jinja2.Environment) -> jinja2.Environment:
     env.filters["module_name"] = module_name
     env.filters["class_name"] = class_name
+
     return env
