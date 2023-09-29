@@ -72,11 +72,11 @@
             "samuelcolvin.jinjahtml",
             "redhat.vscode-yaml",
             "tamasfe.even-better-toml",
-            "ms-python.isort",
             "charliermarsh.ruff",
         ],
         "unwantedRecommendations": [
             "ms-python.flake8",
+            "ms-python.isort",
         ]
     }
 }
