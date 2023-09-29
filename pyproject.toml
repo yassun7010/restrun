@@ -6,7 +6,7 @@ authors = ["yassun7010 <yassun7010@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-restrun = "restrun.__main__:main"
+restrun = "restrun.cli.__main__:main"
 
 [tool.taskipy.tasks]
 test = "pytest"
