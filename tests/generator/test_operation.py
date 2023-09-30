@@ -5,16 +5,16 @@ from restrun.generator.context.operation_context import (
     PythonResponseJsonBody,
 )
 from restrun.generator.context.restrun_context import RestrunContext
-from restrun.generator.operation import OperationGenerator
+from restrun.generator.operation import generate_operation
 from restrun.openapi.schema import PythonObject
 
 
-class TestOperationGenerator:
+class TestGenerateOperation:
     def test_check_auto_generated(
         self, config: Config, restrun_context: RestrunContext
     ) -> None:
         assert is_auto_generated_or_empty(
-            OperationGenerator.generate(
+            generate_operation(
                 config,
                 restrun_context,
                 OperationContext(

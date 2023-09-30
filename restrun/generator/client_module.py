@@ -11,23 +11,20 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class ClientModuleGenerator:
-    @classmethod
-    def generate(
-        cls,
-        config: "Config",
-        restrun_context: "RestrunContext",
-        resources_context: "ResourcesContext",
-        template_path: Path | None = None,
-    ) -> "GeneratedPythonCode":
-        if template_path is None:
-            template_path = Path(__file__).parent / "client_module.py.jinja"
+def generate_client_module(
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resources_context: "ResourcesContext",
+    template_path: Path | None = None,
+) -> "GeneratedPythonCode":
+    if template_path is None:
+        template_path = Path(__file__).parent / "client_module.py.jinja"
 
-        string = render_template(
-            template_path,
-            config=config,
-            restrun=restrun_context,
-            resources=resources_context,
-        )
+    string = render_template(
+        template_path,
+        config=config,
+        restrun=restrun_context,
+        resources=resources_context,
+    )
 
-        return string
+    return string

@@ -10,19 +10,16 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class RootModuleGenerator:
-    @classmethod
-    def generate(
-        cls,
-        config: "Config",
-        restrun_context: "RestrunContext",
-        template_path: Path | None = None,
-    ) -> "GeneratedPythonCode":
-        if template_path is None:
-            template_path = Path(__file__).parent / "root_module.py.jinja"
+def generate_root_module(
+    config: "Config",
+    restrun_context: "RestrunContext",
+    template_path: Path | None = None,
+) -> "GeneratedPythonCode":
+    if template_path is None:
+        template_path = Path(__file__).parent / "root_module.py.jinja"
 
-        return render_template(
-            template_path,
-            config=config,
-            restrun=restrun_context,
-        )
+    return render_template(
+        template_path,
+        config=config,
+        restrun=restrun_context,
+    )

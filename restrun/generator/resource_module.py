@@ -11,21 +11,18 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class ResourceModuleGenerator:
-    @classmethod
-    def generate(
-        cls,
-        config: "Config",
-        restrun_context: "RestrunContext",
-        resource_context: "ResourceContext",
-        template_path: Path | None = None,
-    ) -> "GeneratedPythonCode":
-        if template_path is None:
-            template_path = Path(__file__).parent / "resource_module.py.jinja"
+def generate_resource_module(
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resource_context: "ResourceContext",
+    template_path: Path | None = None,
+) -> "GeneratedPythonCode":
+    if template_path is None:
+        template_path = Path(__file__).parent / "resource_module.py.jinja"
 
-        return render_template(
-            template_path,
-            config=config,
-            restrun=restrun_context,
-            resource=resource_context,
-        )
+    return render_template(
+        template_path,
+        config=config,
+        restrun=restrun_context,
+        resource=resource_context,
+    )

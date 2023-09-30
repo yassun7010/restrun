@@ -2,10 +2,10 @@ from restrun.config import Config
 from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.context.resources_context import ResourcesContext
 from restrun.generator.context.restrun_context import RestrunContext
-from restrun.generator.real_client import RealClientGenerator
+from restrun.generator.real_client import generate_real_client
 
 
-class TestRealClientGenerator:
+class TestGenerateRealClient:
     def test_check_auto_generated(
         self,
         config: Config,
@@ -13,7 +13,7 @@ class TestRealClientGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            RealClientGenerator.generate(
+            generate_real_client(
                 config,
                 restrun_context,
                 resources_context,

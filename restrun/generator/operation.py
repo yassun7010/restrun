@@ -11,21 +11,18 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class OperationGenerator:
-    @classmethod
-    def generate(
-        cls,
-        config: "Config",
-        restrun_context: "RestrunContext",
-        operation_context: "OperationContext",
-        template_path: Path | None = None,
-    ) -> "GeneratedPythonCode":
-        if template_path is None:
-            template_path = Path(__file__).parent / "operation.py.jinja"
+def generate_operation(
+    config: "Config",
+    restrun_context: "RestrunContext",
+    operation_context: "OperationContext",
+    template_path: Path | None = None,
+) -> "GeneratedPythonCode":
+    if template_path is None:
+        template_path = Path(__file__).parent / "operation.py.jinja"
 
-        return render_template(
-            template_path,
-            config=config,
-            restrun=restrun_context,
-            operation=operation_context,
-        )
+    return render_template(
+        template_path,
+        config=config,
+        restrun=restrun_context,
+        operation=operation_context,
+    )

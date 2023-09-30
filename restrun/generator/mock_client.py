@@ -11,21 +11,18 @@ if TYPE_CHECKING:
     from restrun.generator.context.restrun_context import RestrunContext
 
 
-class MockClientGenerator:
-    @classmethod
-    def generate(
-        cls,
-        config: "Config",
-        restrun_context: "RestrunContext",
-        resources_context: "ResourcesContext",
-        template_path: Path | None = None,
-    ) -> "GeneratedPythonCode":
-        if template_path is None:
-            template_path = Path(__file__).parent / "mock_client.py.jinja"
+def generate_mock_client(
+    config: "Config",
+    restrun_context: "RestrunContext",
+    resources_context: "ResourcesContext",
+    template_path: Path | None = None,
+) -> "GeneratedPythonCode":
+    if template_path is None:
+        template_path = Path(__file__).parent / "mock_client.py.jinja"
 
-        return render_template(
-            template_path,
-            config=config,
-            restrun=restrun_context,
-            resources=resources_context,
-        )
+    return render_template(
+        template_path,
+        config=config,
+        restrun=restrun_context,
+        resources=resources_context,
+    )

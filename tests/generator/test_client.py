@@ -1,11 +1,11 @@
 from restrun.config import Config
 from restrun.generator import is_auto_generated_or_empty
-from restrun.generator.client import ClientGenerator
+from restrun.generator.client import generate_client
 from restrun.generator.context.resources_context import ResourcesContext
 from restrun.generator.context.restrun_context import RestrunContext
 
 
-class TestClientGenerator:
+class TestGenerateClient:
     def test_check_auto_generated(
         self,
         config: Config,
@@ -13,7 +13,7 @@ class TestClientGenerator:
         resources_context: ResourcesContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            ClientGenerator.generate(
+            generate_client(
                 config,
                 restrun_context,
                 resources_context,
@@ -28,7 +28,7 @@ class TestClientGenerator:
     ) -> None:
         locals = {}
 
-        code = ClientGenerator.generate(
+        code = generate_client(
             config,
             restrun_context,
             resources_context,

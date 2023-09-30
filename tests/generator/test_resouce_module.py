@@ -2,10 +2,10 @@ from restrun.config import Config
 from restrun.generator import is_auto_generated_or_empty
 from restrun.generator.context.resource_context import ResourceContext
 from restrun.generator.context.restrun_context import RestrunContext
-from restrun.generator.resource_module import ResourceModuleGenerator
+from restrun.generator.resource_module import generate_resource_module
 
 
-class TestResourceModuleGenerator:
+class TestGenerateResourceModule:
     def test_check_auto_generated(
         self,
         config: Config,
@@ -13,7 +13,7 @@ class TestResourceModuleGenerator:
         resource_context: ResourceContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            ResourceModuleGenerator.generate(
+            generate_resource_module(
                 config,
                 restrun_context,
                 resource_context,

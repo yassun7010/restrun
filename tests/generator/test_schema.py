@@ -6,7 +6,7 @@ from restrun.config import Config
 from restrun.generator import AUTO_GENERATED_DOC_COMMENT, is_auto_generated_or_empty
 from restrun.generator.context.restrun_context import RestrunContext
 from restrun.generator.context.schema_context import SchemaContext
-from restrun.generator.schema import SchemaGenerator
+from restrun.generator.schema import generate_schema
 from restrun.openapi.schema import (
     PythonArray,
     PythonCustomStr,
@@ -20,14 +20,14 @@ from restrun.openapi.schema import (
 from tests.conftest import format_by_black
 
 
-class TestSchemaGenerator:
+class TestGenerateSchema:
     def test_check_auto_generated(
         self,
         config: Config,
         restrun_context: RestrunContext,
     ) -> None:
         assert is_auto_generated_or_empty(
-            SchemaGenerator.generate(
+            generate_schema(
                 config,
                 restrun_context,
                 SchemaContext(
@@ -56,7 +56,7 @@ class TestSchemaGenerator:
         restrun_context: RestrunContext,
     ):
         locales = {}
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             SchemaContext(
@@ -98,7 +98,7 @@ class TestSchemaGenerator:
             file_name="literal",
             data_type=PythonSchema("Literal", literal),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -121,7 +121,7 @@ class TestSchemaGenerator:
                 PythonCustomStr("custom"),
             ),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -145,7 +145,7 @@ class TestSchemaGenerator:
                 data_type=PythonLiteralUnion(PythonLiteralType.INT, items=[1, 2, 3]),
             ),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -170,7 +170,7 @@ class TestSchemaGenerator:
                 ),
             ),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -190,7 +190,7 @@ class TestSchemaGenerator:
             file_name="ref",
             data_type=PythonReference("Ref", PythonLiteralType.INT),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -218,7 +218,7 @@ class TestSchemaGenerator:
                 data_type=PythonArray(literal),
             ),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -241,7 +241,7 @@ class TestSchemaGenerator:
                 data_type=PythonArray(PythonReference("Ref", PythonLiteralType.INT)),
             ),
         )
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
@@ -280,7 +280,7 @@ class TestSchemaGenerator:
             ),
         )
 
-        code = SchemaGenerator.generate(
+        code = generate_schema(
             config,
             restrun_context,
             schema_context,
