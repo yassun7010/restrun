@@ -2,14 +2,14 @@ import contextlib
 
 from tempfile import TemporaryDirectory
 
-from restrun.cli.app import App
+from restrun.cli import app
 
 
 class TestCliAppNewCommand:
     def test_new_command(self) -> None:
         with TemporaryDirectory() as dir:
             with contextlib.chdir(dir):
-                App.run(
+                app.run(
                     [
                         "new",
                         "new_command_sample",
@@ -20,7 +20,7 @@ class TestCliAppNewCommand:
 
     def test_new_command_with_overwrite(self) -> None:
         with contextlib.chdir("examples"):
-            App.run(
+            app.run(
                 [
                     "new",
                     "new_command_sample",

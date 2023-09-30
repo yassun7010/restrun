@@ -1,12 +1,12 @@
 import pytest
 
-from restrun.cli.app import App
+from restrun.cli import app
 
 
 class TestCliAppCreateCommand:
     def test_create_command(self) -> None:
         with pytest.raises(SystemExit):
-            App.run(
+            app.run(
                 [
                     "create",
                     "--help",

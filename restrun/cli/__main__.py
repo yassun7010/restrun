@@ -1,9 +1,9 @@
-from .app import App
+from . import app
 
 
 def main() -> None:
     try:
-        App.run()
+        app.run()
 
     except Exception:
         exit(1)
