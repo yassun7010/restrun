@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 from typing import Callable, Generic, Type, TypeAlias, TypeVar
-from venv import logger
 
 import jinja2
 
