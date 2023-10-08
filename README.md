@@ -8,7 +8,7 @@
 
 <!-- --8<-- [end:badges] -->
 
-![RESTRUN logo](./docs/images//RESTRUN.svg | width=100)
+<img src="./docs/images//RESTRUN.svg" width="200" height="200" />
 
 RESTRUN is `REST(full api) + RUN(ner)` generator for Python.
 
