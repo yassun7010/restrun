@@ -8,6 +8,8 @@
 
 <!-- --8<-- [end:badges] -->
 
+![RESTRUN logo](./docs/images//RESTRUN.svg)
+
 RESTRUN is `REST(full api) + RUN(ner)` generator for Python.
 
 - [Documentation](https://yassun7010.github.io/restrun/)
