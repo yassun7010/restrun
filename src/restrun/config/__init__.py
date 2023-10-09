@@ -3,7 +3,7 @@ import os
 
 from io import StringIO
 from pathlib import Path
-from typing import IO, Literal
+from typing import IO, Literal, cast
 
 import jinja2
 
@@ -85,7 +85,9 @@ def load(file: IO, **kwargs) -> Config:
             if isinstance(data, bytes):
                 data = data.decode("utf-8")
 
-            rendered_file = StringIO(jinja2.Template(data).render(os.environ, **kwargs))
+            rendered_file = StringIO(
+                jinja2.Template(cast(str, data)).render(os.environ, **kwargs),
+            )
             rendered_file.name = root
 
             return load(rendered_file, **kwargs)

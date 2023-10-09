@@ -11,8 +11,8 @@ restrun = "restrun.cli.__main__:main"
 
 [tool.taskipy.tasks]
 test = "pytest"
-format = "isort restrun && black restrun"
-lint = "pyright restrun/** tests/** examples/**"
+format = "isort src && black src"
+lint = "pyright src/** tests/** examples/**"
 schema = "python scripts/generate_config_jsonschema.py > schemas/config.schema.json"
 examples = "sh scripts/execute_examples.sh"
 docs = "mkdocs serve"
@@ -47,7 +47,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88
-target-version = ['py310']
+target-version = ['py312']
 
 [tool.pyright]
 exclude = ["**/__pycache__"]
