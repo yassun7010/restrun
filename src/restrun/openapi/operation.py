@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, ItemsView, Literal, TypeVar
+from typing import ItemsView, Literal, Union
 
 from restrun.openapi.schema import (
     PythonDataType,
@@ -53,17 +53,15 @@ class PythonCookieParameter:
         return as_typed_dict_field(self.data_type, self.required)
 
 
-PythonParameter = TypeVar(
-    "PythonParameter",
-    PythonPathParameter,
-    PythonHeaderParameter,
-    PythonQueryParameter,
-    PythonCookieParameter,
-)
-
-
 @dataclass(frozen=True)
-class PythonParameters(Generic[PythonParameter]):
+class PythonParameters[
+    PythonParameter: Union[
+        PythonPathParameter,
+        PythonHeaderParameter,
+        PythonQueryParameter,
+        PythonCookieParameter,
+    ]
+]:
     class_name: str
     parameters: dict[str, PythonParameter]
 
