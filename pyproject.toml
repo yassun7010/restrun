@@ -18,7 +18,7 @@ examples = "sh scripts/execute_examples.sh"
 docs = "mkdocs serve"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 pydantic = "^2.2.1"
 typer = { extras = ["all"], version = "^0.9.0" }
 jinja2 = "^3.1.2"
