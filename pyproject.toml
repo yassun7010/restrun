@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["yassun7010 <yassun7010@outlook.com>"]
 readme = "README.md"
+packages = [{ include = "restrun", from = "src" }]
 
 [tool.poetry.scripts]
 restrun = "restrun.cli.__main__:main"
