@@ -1,11 +1,10 @@
 from collections import OrderedDict
 from enum import Enum
 from functools import cached_property
-from typing import Self
+from typing import Self, assert_never
 
 from attr import dataclass
 
-from restrun.exceptions import NeverReachError
 from restrun.utils.strcase import class_name, module_name
 
 from .openapi import (
@@ -365,7 +364,7 @@ def get_data_type(
                 )
 
             case _:
-                raise NeverReachError(schema_type)
+                assert_never(schema_type)
 
     return PythonLiteralType("Any")
 
@@ -434,7 +433,7 @@ def get_import_modules(data_type: PythonDataType) -> list[str]:
             return get_import_modules(data_type.data_type)
 
         case _:
-            raise NeverReachError(data_type)
+            assert_never(data_type)
 
 
 def get_schemas(openapi: OpenAPI) -> list[PythonDataSchema]:

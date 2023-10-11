@@ -1,3 +1,5 @@
+from typing import assert_never
+
 import rich
 
 from rich.prompt import Prompt
@@ -5,7 +7,6 @@ from rich.prompt import Prompt
 from restrun.cli.prompt.select import prompt_select
 from restrun.config.v1.source import SourceType
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
-from restrun.exceptions import NeverReachError
 
 
 def prompt_source(openapi_location: str | None) -> V1OpenAPISource | None:
@@ -38,4 +39,4 @@ def prompt_source(openapi_location: str | None) -> V1OpenAPISource | None:
             return None
 
         case _:
-            raise NeverReachError(source_type)
+            assert_never(source_type)
