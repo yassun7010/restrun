@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import Self
+from typing import Self, assert_never
 
 from restrun.config.v1.source.openapi_source import V1OpenAPISource
-from restrun.exceptions import NeverReachError
 from restrun.openapi.schema import (
     PythonArray,
     PythonCustomStr,
@@ -53,7 +52,7 @@ class SchemaContext:
                 return "ref"
 
             case _:
-                raise NeverReachError(self.data_type)
+                assert_never(self.data_type)
 
     @property
     def is_literal_type(self) -> bool:
