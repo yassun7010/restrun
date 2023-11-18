@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-]+","pipeline":["stopWordFilter"]},"docs":[{"location":"","title":"Welcome RESTRUN","text":"<p>RESTRUN is <code>REST(full api) + RUN(ner)</code> generator for Python.</p>"},{"location":"#features","title":"Features","text":""}]}
