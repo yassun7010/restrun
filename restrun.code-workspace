@@ -68,6 +68,7 @@
         "recommendations": [
             "charliermarsh.ruff",
             "ms-python.python",
+            "ms-python.vscode-pylance",
             "redhat.vscode-yaml",
             "samuelcolvin.jinjahtml",
             "tamasfe.even-better-toml",
@@ -76,7 +77,6 @@
             "ms-python.black-formatter",
             "ms-python.flake8",
             "ms-python.isort",
-            "ms-python.vscode-pylance",
         ]
     }
 }
