@@ -1035,13 +1035,13 @@ setuptools = "*"
 
 [[package]]
 name = "openapi-pydantic"
-version = "0.3.2"
+version = "0.4.0"
 description = "Pydantic OpenAPI schema implementation"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openapi_pydantic-0.3.2-py3-none-any.whl", hash = "sha256:24488566a0a61bee3b55de6d3665329adaf2aadfe8f292ac0bddfe22155fadac"},
-    {file = "openapi_pydantic-0.3.2.tar.gz", hash = "sha256:685aa631395c469ecfd04f01a2ffedd541f94d372943868a501b412e9de6ba8b"},
+    {file = "openapi_pydantic-0.4.0-py3-none-any.whl", hash = "sha256:8f782be72a4792bf6b5bbc4cf694fda2ca0719c0354ee6a062179982544fb5c0"},
+    {file = "openapi_pydantic-0.4.0.tar.gz", hash = "sha256:22c43e0da5f479d28e11c083d6d3492e09a6ef9e2b3201ccddbfbc8786db1ffb"},
 ]
 
 [package.dependencies]
@@ -2136,4 +2136,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "765dd7dfd17cc6bbe734310d94f962a53307c6bc110204aa5c70be8f6cf9d2e9"
+content-hash = "96a4815d1d9aeec128a6750f443f792218ba24336b52c7f29735d283fd30d606"
